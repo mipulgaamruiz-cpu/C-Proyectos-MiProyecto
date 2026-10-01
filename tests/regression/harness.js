@@ -26,7 +26,7 @@ window.__reg = async (cfg) => {
       }
     }
     ok('Exportes CSV/Excel verificados en ' + nExp + ' pantallas', nExp >= 18, String(nExp));
-    const mass = [['fixed', '#/orders/fixed-income', 1, 6], ['variable', '#/orders/variable-income', 1, 6], ['mm', '#/orders/money-market', 1, 6], ['instr', '#/parametrizacion/instruments', 0, 5], ['bench', '#/parametrizacion/benchmarks', 0, 4], ['cp', '#/parametrizacion/counterparties', 0, 4]];
+    const mass = [['fixed', '#/orders/fixed-income', 1, 6], ['variable', '#/orders/variable-income', 1, 6], ['mm', '#/orders/money-market', 1, 6], ['instr', '#/parametrizacion/instruments', 0, 5], ['bench', '#/parametrizacion/benchmarks', 0, 4], ['cp', '#/parametrizacion/counterparties', 0, 4], ['limites', '#/parametrizacion/limits', 1, 4]];
     for (const [id, r, tab, nrows] of mass) {
       try {
         window.__go(r); await w(600); let root;
@@ -49,7 +49,7 @@ window.__reg = async (cfg) => {
         ok('Masiva ' + id + ': banda VERDE al procesar el ejemplo', !!res().querySelector('.mk-alert--success') && new RegExp(nrows + ' registros cargados\\s*·\\s*0 con errores', 'i').test(tx), tx.slice(0, 100));
         ok('Masiva ' + id + ': las filas aparecen en la tabla', cnt() === c0 + nrows, c0 + ' → ' + cnt());
         await setF(new File([caps[3]], 'ejemplo.csv')); root.querySelector('[data-proc]').click(); await w(1400);
-        const t2 = res().innerText.replace(/\s+/g, ' '), dup = (id === 'instr' || id === 'cp');
+        const t2 = res().innerText.replace(/\s+/g, ' '), dup = (id === 'instr' || id === 'cp' || id === 'limites');
         ok('Masiva ' + id + ': ejemplo CSV' + (dup ? ' repetido: rechazo con "Fila N"' : ': banda verde'), dup ? (!!res().querySelector('.mk-alert--danger,.mk-alert--warning') && /Fila \d/.test(t2)) : !!res().querySelector('.mk-alert--success'), t2.slice(0, 90));
         await setF(new File(['a,b,c\n1,2,3'], 'mal.csv')); root.querySelector('[data-proc]').click(); await w(1100); ok('Masiva ' + id + ': encabezados erróneos rechazados', /encabezados/i.test(res().innerText));
         await setF(new File(['x'], 'nota.txt')); ok('Masiva ' + id + ': .txt rechazado', /Formato no permitido/i.test(res().innerText));
@@ -91,7 +91,7 @@ window.__reg = async (cfg) => {
     ok('Límites: contraparte ' + cfg.cp + ' al 94 % en Alerta', !!l2, l2 ? l2.innerText.replace(/\s+/g, ' ').slice(0, 100) : 'no encontrado');
     window.__go('#/parametrizacion/counterparties'); await w(650); const cr = [...document.querySelectorAll('#pg tbody tr')].find(tr => tr.innerText.includes(cfg.cp)); ok('Contrapartes: ' + cfg.cp + ' con cupo y utilización', !!cr && /%/.test(cr.innerText), cr ? cr.innerText.replace(/\s+/g, ' ').slice(0, 110) : '');
     for (const [id, n] of Object.entries(X.informes)) { window.__go('#/orders/reports'); await w(600); document.querySelector('[data-r="' + id + '"]').click(); await w(300); document.querySelector('[data-gen]').click(); await w(900);
-      const rt = (document.querySelector('#out .mk-rowinfo') || { textContent: '' }).textContent; ok('Informe ' + id + ': ' + n + ' registros tras las pruebas', new RegExp('de ' + n + '\\b').test(rt), rt.replace(/\s+/g, ' ')); }
+      const rt = (document.querySelector('#out') || { textContent: '' }).textContent; ok('Informe ' + id + ': ' + n + ' registros tras las pruebas', new RegExp('\\(' + n + ' (órdenes|decisiones|registros)\\)').test(rt), rt.replace(/\s+/g, ' ').slice(0, 120)); }
     document.querySelector('#bell').click(); await w(300); const nt = document.querySelector('#ntfList').innerText; ok('Campana: cupo de contraparte y vencimiento', /Cupo de contraparte al 93%/.test(nt) && /CDT|DPF|CDP/.test(nt)); document.querySelector('#ntfClose').click();
     ok('Sin errores JS durante los flujos', errs.length === 0, errs.join(';'));
   } catch (e) { ok('EXCEPCIÓN en la prueba', false, String(e && e.message)); }

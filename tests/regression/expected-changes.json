@@ -135,6 +135,11 @@
       "ruta": "#/m/limits",
       "paises": "*",
       "motivo": "Landing de Control de límites: tarjeta nueva Excesos y aprobaciones"
+    },
+    {
+      "ruta": "#/m/param",
+      "paises": "*",
+      "motivo": "Landing de Parametrización: tarjeta nueva Proveedores de precios"
     }
   ],
   "cifras": {

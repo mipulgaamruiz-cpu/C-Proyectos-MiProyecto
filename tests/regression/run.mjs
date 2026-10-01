@@ -17,7 +17,7 @@ const t0 = Date.now();
 try {
   if (want('rutas')) await runRoutes(browser, HTML, R, { update: flag('update-baseline'), screens: !flag('no-screens') });
   if (want('flujos')) { try { const m = await import('./flows.mjs'); await m.runFlows(browser, HTML, R); } catch (e) { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e; } }
-  if (want('propuesta')) { const { COUNTRIES } = await import('./lib.mjs'); const m = await import('./flows2.mjs'); const m3 = await import('./flows3.mjs'); for (const p of COUNTRIES) { await m.runFlows2(browser, HTML, R, p); await m3.runFlows3(browser, HTML, R, p); } }
+  if (want('propuesta')) { const { COUNTRIES } = await import('./lib.mjs'); const m = await import('./flows2.mjs'); const m3 = await import('./flows3.mjs'); const m4 = await import('./flows4.mjs'); for (const p of COUNTRIES) { await m.runFlows2(browser, HTML, R, p); await m3.runFlows3(browser, HTML, R, p); await m4.runFlows4(browser, HTML, R, p); } }
   if (want('numeros')) { try { const m = await import('./numbers.mjs'); await m.runNumbers(browser, HTML, R, { update: flag('update-baseline') }); } catch (e) { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e; } }
   if (want('libretos')) { try { const m = await import('./libretos.mjs'); await m.runLibretos(browser, HTML, R); } catch (e) { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e; } }
 } finally { await browser.close(); }

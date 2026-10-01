@@ -68,9 +68,9 @@ export async function runNumbers(browser, html, R, { update = false } = {}) {
     await page.locator('#view select[data-fl="inst"]').selectOption({ index: 1 });
     const kd = await page.evaluate(() => { const nums = [...document.querySelectorAll('#view .mk-kpi__v')].map(k => parseInt(k.innerText.replace(/\D/g, ''), 10) || 0); return { sum: nums.reduce((a, b) => a + b, 0), total: +document.querySelector('#view .mk-rowinfo').innerText.match(/de (\d+)/)[1] }; });
     R.add(pais, T, '#/orders/derivatives: suma de KPIs = filas visibles tras filtrar', kd.sum === kd.total, kd.sum + ' vs ' + kd.total);
-    await go(page, '#/orders/reports'); await page.click('[data-r="der"]'); await page.click('[data-gen]'); await page.waitForSelector('#out .mk-rowinfo');
-    const kl = await page.evaluate(() => { const v = [...document.querySelectorAll('#out .mk-kpi')].map(k => [k.querySelector('.mk-kpi__l').innerText.trim().toLowerCase(), parseInt(k.querySelector('.mk-kpi__v').innerText.replace(/\D/g, ''), 10) || 0]); return { o: v[0][1], cob: (v.find(x => /cobertura/.test(x[0])) || [0, 0])[1], prop: (v.find(x => /^inversión$/.test(x[0])) || [0, 0])[1], amb: (v.find(x => /cobertura e inversión/.test(x[0])) || [0, 0])[1], total: +document.querySelector('#out .mk-rowinfo').innerText.match(/de (\d+)/)[1] }; });
-    R.add(pais, T, 'Informe de derivados: KPI de órdenes = filas visibles y cobertura + inversión + ambas = órdenes', kl.o === kl.total && kl.cob + kl.prop + kl.amb === kl.total, JSON.stringify(kl));
+    await go(page, '#/orders/reports'); await page.click('[data-r="der"]'); await page.click('[data-gen]'); await page.waitForSelector('#out [data-dlrep]');
+    const kl = await page.evaluate(() => { const D = window.__mk.DS.DERIV_ORDERS, n = +document.querySelector('#out').innerText.match(/\((\d+) órdenes\)/)[1]; return { n, total: D.length, cob: D.filter(o => o.prop === 'Cobertura').length, prop: D.filter(o => o.prop === 'Inversión').length, amb: D.filter(o => o.prop !== 'Cobertura' && o.prop !== 'Inversión').length }; });
+    R.add(pais, T, 'Informe de derivados: el archivo trae todas las órdenes y cobertura + inversión + ambas = órdenes', kl.n === kl.total && kl.cob + kl.prop + kl.amb === kl.total, JSON.stringify(kl));
     now[pais] = m.metrics; now[pais + '_mm'] = m.mm.map(x => ({ p: x.p, tot: x.tot, wam: x.wam, tasa: x.tasa, v7: x.v7 }));
     await ctx.close();
   }

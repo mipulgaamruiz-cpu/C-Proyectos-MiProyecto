@@ -161,7 +161,7 @@ export async function runFlows3(browser, html, R, pais) {
   await go(page, '#/orders/reports');
   const ids = await page.locator('[data-r]').evaluateAll(b => b.map(x => x.dataset.r));
   ok('Informes: siete informes por producto (renta fija, renta variable, mercado monetario, derivados, inmobiliario, alternativas y Lending) y la bitácora de auditoría', ['rf', 'rv', 'mm', 'der', 'inm', 'alt', 'lend', 'aud'].every(i => ids.includes(i)) && ids.length === 8 && !/Libro de órdenes/i.test(await page.locator('#view').innerText()), ids.join(','));
-  const cnt = async () => { const t = await page.locator('#out .mk-rowinfo').innerText().catch(() => ''); const m = t.match(/de (\d+)/); return m ? +m[1] : 0 };
+  const cnt = async () => { const t = await page.locator('#out').innerText().catch(() => ''); const m = t.match(/\((\d+) (?:órdenes|decisiones|registros)\)/); return m ? +m[1] : 0 };
   for (const id of ids.filter(i => i !== 'aud')) {
     await go(page, '#/orders/reports'); await page.click(`[data-r="${id}"]`);
     const vo = await page.locator('#view [name=veh] option').allTextContents();
@@ -272,7 +272,10 @@ export async function runFlows3(browser, html, R, pais) {
   ok('Excesos y aprobaciones: lista los excesos con su resultado, solicitante y aprobador', /Aprobado/.test(exT) && /Bloqueado/.test(exT) && /Naturaleza/.test(exT) && (await page.locator('#view tbody tr').count()) >= 6 && !BAD_TEXT.test(exT));
   await go(page, '#/orders/reports'); await page.click('[data-r="aud"]'); await page.click('#view [data-gen]'); await page.waitForTimeout(900);
   const auT = await page.locator('#view').innerText();
-  ok('Bitácora de auditoría (informe en Órdenes › Reportes): muestra usuario, acción, módulo y referencia, y ya no es una tarjeta', /Usuario/.test(auT) && /Acción/.test(auT) && /Creación|Edición/.test(auT) && (await page.locator('#view tbody tr').count()) >= 8 && !BAD_TEXT.test(auT) && !(await page.evaluate(() => window.__mk.NAV.some(g => g.key === 'audit'))));
+  const [dl] = await Promise.all([page.waitForEvent('download'), page.click('#view [data-dlrep]')]);
+  await page.click('#bell'); await page.waitForTimeout(300); const ntT = await page.locator('#ntfList').innerText(); await page.click('#ntfClose');
+  ok('Informes de órdenes: «Generar informe» no muestra el resultado en pantalla; deja el archivo Excel disponible en la pantalla y en el Centro de Notificaciones', /Archivo del informe disponible/.test(auT) && !/Resultado del informe/.test(auT) && (await page.locator('#view tbody tr').count()) === 0 && /\.xlsx$/.test(dl.suggestedFilename()) && /Archivo del informe disponible/.test(ntT) && /Descargar informe/.test(ntT), dl.suggestedFilename());
+  ok('Bitácora de auditoría (informe en Órdenes › Reportes): se genera el archivo con quién hizo qué y cuándo, y ya no es una tarjeta', /Archivo del informe disponible/.test(auT) && !BAD_TEXT.test(auT) && !(await page.evaluate(() => window.__mk.NAV.some(g => g.key === 'audit'))));
   await go(page, '#/orders/fixed-income'); await page.waitForTimeout(400);
   const f0 = await page.evaluate(() => window.__mk.DS.FI_ORDERS.filter(o => o.estatus === 'F').length);
   await page.locator('#view [data-act="conf"]').first().click(); await page.waitForSelector('[name=uc]');

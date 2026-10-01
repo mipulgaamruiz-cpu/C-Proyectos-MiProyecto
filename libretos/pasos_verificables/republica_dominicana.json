@@ -431,9 +431,8 @@
       }
      ],
      "textoEsperado": [
-      "Usuario",
-      "Acción",
-      "Módulo"
+      "Archivo del informe disponible",
+      "Descargar informe"
      ],
      "textoNoEsperado": []
     }
@@ -462,8 +461,8 @@
       }
      ],
      "textoEsperado": [
-      "Nocional total",
-      "Evidencia"
+      "Archivo del informe disponible",
+      "Descargar informe"
      ],
      "textoNoEsperado": []
     },
@@ -484,8 +483,8 @@
       }
      ],
      "textoEsperado": [
-      "Compra de cartera",
-      "Monto total"
+      "Archivo del informe disponible",
+      "Descargar informe"
      ],
      "textoNoEsperado": []
     }
@@ -694,6 +693,158 @@
      "textoEsperado": [
       "Vigente",
       "Histórica"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "13",
+   "minutos": "OPCIONAL · +5 min",
+   "opcional": true,
+   "pantalla": "OPERAR Y SEGUIR · órdenes del día y en tránsito, liquidez y simulador",
+   "pasos": [
+    {
+     "ruta": "#/orders/fixed-income",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "#vtabs [data-vw=\"1\"]"
+      },
+      {
+       "t": "esperar",
+       "ms": 300
+      }
+     ],
+     "textoEsperado": [
+      "Órdenes del día",
+      "Contraparte",
+      "Cumplimiento"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/dashboard/in-transit",
+     "acciones": [],
+     "textoEsperado": [
+      "Liquidan hoy",
+      "Valor por liquidar"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/dashboard/liquidity",
+     "acciones": [],
+     "textoEsperado": [
+      "Saldo de caja",
+      "Entradas",
+      "Salidas"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/dashboard/simulator",
+     "acciones": [
+      {
+       "t": "elegir",
+       "sel": "#view [name=\"pre\"]",
+       "valor": "Choque de tasas al alza (+200 pb)"
+      },
+      {
+       "t": "click",
+       "sel": "#view [data-consult]"
+      },
+      {
+       "t": "esperar",
+       "ms": 400
+      }
+     ],
+     "textoEsperado": [
+      "Impacto del escenario",
+      "Efecto de la tasa de referencia"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "14",
+   "minutos": "OPCIONAL · +4 min",
+   "opcional": true,
+   "pantalla": "CORREGIR, PRECIOS Y AUTOMATIZAR · correcciones, precios en línea y cálculos automáticos",
+   "pasos": [
+    {
+     "ruta": "#/orders/corrections",
+     "acciones": [],
+     "textoEsperado": [
+      "Antes",
+      "Después",
+      "Motivo",
+      "Aprobó"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/dashboard/prices",
+     "acciones": [],
+     "textoEsperado": [
+      "Precio",
+      "Variación",
+      "Proveedor"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/parametrizacion/price-providers",
+     "acciones": [],
+     "textoEsperado": [
+      "Prioridad",
+      "Frecuencia"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/performance-attribution/summary",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "#view .mk-tab:has-text(\"Volatilidad por ventanas\")"
+      },
+      {
+       "t": "esperar",
+       "ms": 300
+      }
+     ],
+     "textoEsperado": [
+      "30 días",
+      "252 días"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/performance-attribution/peers",
+     "acciones": [],
+     "textoEsperado": [
+      "Percentil",
+      "Reportes regulatorios"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/performance-attribution/auto-calc",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "[data-cierre]"
+      },
+      {
+       "t": "esperar",
+       "ms": 300
+      }
+     ],
+     "textoEsperado": [
+      "Ejecutando",
+      "Cierre completado"
      ],
      "textoNoEsperado": []
     }
