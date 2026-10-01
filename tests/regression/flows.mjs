@@ -10,7 +10,7 @@ export const CFG = {
   'Panamá': { fondo: 'FONDO DE INVERSIÓN RENTA FIJA', fondo2: 'FONDO DE INVERSIÓN LIQUIDEZ', emisor: 'BANCO HIPOTECARIO NACIONAL', cp: 'BANCO GENERAL', bad: ['FINDETER', 'FIC ', 'CLP', 'DOP', 'CORFO', 'BANCO ADEMI', 'FONDO MUTUO', 'FONDO ABIERTO', 'Apoya a', 'BANCOLOMBIA', 'CDT', 'SIMULTÁNEA', 'PACTO DE RETRO', 'REPORTO'] }
 };
 /* cifras esperadas de los informes de órdenes por producto al final de la secuencia de pruebas (se actualizan por fase) */
-export const EXPECT = { informes: { rf: 43, rv: 30, mm: 34, der: 8, inm: 2, alt: 2, lend: 1 } };
+export const EXPECT = { informes: { rf: 43, rv: 30, mm: 34, der: 8, inm: 2, alt: 2, lend: 1, cor: 3 } };
 
 export async function runFlows(browser, html, R) {
   const harness = fs.readFileSync(path.join(here, 'harness.js'), 'utf8');

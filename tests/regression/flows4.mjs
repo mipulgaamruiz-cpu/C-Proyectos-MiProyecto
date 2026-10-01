@@ -75,9 +75,9 @@ export async function runFlows4(browser, html, R, pais) {
   await page.fill('[name=c_mot]', 'Error de digitación en la cantidad'); await page.selectOption('[name=c_ap]', { index: 1 }); await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(500);
   const afterC = await page.evaluate(() => ({ n: window.__mk.CORRECCIONES.length, v: window.__mk.DS.FI_ORDERS.find(o => o.hist && o.hist.length).ver, ap: window.__mk.CORRECCIONES[0].aprobador, us: window.__mk.CORRECCIONES[0].user }));
   ok('Corrección: crea la versión 2, conserva la anterior y registra quién aprobó', afterC.n === corr0 + 1 && afterC.v >= 2 && afterC.ap !== afterC.us, JSON.stringify(afterC));
-  await go(page, '#/orders/corrections'); await page.waitForTimeout(400);
+  await go(page, '#/orders/reports'); await page.click('[data-r="cor"]'); await page.click('#view [data-gen]'); await page.waitForTimeout(900);
   const ct = await viewText(page);
-  ok('Pantalla Correcciones: lista campo, antes, después, motivo, quién corrigió y quién aprobó', /Antes/.test(ct) && /Después/.test(ct) && /Motivo/.test(ct) && /Aprobó/.test(ct) && (await rows()) >= 4 && /Error de digitación en la cantidad/.test(ct));
+  ok('Correcciones: son un informe en Órdenes › Reportes (no una tarjeta) que genera el archivo con campo, antes, después, motivo y aprobador', /Archivo del informe disponible/.test(ct) && /\((\d+) registros\)/.test(ct) && !(await page.evaluate(() => window.__mk.NAV.some(g => g.items.some(i => /corrections/.test(i[0]))))), ct.slice(0, 120));
 
   /* Dashboard › Operaciones en tránsito */
   await go(page, '#/dashboard/in-transit'); await page.waitForTimeout(400);

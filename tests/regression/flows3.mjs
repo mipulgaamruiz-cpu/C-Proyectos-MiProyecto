@@ -160,7 +160,7 @@ export async function runFlows3(browser, html, R, pais) {
   /* Informes de órdenes por producto, filtrables por FIC, FCP y FVP */
   await go(page, '#/orders/reports');
   const ids = await page.locator('[data-r]').evaluateAll(b => b.map(x => x.dataset.r));
-  ok('Informes: siete informes por producto (renta fija, renta variable, mercado monetario, derivados, inmobiliario, alternativas y Lending) y la bitácora de auditoría', ['rf', 'rv', 'mm', 'der', 'inm', 'alt', 'lend', 'aud'].every(i => ids.includes(i)) && ids.length === 8 && !/Libro de órdenes/i.test(await page.locator('#view').innerText()), ids.join(','));
+  ok('Informes: siete informes por producto (renta fija, renta variable, mercado monetario, derivados, inmobiliario, alternativas y Lending), correcciones y la bitácora de auditoría', ['rf', 'rv', 'mm', 'der', 'inm', 'alt', 'lend', 'cor', 'aud'].every(i => ids.includes(i)) && ids.length === 9 && !/Libro de órdenes/i.test(await page.locator('#view').innerText()), ids.join(','));
   const cnt = async () => { const t = await page.locator('#out').innerText().catch(() => ''); const m = t.match(/\((\d+) (?:órdenes|decisiones|registros)\)/); return m ? +m[1] : 0 };
   for (const id of ids.filter(i => i !== 'aud')) {
     await go(page, '#/orders/reports'); await page.click(`[data-r="${id}"]`);

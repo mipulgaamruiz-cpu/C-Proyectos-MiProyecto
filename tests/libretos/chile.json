@@ -775,13 +775,24 @@
    "pantalla": "CORREGIR, PRECIOS Y AUTOMATIZAR · correcciones, precios en línea y cálculos automáticos",
    "pasos": [
     {
-     "ruta": "#/orders/corrections",
-     "acciones": [],
+     "ruta": "#/orders/reports",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "[data-r=\"cor\"]"
+      },
+      {
+       "t": "click",
+       "sel": "[data-gen]"
+      },
+      {
+       "t": "esperar",
+       "ms": 700
+      }
+     ],
      "textoEsperado": [
-      "Antes",
-      "Después",
-      "Motivo",
-      "Aprobó"
+      "Archivo del informe disponible",
+      "Descargar informe"
      ],
      "textoNoEsperado": []
     },
