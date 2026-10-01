@@ -17,7 +17,7 @@ Todos los informes se filtran por tipo de vehículo: **FIC, FCP y FVP**.
 ## Control transversal
 
 - **Validación previa de límites** en renta fija, renta variable, mercado monetario, derivados y decisiones de inversión.
-- **Excesos y aprobaciones** (Control de límites) y **Bitácora de auditoría** (Auditoría).
+- **Excesos y aprobaciones** (Control de límites) y **Bitácora de auditoría** (informe en Órdenes › Reportes).
 - **Segregación de funciones** en todas las órdenes y en las decisiones de inversión.
 
 ## ¿Por qué hay pantallas sin carga masiva?

@@ -17,7 +17,6 @@
       "Dashboard",
       "Órdenes",
       "Control de límites",
-      "Auditoría",
       "Performance attribution"
      ],
      "textoNoEsperado": []
@@ -417,11 +416,19 @@
      "textoNoEsperado": []
     },
     {
-     "ruta": "#/audit/log",
+     "ruta": "#/orders/reports",
      "acciones": [
       {
+       "t": "click",
+       "sel": "[data-r=\"aud\"]"
+      },
+      {
+       "t": "click",
+       "sel": "[data-gen]"
+      },
+      {
        "t": "esperar",
-       "ms": 500
+       "ms": 700
       }
      ],
      "textoEsperado": [
