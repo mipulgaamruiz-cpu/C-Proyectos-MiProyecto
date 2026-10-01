@@ -68,3 +68,7 @@ node gen_templates.js  # plantillas de carga masiva
 - Pendientes de negocio: validar con Ramiro las convenciones de derivados por país, los topes de los límites y los nombres de los vehículos; los datos de desempeño son ilustrativos.
 
 - Las plantillas de carga masiva con datos de demostración están en `03_plantillas_carga_masiva` (por país, en Excel y CSV). Ya no se descargan desde la pantalla: se entregan aparte a quien haga la demo.
+
+## Actualización · operación y seguimiento
+Se agregaron: órdenes del día y en tránsito, contraparte, liquidación y cumplimiento, títulos no emitidos y lectura simulada del PDF de emisión, complementadores (MITRA), correcciones con versión, Operaciones en tránsito, Liquidez, Precios en línea y Proveedores de precios, Simulador, Sortino y volatilidad por ventanas, comparación con pares, cálculos automáticos, límites por carga masiva y duplicado, filtros dentro de las grillas e informes de órdenes como archivo descargable. Regresión: 5.430 pruebas aprobadas, 0 falladas.
+Pendiente por definir: qué significa que cada «entidad» parametrice sus límites; si la aprobación de un exceso puede llegar después.

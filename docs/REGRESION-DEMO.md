@@ -1,25 +1,26 @@
 # Regresión de la demo · Front de inversiones
 
-Generado el 1/10/2026, 14:51:01 con `node tests/regression/run.mjs` (Playwright + Chromium, abre el HTML por `file://`).
+Generado el 1/10/2026, 17:58:06 con `node tests/regression/run.mjs` (Playwright + Chromium, abre el HTML por `file://`).
 
-**Resultado global: 4370 aprobadas, 0 falladas de 4370 verificaciones.**
+**Resultado global: 5430 aprobadas, 0 falladas de 5430 verificaciones.**
 
 ## 1. Resultado por país y por prueba
 
 | Prueba | Colombia | Chile | República Dominicana | Panamá |
 | --- | --- | --- | --- | --- |
 | Preparación | Aprobada (1/1) | Aprobada (1/1) | Aprobada (1/1) | Aprobada (1/1) |
-| Rutas (light) | Aprobada (286/286) | Aprobada (286/286) | Aprobada (286/286) | Aprobada (286/286) |
-| Rendimiento | Aprobada (35/35) | Aprobada (35/35) | Aprobada (35/35) | Aprobada (35/35) |
-| Línea base | Aprobada (35/35) | Aprobada (35/35) | Aprobada (35/35) | Aprobada (35/35) |
-| Diseño | Aprobada (70/70) | Aprobada (70/70) | Aprobada (70/70) | Aprobada (70/70) |
-| Rutas (dark) | Aprobada (286/286) | Aprobada (286/286) | Aprobada (286/286) | Aprobada (286/286) |
-| Localización | — | Aprobada (70/70) | Aprobada (70/70) | Aprobada (70/70) |
-| Flujos | Aprobada (118/118) | Aprobada (118/118) | Aprobada (118/118) | Aprobada (118/118) |
+| Rutas (light) | Aprobada (350/350) | Aprobada (350/350) | Aprobada (350/350) | Aprobada (350/350) |
+| Rendimiento | Aprobada (43/43) | Aprobada (43/43) | Aprobada (43/43) | Aprobada (43/43) |
+| Línea base | Aprobada (43/43) | Aprobada (43/43) | Aprobada (43/43) | Aprobada (43/43) |
+| Diseño | Aprobada (86/86) | Aprobada (86/86) | Aprobada (86/86) | Aprobada (86/86) |
+| Rutas (dark) | Aprobada (350/350) | Aprobada (350/350) | Aprobada (350/350) | Aprobada (350/350) |
+| Localización | — | Aprobada (86/86) | Aprobada (86/86) | Aprobada (86/86) |
+| Flujos | Aprobada (135/135) | Aprobada (135/135) | Aprobada (135/135) | Aprobada (135/135) |
 | Flujos propuesta | Aprobada (38/38) | Aprobada (38/38) | Aprobada (38/38) | Aprobada (38/38) |
-| Flujos fases 2 y 3 | Aprobada (120/120) | Aprobada (120/120) | Aprobada (120/120) | Aprobada (120/120) |
-| Invariantes | Aprobada (19/19) | Aprobada (19/19) | Aprobada (19/19) | Aprobada (11/11) |
-| Libretos | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) |
+| Flujos fases 2 y 3 | Aprobada (122/122) | Aprobada (122/122) | Aprobada (122/122) | Aprobada (122/122) |
+| Flujos operación y seguimiento | Aprobada (62/62) | Aprobada (62/62) | Aprobada (62/62) | Aprobada (62/62) |
+| Invariantes | Aprobada (19/19) | Aprobada (19/19) | Aprobada (19/19) | Aprobada (19/19) |
+| Libretos | Aprobada (44/44) | Aprobada (44/44) | Aprobada (44/44) | Aprobada (44/44) |
 
 Ninguna prueba falló.
 
@@ -56,6 +57,9 @@ La línea base se tomó antes de tocar el prototipo (texto visible por país y r
 | `#/m/pa` | Todos | Landing de Performance attribution: tarjeta nueva Atribución por producto |
 | `#/dashboard/money-market` | Todos | Etiqueta «Módulos conectados» nueva en Dashboard › Mercado monetario |
 | `#/m/limits` | Todos | Landing de Control de límites: tarjeta nueva Excesos y aprobaciones |
+| `#/m/param` | Todos | Landing de Parametrización: tarjeta nueva Proveedores de precios |
+| `#/parametrizacion/indices` | Todos | Filtros dentro del encabezado de la grilla |
+| `#/parametrizacion/rates` | Todos | Filtros dentro del encabezado de la grilla |
 
 Cifras que cambian a propósito: **limitesEvaluados** (se agregan las filas de cupo por exposición potencial y de restricción por propósito); **alertas** (el cupo consolidado de la contraparte con mayor utilización queda en alerta); **brinsonBalanceado1YTD** (el exceso de retorno incluye ahora el efecto de la cobertura).
 
