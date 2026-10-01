@@ -42,7 +42,7 @@ function content(c){
    '“El sistema no deja pasar órdenes incompletas, completa lo que otro módulo ya sabe y valida el archivo fila por fila.”',
    '¿Cuántas órdenes se cargan manualmente cada día y cuántas veces se corrigen errores de digitación?',false,
    [{ruta:'#/orders/fixed-income',acciones:[clk('[data-new]'),esc_('.mk-modal--form [name="instr"]','{INSTR}'),{t:'tecla',sel:'.mk-modal--form [name="instr"]',valor:'Tab'}],texto:['Fuente: New Inversiones','Emisor','Valor indicativo']},
-    {ruta:'#/orders/fixed-income',acciones:[clk('[data-rt="1"]'),sub('#mass input[type=file]','{CARPETA}/Ejemplo_Cargue_Masivo_Ordenes_de_Renta_Fija.xlsx'),clk('#mass [data-proc]'),wait(1800)],texto:['Ejemplo con datos de demostración','6 registros cargados','0 con errores']}]],
+    {ruta:'#/orders/fixed-income',acciones:[clk('[data-rt="1"]'),sub('#mass input[type=file]','{CARPETA}/Ejemplo_Cargue_Masivo_Ordenes_de_Renta_Fija.xlsx'),clk('#mass [data-proc]'),wait(1800)],texto:['6 registros cargados','0 con errores']}]],
   ['4','6:00–9:00','OPERAR · Órdenes › Mercado monetario y Dashboard › Mercado monetario',
    ['**Nuevo**: inversión en **{OP}** con **{CP}**: debajo aparece el cupo, **disponible $480.000.000,00**, que ya descuenta la exposición de derivados con esa contraparte. Valor nominal **1.000.000.000** → la plataforma **bloquea**.','**Dashboard › Mercado monetario** con {FONDO2}: saldo **15.420.000.000**, plazo promedio ≈ **49,8 días**, vence en 7 días **4.920.000.000 · 4 op.**; pestañas Escalera de vencimientos y Devengo.'],
    '“Los cupos de contraparte se comparten entre mercado monetario y derivados: nadie sobrepasa un cupo sin que quede registrado.”',

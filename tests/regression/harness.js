@@ -35,8 +35,9 @@ window.__reg = async (cfg) => {
         const inp = root.querySelector('input[type=file]'), res = () => root.querySelector('[data-result]'), setF = async f => { const dt = new DataTransfer(); dt.items.add(f); inp.files = dt.files; inp.dispatchEvent(new Event('change')); await w(100); };
         const cnt = () => { const i = document.querySelector('#view .mk-rowinfo'); return i ? +(i.textContent.match(/de (\d+)/) || [0, 0])[1] : -1; };
         const dls = [...root.querySelectorAll('[data-dl]')].reduce((o, b) => { o[b.dataset.dl] = b; return o; }, {});
-        ok('Masiva ' + id + ': botones estructura, manual y ejemplos', ['estructura', 'manual', 'ejemplo', 'ejemplocsv'].every(k => dls[k]));
-        caps.length = 0; for (const k of ['estructura', 'manual', 'ejemplo', 'ejemplocsv']) { dls[k].click(); await w(250); }
+        ok('Masiva ' + id + ': botones estructura y manual; el ejemplo con datos ya no está en pantalla', ['estructura', 'manual'].every(k => dls[k]) && !dls.ejemplo && !dls.ejemplocsv && !/Ejemplo con datos de demostración/.test(root.innerText));
+        caps.length = 0; for (const k of ['estructura', 'manual']) { dls[k].click(); await w(250); }
+        { const mm = M.MASS[id]; caps.push(new Blob([M.buildXlsx(mm, mm.demo())], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })); caps.push(new Blob([M.demoCsv(mm)], { type: 'text/csv;charset=utf-8' })); }
         ok('Masiva ' + id + ': descargas generadas', caps.length === 4 && caps.every(b => b.size > 200), caps.map(b => b.size).join('/'));
         const st = await rowsOf(caps[0], 'xlsx'), ex = await rowsOf(caps[2], 'xlsx'), exc = await rowsOf(caps[3], 'csv');
         ok('Masiva ' + id + ': ejemplo Excel con ' + nrows + ' filas y los encabezados de la estructura', ex.length === nrows + 1 && JSON.stringify(ex[0]) === JSON.stringify(st[0]));

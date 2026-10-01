@@ -232,7 +232,7 @@ export async function runFlows3(browser, html, R, pais) {
   const dtx = []; for (const r of ['#/orders/derivatives', '#/dashboard/sensitivity-measures', '#/dashboard/exposure', '#/orders/reports']) { await go(page, r); dtx.push(await page.locator('#view').innerText()) }
   ok('Derivados: ninguna pantalla muestra opciones, delta ni vega', !/Opci[oó]n|opciones|\bDelta\b|\bVega\b/.test(dtx.join(' ')));
   await go(page, '#/orders/fixed-income'); await page.click('#view [data-rt="1"]'); await page.waitForTimeout(400);
-  ok('Carga masiva: los botones de descarga muestran su icono', (await page.locator('#view [data-dl] svg').count()) >= 4 && (await page.locator('#view [data-dl] svg *').count()) > 0);
+  ok('Carga masiva: los botones de descarga muestran su icono', (await page.locator('#view [data-dl] svg').count()) >= 2 && (await page.locator('#view [data-dl] svg *').count()) > 0);
   await go(page, '#/limit-control/limit-evaluation'); await page.waitForTimeout(400);
   ok('Evaluación de límites: filtro por tipo de activo', (await page.locator('#view select[data-fl="ta"]').count()) === 1);
   await go(page, '#/dashboard/future-flows'); await page.waitForTimeout(400);
