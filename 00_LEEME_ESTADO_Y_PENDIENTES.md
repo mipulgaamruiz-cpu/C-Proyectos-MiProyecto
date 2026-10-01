@@ -22,7 +22,7 @@ Este paquete reúne todo lo construido hasta ahora, **tal como está**. La imple
 | Fase 1 · Derivados (órdenes con cotizaciones, valor indicativo, justificación, evidencia inmutable, límites normativos e internos, segregación, exposición y cobertura, efecto de cobertura en atribución, precarga con chips de fuente, eventos publicados, parámetros editables) | **Hecha.** Regresión completa de la fase: 3.188 aprobadas y 0 falladas (4 países, tema claro y oscuro) |
 | Fase 2 · Decisiones de inversión, inmobiliarios y alternativos (clases de activo, avalúos, valoración vencida, seguimiento, flujos, límites nuevos, TIR y MOIC, renta y valorización, catálogos) | **Hecha** en el prototipo |
 | Fase 3 · FVP (portafolios por perfil, régimen de inversión versionado, comparación entre perfiles) | **Hecha** en el prototipo |
-| Fase 4 · Lending | **No implementada, por decisión pendiente** (como pide la instrucción) |
+| Fase 4 · Lending | **Hecha** (confirmado que el fondo invierte en cartera): pestaña Cartera en el Visor, flujos con prepago, límites de concentración y compra de cartera |
 | Libretos con escenas nuevas y pasos verificables | **Hechos** (4 países; 31 pasos por país pasan: 124 aprobadas, 0 falladas) |
 | Regresión completa (4 países, tema claro y oscuro, rutas, flujos, propuesta, invariantes y libretos) | **Hecha: 3.862 aprobadas y 0 falladas.** Informe en `05_pruebas/docs/REGRESION-DEMO.md` |
 
@@ -30,7 +30,7 @@ Este paquete reúne todo lo construido hasta ahora, **tal como está**. La imple
 
 1. **Revisión visual humana** de las pantallas nuevas (las capturas se generan en `tests/regression/out/` al correr la suite; aquí no van para reducir el tamaño).
 2. Validaciones de negocio (Ramiro): convenciones de mercado por país, naturaleza de cada límite, parámetros de mejor ejecución, datos de Panamá y nombres de bancos, instrumentos y tasas.
-3. Fase 4 (Lending), solo si se confirma que el fondo invierte en cartera.
+3. Validar con negocio los datos ilustrativos de Lending (deudores, tasas, topes y prepago).
 4. El proyecto de origen **no es un repositorio git**: no hay rama ni commits por fase; las copias por fase están en `06_fuentes/` (`mk.before_*.js`).
 
 ## Cómo reconstruir el prototipo desde las fuentes

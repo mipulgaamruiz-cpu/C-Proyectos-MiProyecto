@@ -43,7 +43,7 @@ Cada uno está marcado en el código con `/* SUPUESTO: ... */`.
 
 ## 5. Pendientes
 
-- **Fase 4 · Lending: no implementada (pendiente de decisión).** Depende de confirmar que el fondo *invierte* en cartera (si la origina, es otro dominio). Ya existen la clase de activo Cartera en Instrumentos y la decisión «Compra de cartera»; faltan composición por deudor, calificación, plazo y tasa en el Visor, flujos con supuesto de prepago y límites de concentración por deudor, sector y originador.
+- **Fase 4 · Lending: implementada (confirmada por el responsable de negocio: el fondo *invierte* en cartera; no la origina ni la cobra).** Visor de portafolio › pestaña **Cartera** (composición por deudor, calificación, sector, originador, plazo, tasa y mora); **Flujos futuros** con supuesto de prepago (CPR anual editable, por defecto 8 %, también en Parametrización › Flujo de órdenes); límites internos de **concentración de cartera** por deudor, originador y sector (medidos sobre el saldo de cartera, con la posición real en Evaluación de límites); y **compra de cartera** por Decisiones de inversión con validación previa de concentración por originador. **SUPUESTO:** los deudores, calificaciones, plazos, tasas, mora, el lote CAR-002 y los topes (12 % deudor, 70 % y 50 % originador, 45 % y 40 % sector) son ilustrativos; Administración de activos y crédito es el módulo dueño de los datos.
 - Umbrales por definir con Compliance: cotizaciones mínimas, tolerancia, frecuencia de avalúo y umbral de dato desactualizado.
 - Validaciones de Ramiro antes de la demo: convenciones de mercado por país (base de días, calendario, fixing e instrumentos disponibles) y los datos de Panamá.
 - Qué datos entrega New Inversiones y con qué frecuencia (hoy simulado).

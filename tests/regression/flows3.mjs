@@ -87,6 +87,19 @@ export async function runFlows3(browser, html, R, pais) {
   await page.click('#view [data-t="1"]'); await page.waitForTimeout(400);
   vt = await page.locator('#view').innerText();
   ok('Visor: portafolio alternativo con pestaña Seguimiento (comprometido vs desembolsado, flujos y covenants)', /Comprometido/i.test(vt) && /Desembolsado/i.test(vt) && /Covenants en alerta/i.test(vt) && /Flujos reales vs esperados/i.test(vt));
+  /* Fase 4 · Lending: inversión en cartera */
+  await page.click('#view [data-t="2"]'); await page.waitForTimeout(400);
+  vt = await page.locator('#view').innerText();
+  ok('Lending: pestaña Cartera con composición por deudor, calificación, plazo y tasa', /Composición por deudor/i.test(vt) && /Por calificación/i.test(vt) && /Tasa promedio ponderada/i.test(vt) && /Plazo promedio ponderado/i.test(vt) && /Fuente: Administración de activos y crédito/.test(vt) && !BAD_TEXT.test(vt));
+  const lend = await page.evaluate(() => { const M = window.__mk, rows = M.carPort(M.DS.FUNDS.find(f => M.vehKind(f) === 'alt')), tot = rows.reduce((a, x) => a + x.saldo, 0), cars = M.DS.INSTRUMENTS.filter(i => i.clase === 'Cartera').reduce((a, i) => a + M.assetVal(i).valor, 0); return { n: rows.length, tot, cars }; });
+  ok('Lending: la suma de los saldos por deudor es igual al valor vigente de la cartera', lend.n > 0 && Math.abs(lend.tot - lend.cars) < 1, JSON.stringify(lend));
+  const fl = await page.evaluate(() => { const M = window.__mk, p = M.DS.FUNDS.find(f => M.vehKind(f) === 'alt'), a = M.carFlows(p, 1, 0), b = M.carFlows(p, 1, 20); return { a: a.reduce((s, x) => s + x.pre, 0), b: b.reduce((s, x) => s + x.pre, 0), bal: b.every((x, i) => i === 0 || Math.abs(x.ini - b[i - 1].fin) < 1) }; });
+  ok('Lending: el prepago es 0 con CPR 0 %, crece con CPR 20 % y el saldo es consistente mes a mes', fl.a === 0 && fl.b > 0 && fl.bal, JSON.stringify(fl));
+  await go(page, '#/limit-control/limit-evaluation'); await page.waitForTimeout(400);
+  const le = await page.evaluate(() => window.__mk.evalRows().filter(r => /CARTERA/.test(r.tipo)));
+  ok('Lending: la evaluación de límites incluye concentración de cartera por deudor, originador y sector, con la posición real', ['DEUDOR', 'ORIGINADOR', 'SECTOR'].every(k => le.some(r => r.tipo.endsWith(k))) && le.every(r => r.actual > 0 && r.nat === 'Interno') && le.some(r => r.estado === 'Incumple'), JSON.stringify(le.map(r => [r.sub, r.estado])));
+  const cc = await page.evaluate(() => { const M = window.__mk, p = M.DS.FUNDS.find(f => M.vehKind(f) === 'alt'); return M.concCheck({ activo: 'CAR-001', port: p, tipo: 'Compra de cartera', monto: 8000000000 }) });
+  ok('Lending: la compra de cartera valida la concentración por originador (límite interno)', /ORIGINADOR/i.test(cc.tipo) && cc.nat === 'Interno' && cc.lim > 0 && cc.share > 0, JSON.stringify(cc));
   /* Flujos futuros */
   for (const [port, re, lbl] of [[K.inm, /Canon y pérdida esperados/, 'canon y pérdida esperados'], [K.alt, /Desembolsos y flujos de cartera esperados/, 'desembolsos y flujos de cartera'], [K.fvp[1], /Liquidez esperada del (FVP|APV)/, 'liquidez esperada del FVP']]) {
     await go(page, '#/dashboard/future-flows');
