@@ -61,7 +61,8 @@ node gen_templates.js  # plantillas de carga masiva
 
 ## Actualización final (entrega para la demo)
 
-- Regresión completa final: **4.104 pruebas aprobadas y 0 falladas** (Colombia, Chile, República Dominicana y Panamá, tema claro y oscuro, flujos, invariantes, libretos y plantillas).
-- Nuevo: Fase 4 Lending, siete informes de órdenes por producto filtrables por FIC, FCP y FVP, Atribución por producto, catálogos nuevos y «Módulos conectados» en Renta fija, Renta variable y Derivados.
-- La versión vigente es `front-inversiones-performance-attribution.html` (raíz). `fuentes/` quedó solo como referencia histórica (ver `fuentes/LEEME.md`).
-- Cobertura por tipo de activo: `docs/COBERTURA-POR-TIPO-DE-ACTIVO.md`. Resultado de la regresión: `docs/REGRESION-DEMO.md`.
+- Regresión completa final: **4.554 pruebas aprobadas y 0 falladas** (Colombia, Chile, República Dominicana y Panamá, tema claro y oscuro, flujos, invariantes, libretos y plantillas).
+- Incluye: Fase 4 Lending; informes de órdenes por producto filtrables por FIC, FCP y FVP; Atribución por producto con efecto cambiario; Derivados sin opciones (forward y swap de divisas y de tasas, OTC y novado, y futuros) con propósito cobertura, inversión o ambos; validación previa de límites, excesos y aprobaciones, bitácora de auditoría y segregación de funciones en todas las órdenes; «Módulos conectados» en todas las pantallas.
+- La versión vigente es `front-inversiones-performance-attribution.html` (raíz). `fuentes/` es solo referencia histórica (ver `fuentes/LEEME.md`).
+- Documentos: `docs/COBERTURA-POR-TIPO-DE-ACTIVO.md`, `docs/ANALISIS-DE-BRECHAS-NEGOCIO-FIDUCIARIO.md` y `docs/REGRESION-DEMO.md`.
+- Pendientes de negocio: validar con Ramiro las convenciones de derivados por país, los topes de los límites y los nombres de los vehículos; los datos de desempeño son ilustrativos.

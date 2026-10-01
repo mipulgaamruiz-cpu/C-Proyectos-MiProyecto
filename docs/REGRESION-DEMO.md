@@ -1,25 +1,25 @@
 # Regresión de la demo · Front de inversiones
 
-Generado el 1/10/2026, 5:47:03 con `node tests/regression/run.mjs` (Playwright + Chromium, abre el HTML por `file://`).
+Generado el 1/10/2026, 14:04:25 con `node tests/regression/run.mjs` (Playwright + Chromium, abre el HTML por `file://`).
 
-**Resultado global: 4104 aprobadas, 0 falladas de 4104 verificaciones.**
+**Resultado global: 4554 aprobadas, 0 falladas de 4554 verificaciones.**
 
 ## 1. Resultado por país y por prueba
 
 | Prueba | Colombia | Chile | República Dominicana | Panamá |
 | --- | --- | --- | --- | --- |
 | Preparación | Aprobada (1/1) | Aprobada (1/1) | Aprobada (1/1) | Aprobada (1/1) |
-| Rutas (light) | Aprobada (277/277) | Aprobada (277/277) | Aprobada (277/277) | Aprobada (277/277) |
-| Rendimiento | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) |
-| Línea base | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) |
-| Diseño | Aprobada (68/68) | Aprobada (68/68) | Aprobada (68/68) | Aprobada (68/68) |
-| Rutas (dark) | Aprobada (277/277) | Aprobada (277/277) | Aprobada (277/277) | Aprobada (277/277) |
-| Localización | — | Aprobada (68/68) | Aprobada (68/68) | Aprobada (68/68) |
-| Flujos | Aprobada (117/117) | Aprobada (117/117) | Aprobada (117/117) | Aprobada (117/117) |
+| Rutas (light) | Aprobada (302/302) | Aprobada (302/302) | Aprobada (302/302) | Aprobada (302/302) |
+| Rendimiento | Aprobada (37/37) | Aprobada (37/37) | Aprobada (37/37) | Aprobada (37/37) |
+| Línea base | Aprobada (37/37) | Aprobada (37/37) | Aprobada (37/37) | Aprobada (37/37) |
+| Diseño | Aprobada (74/74) | Aprobada (74/74) | Aprobada (74/74) | Aprobada (74/74) |
+| Rutas (dark) | Aprobada (302/302) | Aprobada (302/302) | Aprobada (302/302) | Aprobada (302/302) |
+| Localización | — | Aprobada (74/74) | Aprobada (74/74) | Aprobada (74/74) |
+| Flujos | Aprobada (119/119) | Aprobada (119/119) | Aprobada (119/119) | Aprobada (119/119) |
 | Flujos propuesta | Aprobada (38/38) | Aprobada (38/38) | Aprobada (38/38) | Aprobada (38/38) |
-| Flujos fases 2 y 3 | Aprobada (80/80) | Aprobada (80/80) | Aprobada (80/80) | Aprobada (80/80) |
+| Flujos fases 2 y 3 | Aprobada (122/122) | Aprobada (122/122) | Aprobada (122/122) | Aprobada (122/122) |
 | Invariantes | Aprobada (19/19) | Aprobada (19/19) | Aprobada (19/19) | Aprobada (11/11) |
-| Libretos | Aprobada (32/32) | Aprobada (32/32) | Aprobada (32/32) | Aprobada (32/32) |
+| Libretos | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) |
 
 Ninguna prueba falló.
 
@@ -38,7 +38,7 @@ La línea base se tomó antes de tocar el prototipo (texto visible por país y r
 | `#/parametrizacion/limits` | Todos | Columna y filtro «Naturaleza» (normativo o interno) en Configuración de límites |
 | `#/dashboard/graphics` | Todos | Chip de fuente (New Inversiones) en el Visor de portafolio |
 | `#/dashboard/future-flows` | Todos | Chips de fuente y liquidez esperada (Administración del fondo) en Flujos futuros |
-| `#/dashboard/sensitivity-measures` | Todos | Sin cambios de contenido (la plataforma no opera opciones, por lo que no hay delta ni vega) |
+| `#/dashboard/sensitivity-measures` | Todos | Delta y vega de las opciones junto al DV01 |
 | `#/limit-control/limit-evaluation` | Todos | Naturaleza del límite, cupo de contraparte por exposición potencial y restricción por propósito |
 | `#/orders/reports` | Todos | El Libro de órdenes se reemplaza por siete informes por producto (renta fija, renta variable, mercado monetario, derivados, inmobiliario, alternativas y Lending), filtrables por FIC, FCP y FVP |
 | `#/performance-attribution/brinson` | Todos | Efecto de cobertura dentro de la atribución de retorno; el portafolio por defecto respeta el país |
@@ -54,6 +54,8 @@ La línea base se tomó antes de tocar el prototipo (texto visible por país y r
 | `#/orders/fixed-income` | Todos | Etiqueta «Módulos conectados» nueva en Renta fija |
 | `#/orders/variable-income` | Todos | Etiqueta «Módulos conectados» nueva en Renta variable |
 | `#/m/pa` | Todos | Landing de Performance attribution: tarjeta nueva Atribución por producto |
+| `#/dashboard/money-market` | Todos | Etiqueta «Módulos conectados» nueva en Dashboard › Mercado monetario |
+| `#/m/limits` | Todos | Landing de Control de límites: tarjeta nueva Excesos y aprobaciones |
 
 Cifras que cambian a propósito: **limitesEvaluados** (se agregan las filas de cupo por exposición potencial y de restricción por propósito); **alertas** (el cupo consolidado de la contraparte con mayor utilización queda en alerta); **brinsonBalanceado1YTD** (el exceso de retorno incluye ahora el efecto de la cobertura).
 
@@ -124,8 +126,9 @@ El menú, la home y las tarjetas de cada landing salen de la misma lista (`NAV`)
 1. **Parametrización**: Flujo de órdenes, Portafolios, Instrumentos, Índices de referencia, Benchmarks, Contrapartes y cupos, Tasas de referencia, Configuración de límites, Catálogos.
 2. **Dashboard**: Visor de portafolio, Flujos futuros, Medidas de sensibilidad, Mercado monetario, Exposición y cobertura.
 3. **Órdenes**: Renta fija, Renta variable, Mercado monetario, Derivados, Decisiones de inversión, Reportes (informes por producto).
-4. **Control de límites**: Evaluación.
-5. **Performance attribution**: Resumen de desempeño, Atribución de retorno, Contribución por activo, Atribución renta fija, Atribución mercado monetario, Atribución por producto, Reportes.
+4. **Control de límites**: Evaluación, Excesos y aprobaciones.
+5. **Auditoría**: Bitácora de auditoría.
+6. **Performance attribution**: Resumen de desempeño, Atribución de retorno, Contribución por activo, Atribución renta fija, Atribución mercado monetario, Atribución por producto, Reportes.
 
 ## 7. Cómo ejecutar
 
