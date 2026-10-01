@@ -110,6 +110,21 @@
       "ruta": "#/orders/money-market",
       "paises": "*",
       "motivo": "La lista de portafolios incluye los vehículos nuevos"
+    },
+    {
+      "ruta": "#/orders/fixed-income",
+      "paises": "*",
+      "motivo": "Etiqueta «Módulos conectados» nueva en Renta fija"
+    },
+    {
+      "ruta": "#/orders/variable-income",
+      "paises": "*",
+      "motivo": "Etiqueta «Módulos conectados» nueva en Renta variable"
+    },
+    {
+      "ruta": "#/m/pa",
+      "paises": "*",
+      "motivo": "Landing de Performance attribution: tarjeta nueva Atribución por producto"
     }
   ],
   "cifras": {
