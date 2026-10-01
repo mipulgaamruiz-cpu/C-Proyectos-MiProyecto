@@ -20,7 +20,7 @@ export async function runFlows4(browser, html, R, pais) {
     const t0 = await viewText(page);
     ok(`${lbl}: pestañas Histórico, Órdenes del día y En tránsito`, /Histórico/.test(t0) && /Órdenes del día/.test(t0) && /En tránsito/.test(t0));
     ok(`${lbl}: columnas Contraparte, Liquidación y Cumplimiento`, /Contraparte/.test(t0) && /Liquidación/.test(t0) && /Cumplimiento/.test(t0));
-    ok(`${lbl}: filtros por instrumento/operación y contraparte`, /Contraparte/.test(await page.locator('.mk-filters').first().innerText()) && exp.tot > 0);
+    ok(`${lbl}: filtros por instrumento/operación y contraparte`, (await page.locator('#view thead [data-fl]').count()) >= 2 && (await page.locator('#view thead select').evaluateAll(l => l.map(s => s.closest('th').innerText)).then(t => t.some(x => /Contraparte/.test(x)))) && exp.tot > 0);
     await tab('Órdenes del día'); const nh = await rows();
     ok(`${lbl}: «Órdenes del día» muestra solo las del día (${exp.hoy})`, exp.hoy > 0 && nh === Math.min(exp.hoy, 10), nh + ' filas');
     await tab('En tránsito'); const nt = await rows();
@@ -28,7 +28,17 @@ export async function runFlows4(browser, html, R, pais) {
     await tab('Histórico'); ok(`${lbl}: «Histórico» vuelve a mostrar todas`, (await rows()) === Math.min(exp.tot, 10));
   }
   await go(page, '#/orders/derivatives'); await page.waitForTimeout(300);
-  ok('Derivados: filtro por contraparte y vista «Órdenes del día»', /Contraparte/.test(await page.locator('.mk-filters').first().innerText()) && /Órdenes del día/.test(await viewText(page)));
+  ok('Derivados: filtro por contraparte y vista «Órdenes del día»', (await page.locator('#view thead select').evaluateAll(l => l.map(s => s.closest('th').innerText)).then(t => t.some(x => /Contraparte/.test(x)))) && /Órdenes del día/.test(await viewText(page)));
+
+  /* Filtros dentro de la grilla */
+  await go(page, '#/orders/fixed-income'); await page.waitForTimeout(300);
+  const nAll = await rows();
+  ok('Grillas: los filtros viven en el encabezado de la grilla, con «Limpiar» en Acciones y sin barra de búsqueda aparte', (await page.locator('#view thead [data-clear]').count()) === 1 && (await page.locator('#view thead [data-fl]').count()) >= 3 && (await page.locator('#view thead [data-cf]').count()) >= 3 && (await page.locator('#view [data-q]').count()) === 0);
+  await page.locator('#view thead [data-cf="Cantidad"]').fill('500.000.000'); await page.waitForTimeout(300);
+  const nF = await rows();
+  ok('Grillas: el filtro de texto de una columna acota las filas y «Limpiar» las restablece', nF > 0 && nF < nAll || nAll <= 1);
+  await page.click('#view thead [data-clear]'); await page.waitForTimeout(300);
+  ok('Grillas: «Limpiar» restablece todos los filtros', (await rows()) === nAll);
 
   /* Renta fija: título no emitido y lectura simulada del PDF de emisión */
   await go(page, '#/orders/fixed-income'); await page.waitForTimeout(300);

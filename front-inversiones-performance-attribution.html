@@ -326,6 +326,11 @@ a { color: var(--mk-primary); }
 }
 .mk-table thead th:first-child { border-top-left-radius: 6px; }
 .mk-table thead th:last-child  { border-top-right-radius: 6px; }
+.mk-table thead th { vertical-align: top; }
+.mk-thl { font-weight: 700; }
+.mk-thf { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; font-weight: 400; }
+.mk-thf .mk-input, .mk-thf .mk-select { height: 30px; min-height: 30px; padding: 2px 8px; font-size: 12px; min-width: 112px; background-color: #fff; color: #222; border-radius: 6px; }
+.mk-thf .mk-btn { height: 30px; padding: 0 10px; font-size: 12px; white-space: nowrap; }
 .mk-table tbody td { padding: 11px 14px; border-bottom: 1px solid var(--mk-border-2); color: var(--mk-text); }
 .mk-table tbody tr:hover { background: var(--mk-primary-50); }
 .mk-table .actions { display: flex; gap: 6px; }
@@ -1781,30 +1786,44 @@ function bindMask(f,name,fn){const i=$('[name="'+name+'"]',f);if(i)i.addEventLis
 /* =============== Tabla de datos (DataTable de la Plataforma) =============== */
 /* Convención de la Plataforma: Acciones como primera columna y Estado al final. */
 function DataTable(host,o){
- const st={q:'',page:1,sort:o.defaultSort||null,dir:o.defaultDir||1,f:{},d1:'',d2:'',op:OPDATE};
+ const st={q:'',page:1,sort:o.defaultSort||null,dir:o.defaultDir||1,f:{},cf:{},d1:'',d2:'',op:OPDATE};
+ const nh=x=>String(x).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+ const colTxt=(c,r)=>htmlTxt(String(c.txt?c.txt(r):c.fmt?c.fmt(r[c.k]):c.html?c.html(r):r[c.k]==null?'':r[c.k]));
+ const fcol=fl=>fl.col?o.cols.findIndex(c=>c.h===fl.col):(o.cols.findIndex(c=>nh(c.h)===nh(fl.label))>=0?o.cols.findIndex(c=>nh(c.h)===nh(fl.label)):o.cols.findIndex(c=>nh(c.h)===nh(fl.label)||nh(c.h).startsWith(nh(fl.label))||nh(fl.label).startsWith(nh(c.h))));
+ const flMap={};(o.filters||[]).forEach(fl=>{const i=fcol(fl);if(i>=0&&flMap[i]===undefined)flMap[i]=fl});
+ const flLoose=(o.filters||[]).filter(fl=>!Object.values(flMap).includes(fl));
+ const estFl=flLoose.find(fl=>nh(fl.label)==='estado');
  const rowsAll=()=>o.rows(st);
  function filtered(){let rows=rowsAll();
   (o.filters||[]).forEach(fl=>{const v=st.f[fl.id];if(v)rows=rows.filter(r=>String(fl.get(r))===v)});
   if(o.dateRange){const a=st.d1?new Date(st.d1+'T00:00:00').getTime():null,b=st.d2?new Date(st.d2+'T23:59:59').getTime():null;rows=rows.filter(r=>{const t=r[o.dateRange.k];return (!a||t>=a)&&(!b||t<=b)})}
+  Object.keys(st.cf).forEach(h=>{const v=st.cf[h];if(!v)return;const c=o.cols.find(x=>x.h===h);if(c){const q=v.toLowerCase();rows=rows.filter(r=>colTxt(c,r).toLowerCase().includes(q))}});
   if(st.q){const q=st.q.toLowerCase();rows=rows.filter(r=>o.cols.some(c=>String(c.txt?c.txt(r):(c.fmt?c.fmt(r[c.k]):r[c.k])).toLowerCase().includes(q)))}
   if(st.sort){const c=o.cols.find(c=>c.h===st.sort);rows=rows.slice().sort((a,b)=>{const x=c.sv?c.sv(a):a[c.k],y=c.sv?c.sv(b):b[c.k];return (x>y?1:x<y?-1:0)*st.dir})}return rows}
  function render(){
   const all=filtered(),ps=o.pageSize||10,pages=o.noPage?1:Math.max(1,Math.ceil(all.length/ps));if(st.page>pages)st.page=pages;
   const rows=o.noPage?all:all.slice((st.page-1)*ps,st.page*ps);
   const hasActs=!!o.acts;
-  const th=(hasActs?'<th>Acciones</th>':'')+o.cols.map(c=>'<th'+(c.sortable?' style="cursor:pointer" data-h="'+esc(c.h)+'"':'')+'>'+(c.tip?'<span class="mk-th-info">'+esc(c.h)+info(c.tip)+'</span>':esc(c.h))+(st.sort===c.h?' <span style="font-size:11px">'+(st.dir>0?'▲':'▼')+'</span>':'')+'</th>').join('')+(o.estado?'<th>Estado</th>':'');
+  const dcol=o.dateRange?o.cols.findIndex(c=>c.k===o.dateRange.k):-1,fRow=!o.noFilters;
+  const ctl=(c,i)=>{if(!fRow)return '';let h='';const fl=flMap[i]||(o.estado&&false);
+   if(fl)h='<select class="mk-select" data-fl="'+fl.id+'" aria-label="Filtrar por '+esc(fl.label)+'"><option value="">Todos</option>'+fl.opts().map(v=>'<option'+(st.f[fl.id]===v?' selected':'')+'>'+esc(v)+'</option>').join('')+'</select>';
+   else if(i===dcol)h='<input class="mk-input" type="date" name="d1" value="'+st.d1+'" title="Desde" aria-label="Desde"><input class="mk-input" type="date" name="d2" value="'+st.d2+'" title="Hasta" aria-label="Hasta">';
+   else h='<input class="mk-input" data-cf="'+esc(c.h)+'" placeholder="Filtrar" value="'+esc(st.cf[c.h]||'')+'" aria-label="Filtrar '+esc(c.h)+'">';
+   return '<div class="mk-thf">'+h+'</div>'};
+  const th=(hasActs?'<th><div class="mk-thl">Acciones</div>'+(fRow?'<div class="mk-thf"><button class="mk-btn mk-btn--secondary mk-btn--sm" data-clear type="button">'+ic('x')+'Limpiar</button></div>':'')+'</th>':'')+o.cols.map((c,i)=>'<th><div class="mk-thl"'+(c.sortable?' style="cursor:pointer" data-h="'+esc(c.h)+'"':'')+'>'+(c.tip?'<span class="mk-th-info">'+esc(c.h)+info(c.tip)+'</span>':esc(c.h))+(st.sort===c.h?' <span style="font-size:11px">'+(st.dir>0?'▲':'▼')+'</span>':'')+'</div>'+ctl(c,i)+'</th>').join('')+(o.estado?'<th><div class="mk-thl">Estado</div>'+(fRow&&estFl?'<div class="mk-thf"><select class="mk-select" data-fl="'+estFl.id+'" aria-label="Filtrar por estado"><option value="">Todos</option>'+estFl.opts().map(v=>'<option'+(st.f[estFl.id]===v?' selected':'')+'>'+esc(v)+'</option>').join('')+'</select></div>':'')+'</th>':'');
   const body=rows.length?rows.map((r,i)=>'<tr data-i="'+i+'">'+(hasActs?'<td>'+actsHTML(o.acts(r),i)+'</td>':'')+o.cols.map(c=>'<td'+(c.cls?' class="'+c.cls+'"':'')+'>'+(c.html?c.html(r):esc(c.fmt?c.fmt(r[c.k]):r[c.k]))+'</td>').join('')+(o.estado?'<td>'+o.estado(r)+'</td>':'')+'</tr>').join(''):'<tr><td colspan="'+(o.cols.length+(hasActs?1:0)+(o.estado?1:0))+'"><div class="mk-empty">'+(o.empty||'Sin resultados')+'</div></td></tr>';
   const tot=o.totals&&rows.length?'<tr style="font-weight:700;border-top:2px solid var(--mk-primary)">'+(hasActs?'<td></td>':'')+o.totals(all).map(t=>'<td>'+t+'</td>').join('')+'</tr>':'';
   let pager='';if(!o.noPage&&pages>1){pager='<div class="mk-pagination"><span class="mk-pagination__info">Página '+st.page+' de '+pages+'</span><button data-pp="1" aria-label="Primera página"'+(st.page===1?' disabled':'')+'>«</button><button data-pp="'+(st.page-1)+'" aria-label="Página anterior"'+(st.page===1?' disabled':'')+'>‹</button>';for(let p=1;p<=pages;p++)pager+='<button data-pp="'+p+'" class="'+(p===st.page?'active':'')+'">'+p+'</button>';pager+='<button data-pp="'+(st.page+1)+'" aria-label="Página siguiente"'+(st.page===pages?' disabled':'')+'>›</button><button data-pp="'+pages+'" aria-label="Última página"'+(st.page===pages?' disabled':'')+'>»</button></div>'}
   const exp=o.noTools?'':'<div class="mk-export" style="margin-left:auto"><button class="mk-btn mk-btn--secondary" data-x="csv"'+TIP('Descargar los datos filtrados en CSV')+'>'+ic('clouddl')+'CSV</button><button class="mk-btn mk-btn--excel" data-x="xls"'+TIP('Descargar los datos filtrados en Excel')+'>'+ic('clouddl')+'Excel</button></div>';
-  const filt=o.noFilters?'':'<div class="mk-tplfilters mk-filters"><div class="mk-field mk-field--search"><label class="mk-label">Buscar</label><input class="mk-input" data-q placeholder="'+esc(o.searchPh||'Buscar...')+'" value="'+esc(st.q)+'"></div>'+(o.opDate?opField(st.op):'')+(o.dateRange?rangeFields(st.d1,st.d2,'la '+o.dateRange.label):'')+(o.filters||[]).map(fl=>'<div class="mk-field"><label class="mk-label">'+esc(fl.label)+'</label><div class="mk-combobox"><select class="mk-select" data-fl="'+fl.id+'"><option value="">Todos</option>'+fl.opts().map(v=>'<option'+(st.f[fl.id]===v?' selected':'')+'>'+esc(v)+'</option>').join('')+'</select></div></div>').join('')+'<button class="mk-btn mk-btn--secondary" data-clear>Limpiar</button>'+exp+'</div>';
+  const loose=flLoose.filter(fl=>fl!==estFl||!o.estado);
+  const filt=o.noFilters?'':((o.opDate||loose.length||(!hasActs)||exp)?'<div class="mk-tplfilters mk-filters">'+(o.opDate?opField(st.op):'')+loose.map(fl=>'<div class="mk-field"><label class="mk-label">'+esc(fl.label)+'</label><div class="mk-combobox"><select class="mk-select" data-fl="'+fl.id+'"><option value="">Todos</option>'+fl.opts().map(v=>'<option'+(st.f[fl.id]===v?' selected':'')+'>'+esc(v)+'</option>').join('')+'</select></div></div>').join('')+(hasActs?'':'<button class="mk-btn mk-btn--secondary" data-clear>Limpiar</button>')+exp+'</div>':'');
   host.innerHTML=(o.kpis&&!o.noFilters?'<div class="mk-kpis">'+o.kpis(filtered()).map(k=>kpiBox(k[0],k[1],k[2])).join('')+'</div>':'')+filt+'<div class="mk-card">'+(o.noTools||!o.noFilters?'':'<div class="mk-datatable__toolbar"><div class="mk-search"></div>'+exp+'</div>')+'<div class="mk-tablewrap"><table class="mk-table"><thead><tr>'+th+'</tr></thead><tbody>'+body+tot+'</tbody></table></div>'+(o.noFoot?'':'<div class="mk-datatable__foot"><span class="mk-rowinfo">Mostrando '+rows.length+' de '+all.length+' '+(o.noun||'registros')+'</span>'+pager+'</div>')+'</div>';
-  const q=$('[data-q]',host);if(q)q.addEventListener('input',()=>{st.q=q.value;st.page=1;const p=q.selectionStart;render();const n=$('[data-q]',host);n.focus();n.setSelectionRange(p,p)});
+  $$('[data-cf]',host).forEach(q=>q.addEventListener('input',()=>{st.cf[q.dataset.cf]=q.value;st.page=1;const p=q.selectionStart,h=q.dataset.cf;render();const n=$$('[data-cf]',host).find(x=>x.dataset.cf===h);if(n){n.focus();n.setSelectionRange(p,p)}}));
   $$('[data-fl]',host).forEach(s=>s.addEventListener('change',()=>{st.f[s.dataset.fl]=s.value;st.page=1;render()}));
   $$('[name=d1],[name=d2]',host).forEach(i=>i.addEventListener('change',()=>{const n=i.name,prev=st[n];st[n]=i.value;if(st.d1&&st.d2&&st.d1>st.d2){st[n]=prev;toast('La fecha inicial no puede ser posterior a la final.','warning','Rango de fechas');render();return}st.page=1;render()}));
   const opi=$('[name=op]',host);if(opi)opi.addEventListener('change',()=>{if(!opi.value){opi.value=st.op;toast('La fecha operativa no se deja en blanco; se restableció el último día válido.','warning','Fecha operativa');return}st.op=opi.value;st.page=1;render()});
-  const cl=$('[data-clear]',host);if(cl)cl.addEventListener('click',()=>{st.q='';st.f={};st.d1='';st.d2='';st.page=1;render()});
-  $$('th[data-h]',host).forEach(t=>t.addEventListener('click',()=>{if(st.sort===t.dataset.h)st.dir*=-1;else{st.sort=t.dataset.h;st.dir=1}render()}));
+  const cl=$('[data-clear]',host);if(cl)cl.addEventListener('click',()=>{st.q='';st.f={};st.cf={};st.d1='';st.d2='';st.page=1;render()});
+  $$('[data-h]',host).forEach(t=>t.addEventListener('click',()=>{if(st.sort===t.dataset.h)st.dir*=-1;else{st.sort=t.dataset.h;st.dir=1}render()}));
   $$('[data-pp]',host).forEach(b=>b.addEventListener('click',()=>{st.page=+b.dataset.pp;render()}));
   $$('[data-x]',host).forEach(b=>b.addEventListener('click',()=>{const a=filtered(),name=(o.fileName||'datos')+'-'+new Date().toISOString().slice(0,10);if(!a.length){toast('No hay datos para descargar.','warning');return}const heads=o.cols.map(c=>c.h).concat(o.estado?['Estado']:[]),rowsX=a.map(r=>o.cols.map(c=>xvCell(c,r)).concat(o.estado?[htmlTxt(o.estado(r))]:[]));exportTable(name,b.dataset.x==='csv'?'csv':'xlsx',heads,rowsX,o.fileName||'Datos');toast(a.length+' registros exportados.','success','Descarga lista')}));
   $$('[data-act]',host).forEach(b=>b.addEventListener('click',()=>{const tr=b.closest('tr');o.onAct&&o.onAct(b.dataset.act,rows[+tr.dataset.i])}));
@@ -2129,7 +2148,7 @@ const DERIV_ESTATUS={'En cotización':'C','Por justificar':'C','Registrada':'R',
 
 const EST_EV={Cumple:'success',Alerta:'warning',Incumple:'danger'};
 PAGES.limiteval=crudPage({title:'Evaluación de límites',help:'Seguimiento del cumplimiento de los límites definidos en Parametrización.',noNew:true,fileName:'evaluacion-limites',defaultSort:'Utilización',defaultDir:-1,searchPh:'Portafolio, tipo o sublímite...',noun:'límites',
- filters:[{id:'p',label:'Portafolio',opts:()=>FUNDS.slice(),get:r=>r.port},{id:'e',label:'Evaluación',opts:()=>['MAX','MIN'],get:r=>r.eval},{id:'s',label:'Estado',opts:()=>['Cumple','Alerta','Incumple'],get:r=>r.estado},{id:'n',label:'Naturaleza',opts:()=>['Normativo','Interno'],get:r=>r.nat},{id:'ta',label:'Tipo de activo',opts:()=>LIM_TA,get:r=>limTA(r)}],
+ filters:[{id:'p',label:'Portafolio',opts:()=>FUNDS.slice(),get:r=>r.port},{id:'e',label:'Evaluación',opts:()=>['MAX','MIN'],get:r=>r.eval},{id:'s',label:'Estado',opts:()=>['Cumple','Alerta','Incumple'],get:r=>r.estado},{id:'n',label:'Naturaleza',opts:()=>['Normativo','Interno'],get:r=>r.nat},{id:'ta',label:'Tipo de activo',col:'Tipo de límite',opts:()=>LIM_TA,get:r=>limTA(r)}],
  kpis:rows=>[['Límites evaluados',rows.length,'p'],['Cumplen',rows.filter(r=>r.estado==='Cumple').length,'g'],['En alerta',rows.filter(r=>r.estado==='Alerta').length,'y'],['Incumplen',rows.filter(r=>r.estado==='Incumple').length,'r']],
  cols:[{h:'Portafolio',k:'port'},{h:'Tipo de límite',k:'tipo'},{h:'Sublímite',k:'sub'},{h:'Evaluación',k:'eval',html:r=>badge(r.eval,r.eval==='MAX'?'danger':'info'),txt:r=>r.eval,tip:'MAX: tope que no se puede superar · MIN: piso mínimo a mantener'},{h:'Naturaleza',k:'nat',html:r=>natB(r.nat),txt:r=>r.nat,tip:'Normativo: bloquea la orden. Interno: permite continuar con aprobación registrada.'},{h:'Límite',k:'pct',fmt:v=>pc2(v*100)},{h:'Posición actual',k:'actual',fmt:v=>pc2(v*100)},{h:'Utilización',k:'uso',sortable:true,tip:'Posición actual dividida por el límite. En alerta desde 90%; incumple al superar el 100% de un tope.',html:r=>'<div style="min-width:110px">'+pc2(r.uso*100)+'<div class="mk-util"><div class="mk-util__b'+(r.estado==='Incumple'?' hi':'')+'" style="width:'+Math.min(100,r.uso*100)+'%"></div></div></div>',txt:r=>pc2(r.uso*100)}],
  rows:evalEmit,opDate:true,estado:r=>badge(r.estado,EST_EV[r.estado],true),acts:()=>[['ver']],

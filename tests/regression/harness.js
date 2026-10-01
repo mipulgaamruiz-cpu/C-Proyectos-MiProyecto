@@ -13,7 +13,7 @@ window.__reg = async (cfg) => {
       window.__go(r); await w(550);
       const bx = document.querySelector('#view [data-x="csv"]'), bxl = document.querySelector('#view [data-x="xls"]');
       if (bx && bxl && bx.offsetParent) {
-        const th = [...document.querySelector('#view table.mk-table thead tr').children].map(c => c.textContent.trim().toLowerCase()).filter(x => x !== 'acciones');
+        const th = [...document.querySelector('#view table.mk-table thead tr').children].map(c => (c.querySelector('.mk-thl') || c).textContent.trim().toLowerCase()).filter(x => x !== 'acciones');
         const info = document.querySelector('#view .mk-rowinfo'), n = info ? +(info.textContent.match(/de (\d+)/) || [0, 0])[1] : -1;
         caps.length = 0; bx.click(); await w(250); bxl.click(); await w(300); nExp++;
         if (caps.length < 2) { ok('Exportes ' + r, false, 'no se generaron los archivos'); continue; }

@@ -141,8 +141,8 @@ export async function runFlows3(browser, html, R, pais) {
   const vers = await page.evaluate(() => window.__mk.DS.FVP_REG.map(v => [v.ver, v.p.Conservador.rvMax]));
   ok('Régimen del FVP: la nueva versión no borra las anteriores (queda Futura)', rg1.length === 3 && rg1.some(x => /Futura/i.test(x)) && vers.some(v => v[0] === 2) && vers.some(v => v[0] === 3 && v[1] === 15), JSON.stringify(vers));
   await go(page, '#/limit-control/limit-evaluation');
-  await page.fill('#view [data-q]', 'RÉGIMEN'); await page.waitForTimeout(300);
-  const ev = await page.locator('#view tbody tr', { hasText: 'RÉGIMEN DE INVERSIÓN' }).count();
+  await page.waitForTimeout(300);
+  const ev = await page.evaluate(() => window.__mk.evalRows().filter(r => /RÉGIMEN DE INVERSIÓN/.test(r.tipo)).length);
   ok('Evaluación de límites: el régimen del FVP se evalúa por perfil (tope en renta variable y mínimo en renta fija)', ev === 6, String(ev));
   const vtxt = await page.locator('#view').innerText();
   ok('Evaluación de límites: muestra límites de inmuebles y de alternativos', /CONCENTRACIÓN POR INMUEBLE/i.test(vtxt) || (await page.locator('#view select[data-fl="p"]').count()) > 0);
@@ -153,7 +153,7 @@ export async function runFlows3(browser, html, R, pais) {
   /* portafolios */
   await go(page, '#/parametrizacion/portfolios');
   const tp = await page.locator('#view select[data-fl="t"] option').allTextContents();
-  await page.fill('#view [data-q]', K.fvp[0].split(' ')[0]); await page.waitForTimeout(300);
+  await page.locator('#view [data-cf]').first().fill(K.fvp[0].split(' ')[0]); await page.waitForTimeout(300);
   const pt = await page.locator('#view').innerText();
   ok('Portafolios: tipos de vehículo nuevos (inmobiliario, alternativo y FVP por perfil)', tp.some(x => /Fondo inmobiliario/i.test(x)) && tp.some(x => /Fondo alternativo/i.test(x)) && tp.some(x => /FVP|APV/.test(x)) && K.fvp.every(f => pt.includes(f)), tp.join(','));
 

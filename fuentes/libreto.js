@@ -114,9 +114,9 @@ function content(c){
   ['Límite por contraparte {CP} (MAX 25 %)','94 % · Alerta','Control de límites › Evaluación'],
   ['Exposición y cobertura (todos los portafolios)','Exposición bruta 37.000.000.000 · cobertura 23.400.000.000 · 63,2 % cubierto','Dashboard › Exposición y cobertura'],
   ['Órdenes de derivados (datos originales)','8 órdenes: 1 En cotización, 1 Por justificar, 2 Registradas, 4 Confirmadas; 2 con justificación','Órdenes › Derivados'],
-  ['Informes de órdenes (sin cargas previas)','Renta fija 26 · renta variable 14 · mercado monetario 18 · derivados 8 · inmobiliario 2 · alternativas 2 · Lending 1','Órdenes › Reportes'],
+  ['Informes de órdenes (sin cargas previas)','Renta fija 29 · renta variable 16 · mercado monetario 19 · derivados 8 · inmobiliario 2 · alternativas 2 · Lending 1','Órdenes › Reportes'],
   ['Parámetros de mejor ejecución (ilustrativos)','3 cotizaciones mínimas · tolerancia 0,50 % · dato desactualizado a los 2 días · avalúo vencido a los 12 meses','Parametrización › Flujo de órdenes'],
-  ['Archivos de ejemplo para Carga Masiva','Renta fija 6 · Renta variable 6 · Mercado monetario 6 · Instrumentos 5 · Benchmarks 4 · Contrapartes 4 filas (todas válidas: banda verde)','{CARPETA}']
+  ['Archivos de ejemplo para Carga Masiva','Renta fija 6 · Renta variable 6 · Mercado monetario 6 · Instrumentos 5 · Benchmarks 4 · Contrapartes 4 · Límites 4 filas (todas válidas: banda verde)','{CARPETA}']
  ].map(r=>r.map(T));
  const roles=[
   ['Gerente de inversiones','Ve posición, vencimientos, exposición, cobertura y desempeño en una sola plataforma; decide con datos del día.'],

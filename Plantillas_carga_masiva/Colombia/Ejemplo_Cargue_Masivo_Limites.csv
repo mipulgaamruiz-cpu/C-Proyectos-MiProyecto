@@ -1,0 +1,5 @@
+﻿"Portafolio";"Tipo de límite";"Valor límite";"Evaluación";"Naturaleza";"Porcentaje";"Denominador"
+"FIC RENTA FIJA";"CALIFICACIÓN";"A-";"MAX";"Interno";"15";"TOTAL ACTIVO"
+"FIC LIQUIDEZ";"PLAZO";"721 A 1,080";"MAX";"Interno";"25";"TOTAL ACTIVO"
+"PORTAFOLIO DELEGADO 3";"MONEDA";"USD";"MAX";"Normativo";"30";"TOTAL ACTIVO"
+"FIC RENTA FIJA LARGO PLAZO";"EMISOR";"COLPENSIONES";"MIN";"Interno";"5";"TOTAL ACTIVO"
