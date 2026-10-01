@@ -1,13 +1,13 @@
 {
  "Colombia": {
-  "limitesEvaluados": 20,
-  "alertas": 2,
+  "limitesEvaluados": 46,
+  "alertas": 3,
   "cupoBancolombia": 6720000000,
   "contrapartes": 7,
-  "ordenesRF": 26,
-  "ordenesRV": 14,
-  "ordenesMM": 18,
-  "brinsonBalanceado1YTD": -0.0016382560716331155
+  "ordenesRF": 29,
+  "ordenesRV": 16,
+  "ordenesMM": 19,
+  "brinsonBalanceado1YTD": 0.0022473912074015435
  },
  "Colombia_mm": [
   {
@@ -33,14 +33,14 @@
   }
  ],
  "Chile": {
-  "limitesEvaluados": 20,
-  "alertas": 2,
+  "limitesEvaluados": 46,
+  "alertas": 3,
   "cupoBancolombia": 6720000000,
   "contrapartes": 7,
-  "ordenesRF": 26,
-  "ordenesRV": 14,
-  "ordenesMM": 18,
-  "brinsonBalanceado1YTD": -0.00008405685756429984
+  "ordenesRF": 29,
+  "ordenesRV": 16,
+  "ordenesMM": 19,
+  "brinsonBalanceado1YTD": 0.005654694233024348
  },
  "Chile_mm": [
   {
@@ -66,14 +66,14 @@
   }
  ],
  "República Dominicana": {
-  "limitesEvaluados": 20,
-  "alertas": 2,
+  "limitesEvaluados": 46,
+  "alertas": 3,
   "cupoBancolombia": 6720000000,
   "contrapartes": 7,
-  "ordenesRF": 26,
-  "ordenesRV": 14,
-  "ordenesMM": 18,
-  "brinsonBalanceado1YTD": 0.0003114805482041724
+  "ordenesRF": 29,
+  "ordenesRV": 16,
+  "ordenesMM": 19,
+  "brinsonBalanceado1YTD": 0.0017783264867944956
  },
  "República Dominicana_mm": [
   {
@@ -92,6 +92,39 @@
   },
   {
    "p": "FONDO ABIERTO RENTA FIJA",
+   "tot": 2000000000,
+   "wam": 30.4,
+   "tasa": 0.10588,
+   "v7": 800000000
+  }
+ ],
+ "Panamá": {
+  "limitesEvaluados": 46,
+  "alertas": 3,
+  "cupoBancolombia": 6720000000,
+  "contrapartes": 7,
+  "ordenesRF": 29,
+  "ordenesRV": 16,
+  "ordenesMM": 19,
+  "brinsonBalanceado1YTD": 0.0005325381258384637
+ },
+ "Panamá_mm": [
+  {
+   "p": "FONDO DE INVERSIÓN LIQUIDEZ",
+   "tot": 15420000000,
+   "wam": 49.7613,
+   "tasa": 0.106458,
+   "v7": 4920000000
+  },
+  {
+   "p": "FONDO DE INVERSIÓN MONETARIO",
+   "tot": 3272749058,
+   "wam": 26.0362,
+   "tasa": 0.106069,
+   "v7": 1200000000
+  },
+  {
+   "p": "FONDO DE INVERSIÓN RENTA FIJA",
    "tot": 2000000000,
    "wam": 30.4,
    "tasa": 0.10588,

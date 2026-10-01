@@ -140,6 +140,16 @@
       "ruta": "#/m/param",
       "paises": "*",
       "motivo": "Landing de Parametrización: tarjeta nueva Proveedores de precios"
+    },
+    {
+      "ruta": "#/parametrizacion/indices",
+      "paises": "*",
+      "motivo": "Filtros dentro del encabezado de la grilla"
+    },
+    {
+      "ruta": "#/parametrizacion/rates",
+      "paises": "*",
+      "motivo": "Filtros dentro del encabezado de la grilla"
     }
   ],
   "cifras": {
