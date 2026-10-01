@@ -410,6 +410,7 @@
      "textoEsperado": [
       "Aprobado",
       "Bloqueado",
+      "Pendiente",
       "Aprobó"
      ],
      "textoNoEsperado": []

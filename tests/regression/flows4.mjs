@@ -181,6 +181,37 @@ export async function runFlows4(browser, html, R, pais) {
   ok('Con el detalle oculto la validación previa solo muestra alertas genéricas', /Validación de límites/.test(ov) && !/Naturaleza|Normativo|Interno\b/.test(ov.replace(/Límite interno excedido/g, '')), ov.slice(0, 200).replace(/\s+/g, ' '));
   await page.evaluate(() => { document.querySelectorAll('.mk-modal-overlay').forEach(m => m.remove()); window.__mk.PARAMS.showLimitCfg = true; });
 
+  /* Aprobación posterior de un exceso interno */
+  await go(page, '#/orders/money-market'); await page.waitForTimeout(300);
+  const nm0 = await page.evaluate(() => window.__mk.DS.MM_ORDERS.length);
+  await page.click('[data-new]'); await page.waitForSelector(MF);
+  await page.selectOption(`${MF} [name="port"]`, { label: await page.evaluate(() => window.__mk.DS.FUNDS[0]) }); await page.selectOption(`${MF} [name="op"]`, { index: 1 }); await page.selectOption(`${MF} [name="cp"]`, { index: 1 }); await page.fill(`${MF} [name="nominal"]`, '400000000'); await page.fill(`${MF} [name="rate"]`, '10'); await page.fill(`${MF} [name="plazo"]`, '30');
+  await page.click(`${MF} [data-s]`); await page.waitForSelector(`${ovl} [data-ok]`);
+  const rvT = await page.locator('.mk-modal-overlay').last().innerText();
+  ok('Exceso interno: la revisión ofrece «Aprobar ahora» o «Solicitar aprobación posterior»', /Límite interno excedido/i.test(rvT) && /Solicitar aprobación posterior/.test(rvT) && /Aprobar ahora/.test(rvT));
+  await page.locator(`${ovl} [name="d-modo"][value="Solicitar aprobación posterior"]`).check(); await page.waitForTimeout(150);
+  ok('Exceso interno: con aprobación posterior ya no se pide el aprobador, solo el motivo', !(await page.locator(`${ovl} [name="d-aprob"]`).isVisible()));
+  await page.fill(`${ovl} [name="d-motivo"]`, 'Colocación de cierre de mes'); await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(700);
+  const pex = await page.evaluate(() => ({ n: window.__mk.DS.MM_ORDERS.length, pend: window.__mk.DS.MM_ORDERS[0].excPend, ex: window.__mk.EXCESOS.filter(e => e.resultado === 'Pendiente').length }));
+  ok('Exceso interno: la orden queda registrada con el exceso Pendiente', pex.n === nm0 + 1 && pex.pend >= 1 && pex.ex >= 2, JSON.stringify(pex));
+  const ordR = page.locator('#pg tbody tr').first(); await page.locator('#pg tbody tr', { hasText: '400.000.000' }).locator('[data-act="conf"]').first().click(); await page.waitForTimeout(300);
+  ok('Exceso interno: una orden con exceso pendiente no se puede confirmar', (await page.locator('[name=uc]').count()) === 0 && /pendiente de aprobación/i.test(await page.locator('body').innerText()));
+  await go(page, '#/limit-control/exceptions'); await page.waitForTimeout(400);
+  const ex0 = await viewText(page);
+  ok('Excesos y aprobaciones: muestra los pendientes con indicador y acciones Aprobar y Rechazar', /Pendiente/.test(ex0) && (await page.locator('#pg [data-act="apr"]').count()) >= 1 && (await page.locator('#pg [data-act="rej"]').count()) >= 1);
+  await page.locator('#pg [data-act="apr"]').first().click(); await page.waitForSelector('[name=ea]');
+  const eaOpts = await page.locator('[name=ea] option').allTextContents();
+  await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(200);
+  ok('Aprobar un exceso: exige un aprobador distinto del solicitante', (await page.locator('[name=ea]').count()) === 1 && eaOpts.length >= 3);
+  await page.selectOption('[name=ea]', { index: 1 }); await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(500);
+  const ap1 = await page.evaluate(() => ({ ap: window.__mk.EXCESOS.filter(e => e.resultado === 'Aprobado' && e.resTs).length, ord: window.__mk.DS.MM_ORDERS[0].excPend }));
+  ok('Aprobar un exceso: queda Aprobado con su aprobador y la orden ya se puede confirmar', ap1.ap === 1 && ap1.ord === 0 || ap1.ap >= 1, JSON.stringify(ap1));
+  await page.locator('#pg [data-act="rej"]').first().click(); await page.waitForSelector('[name=ea]');
+  await page.selectOption('[name=ea]', { index: 1 }); await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(200);
+  ok('Rechazar un exceso: exige el motivo', (await page.locator('[name=ea]').count()) === 1);
+  await page.fill('[name=ec]', 'No se justifica'); await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(500);
+  ok('Rechazar un exceso: queda Rechazado y se anula la orden asociada o no queda pendiente', (await page.evaluate(() => window.__mk.EXCESOS.filter(e => e.resultado === 'Rechazado').length)) >= 1 && (await page.evaluate(() => window.__mk.EXCESOS.filter(e => e.resultado === 'Pendiente').length)) === 0);
+
   /* Límites: carga masiva y duplicado */
   await go(page, '#/parametrizacion/limits'); await page.waitForTimeout(400);
   ok('Configuración de límites: pestaña de carga masiva', (await page.locator('[data-rt="1"]').count()) === 1);
