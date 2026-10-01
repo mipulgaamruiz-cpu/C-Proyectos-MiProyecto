@@ -39,6 +39,7 @@ Cada uno está marcado en el código con `/* SUPUESTO: ... */`.
 - **Catálogos nuevos**: Clases de activo, Instrumentos de derivados (disponibilidad por país), Sectores de cartera y Originadores de cartera.
 - **Módulos conectados**: ahora también en Renta fija, Renta variable y Derivados (en Derivados faltaba por un orden de carga).
 - **Derivados**: el propósito de una operación es Cobertura, Inversión o ambos (en «Cobertura e inversión» el 50 % del nocional cuenta como cobertura; SUPUESTO). Instrumentos: forward y swap (OTC y novado) y futuros; sin opciones.
+- **Control (cierre de brechas)**: validación previa de límites en renta fija, renta variable y mercado monetario (normativo bloquea; interno pide motivo y aprobador); pantalla **Excesos y aprobaciones** (Control de límites); **Bitácora de auditoría** (grupo Auditoría); **segregación de funciones** en renta fija, renta variable y mercado monetario (quien registra no confirma, con la acción Confirmar); **efecto cambiario** en Atribución de retorno (USD y EUR); y etiqueta «Datos ilustrativos de demostración» con la fuente Contabilidad en Performance attribution. **SUPUESTO:** los límites normativos de inversión son de **Riesgos** (decisión del negocio); el evento «límite excedido» se publica a Riesgos.
 - **Pantallas**: «Módulos conectados» en todas; Flujo de órdenes y Catálogos con Editar e Inactivar; un solo botón «Nuevo» en Instrumentos; filtro por tipo de activo en Contribución, Evaluación de límites y Flujos futuros; Visor con mercado monetario y derivados; sin personas naturales en los portafolios; tarjetas del home y de los grupos en filas balanceadas.
 - **Decisión de diseño**: Derivados y Decisiones de inversión no tienen carga masiva a propósito (cotizador y evidencia de mejor ejecución; comité y acta).
 - **Cuatro países**: se agregó Panamá (además de Colombia, Chile y República Dominicana) y todo se probó en los cuatro.
@@ -63,8 +64,9 @@ El menú, la home y las tarjetas de cada landing salen de la misma lista (`NAV`)
 1. **Parametrización**: Flujo de órdenes, Portafolios, Instrumentos, Índices de referencia, Benchmarks, Contrapartes y cupos, Tasas de referencia, Configuración de límites, Catálogos.
 2. **Dashboard**: Visor de portafolio, Flujos futuros, Medidas de sensibilidad, Mercado monetario, Exposición y cobertura.
 3. **Órdenes**: Renta fija, Renta variable, Mercado monetario, Derivados, Decisiones de inversión, Reportes (informes por producto).
-4. **Control de límites**: Evaluación.
-5. **Performance attribution**: Resumen de desempeño, Atribución de retorno, Contribución por activo, Atribución renta fija, Atribución mercado monetario, Atribución por producto, Reportes.
+4. **Control de límites**: Evaluación, Excesos y aprobaciones.
+5. **Auditoría**: Bitácora de auditoría.
+6. **Performance attribution**: Resumen de desempeño, Atribución de retorno, Contribución por activo, Atribución renta fija, Atribución mercado monetario, Atribución por producto, Reportes.
 
 ## 7. Cómo ejecutar
 

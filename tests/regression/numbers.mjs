@@ -16,7 +16,7 @@ export async function runNumbers(browser, html, R, { update = false } = {}) {
         const c = M.contributions(p, k), s = c.rows.reduce((a, x) => a + x.c, 0);
         out.contrib.push({ p, k, d: Math.abs(s - c.T) });
         ['Macroactivo', 'Subactivo', 'Clase de inversión', 'Moneda'].forEach(l => {
-          const b = M.brinson(p, k, l), sum = b.rows.reduce((a, x) => a + x.tot, 0) + (b.hedge ? b.hedge.net : 0);
+          const b = M.brinson(p, k, l), sum = b.rows.reduce((a, x) => a + x.tot, 0) + (b.hedge ? b.hedge.net : 0) + (b.fx ? b.fx.net : 0);
           out.brinson.push({ p, k, l, d: Math.abs(sum - b.exc), hedge: b.hedge ? b.hedge.net : 0 });
         });
       }));

@@ -242,6 +242,48 @@ export async function runFlows3(browser, html, R, pais) {
   const navRoutes = await page.evaluate(() => window.__mk.NAV.flatMap(g => g.items.map(i => i[0])));
   const sinMod = []; for (const r of navRoutes) { await go(page, r); await page.waitForTimeout(250); if ((await page.locator('#view .mk-apoya a.mk-chip').count()) < 2) sinMod.push(r) }
   ok('Módulos conectados: todas las pantallas muestran la etiqueta con sus enlaces', sinMod.length === 0, sinMod.join(','));
+  /* Control: validación previa en renta fija, renta variable y mercado monetario; excesos; auditoría; segregación; efecto cambiario */
+  const sc = await page.evaluate(() => { const M = window.__mk, rows = M.evalRows().filter(r => r.eval === 'MAX'), val = p => (M.DS.SENS.find(x => x.port === p) || {}).val || 2e10;
+    const em = rows.filter(r => r.tipo === 'EMISOR' && M.DS.INSTRUMENTS.some(i => i.emisor === r.sub)).sort((a, b) => b.uso - a.uso)[0];
+    const cr = rows.filter(r => r.tipo === 'CONTRAPARTE' && r.nat === 'Interno' && M.DS.MM_CP.some(c => c.name === r.sub)).sort((a, b) => b.uso - a.uso)[0], cp = M.DS.MM_CP.find(c => c.name === cr.sub);
+    const need = (cr.pct - cr.actual) * val(cr.port), avail = cp.cupo - M.cpTotal(cp.name);
+    return { rfPort: em.port, rfInstr: M.DS.INSTRUMENTS.find(i => i.emisor === em.sub).mnem, rfVal: Math.round(em.pct * val(em.port) * 0.6), mmPort: cr.port, mmCp: cr.sub, mmNom: Math.round(Math.min(avail * 0.9, need * 1.6)), ok: Math.min(avail * 0.9, need * 1.6) > need } });
+  ok('Validación previa: existe un caso de demostración para el límite interno de contraparte', sc.ok, JSON.stringify(sc));
+  const ex0 = await page.evaluate(() => window.__mk.EXCESOS.length), au0 = await page.evaluate(() => window.__mk.AUDIT.length);
+  await go(page, '#/orders/fixed-income'); await page.click('#view [data-new]'); await page.waitForSelector(MF);
+  await page.selectOption(`${MF} [name=port]`, sc.rfPort); await page.fill(`${MF} [name=instr]`, sc.rfInstr); await page.fill(`${MF} [name=quantity]`, '1000'); await page.fill(`${MF} [name=value]`, String(sc.rfVal));
+  await page.click(`${MF} [data-s]`); await page.waitForTimeout(500);
+  const rfp = await page.locator('.mk-modal-overlay').last().innerText();
+  ok('Validación previa · renta fija: un límite normativo excedido bloquea la orden y deshabilita Confirmar', /Validación de límites/.test(rfp) && /Límite normativo excedido/.test(rfp) && (await page.locator(`${ovl} [data-ok][disabled]`).count()) === 1);
+  ok('Validación previa · renta fija: el bloqueo queda en Excesos y aprobaciones', (await page.evaluate(() => window.__mk.EXCESOS.filter(e => e.resultado === 'Bloqueado').length)) > 0 && (await page.evaluate(() => window.__mk.EXCESOS.length)) > ex0); await closeModals(page);
+  await go(page, '#/orders/money-market'); await page.click('#view [data-new]'); await page.waitForSelector(MF);
+  await page.selectOption(`${MF} [name=op]`, { index: 1 }); await page.selectOption(`${MF} [name=port]`, sc.mmPort); await page.selectOption(`${MF} [name=cp]`, sc.mmCp); await page.fill(`${MF} [name=nominal]`, String(sc.mmNom)); await page.fill(`${MF} [name=rate]`, '10%'); await page.fill(`${MF} [name=plazo]`, '30');
+  await page.click(`${MF} [data-s]`); await page.waitForTimeout(500);
+  const mmp = await page.locator('.mk-modal-overlay').last().innerText();
+  ok('Validación previa · mercado monetario: un límite interno excedido pide motivo y aprobador', /Validación de límites/.test(mmp) && /Límite interno excedido/.test(mmp) && (await page.locator(`${ovl} [name=d-motivo]`).count()) === 1);
+  await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(300);
+  ok('Validación previa · mercado monetario: sin aprobación no se registra', /registra el motivo|Indica el motivo|obligatorio|Falta/i.test(await page.locator('.mk-modal-overlay').last().innerText()) || (await page.locator('.mk-modal-overlay').count()) >= 2);
+  await page.fill(`${ovl} [name=d-motivo]`, 'Renovación de una operación que vence mañana.'); await page.selectOption(`${ovl} [name=d-aprob]`, { index: 1 });
+  const mm0 = await page.evaluate(() => window.__mk.DS.MM_ORDERS.length); await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(800);
+  ok('Validación previa · mercado monetario: con motivo y aprobador se registra y queda el exceso aprobado', (await page.evaluate(() => window.__mk.DS.MM_ORDERS.length)) === mm0 + 1 && (await page.evaluate(() => window.__mk.EXCESOS.some(e => e.resultado === 'Aprobado' && /Renovación/.test(e.motivo) && e.aprobador !== '—'))));
+  ok('Auditoría: lo registrado y lo bloqueado quedan en la bitácora', (await page.evaluate(() => window.__mk.AUDIT.length)) >= au0 + 3);
+  await go(page, '#/limit-control/exceptions'); await page.waitForTimeout(400);
+  const exT = await page.locator('#view').innerText();
+  ok('Excesos y aprobaciones: lista los excesos con su resultado, solicitante y aprobador', /Aprobado/.test(exT) && /Bloqueado/.test(exT) && /Naturaleza/.test(exT) && (await page.locator('#view tbody tr').count()) >= 6 && !BAD_TEXT.test(exT));
+  await go(page, '#/audit/log'); await page.waitForTimeout(400);
+  const auT = await page.locator('#view').innerText();
+  ok('Bitácora de auditoría: muestra usuario, acción, módulo y referencia', /Usuario/.test(auT) && /Acción/.test(auT) && /Creación|Edición/.test(auT) && (await page.locator('#view tbody tr').count()) >= 8 && !BAD_TEXT.test(auT));
+  await go(page, '#/orders/fixed-income'); await page.waitForTimeout(400);
+  const f0 = await page.evaluate(() => window.__mk.DS.FI_ORDERS.filter(o => o.estatus === 'F').length);
+  await page.locator('#view [data-act="conf"]').first().click(); await page.waitForSelector('[name=uc]');
+  const reg = await page.locator('.mk-modal-overlay').last().innerText(); const uopts = await page.locator('[name=uc] option').allTextContents();
+  ok('Segregación en renta fija: quien confirma no puede ser quien registró', /Segregación de funciones/.test(reg) && uopts.length === 4 && !uopts.some(u => reg.includes('REGISTRÓ') && false), uopts.join('|'));
+  await page.selectOption('[name=uc]', { index: 1 }); await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(500);
+  ok('Segregación en renta fija: confirmar finaliza la orden y registra quién confirmó', (await page.evaluate(() => window.__mk.DS.FI_ORDERS.filter(o => o.estatus === 'F').length)) === f0 + 1 && (await page.evaluate(() => window.__mk.DS.FI_ORDERS.some(o => o.estatus === 'F' && o.uConf && o.uConf !== o.uReg))));
+  await go(page, '#/performance-attribution/brinson'); await page.waitForTimeout(300);
+  await page.selectOption('#view [name=port]', { index: 1 }); await page.click('#view [data-consult]'); await page.waitForTimeout(700);
+  const brT = await page.locator('#view').innerText();
+  ok('Atribución de retorno: separa el efecto cambiario de las inversiones en USD y EUR', /Efecto cambiario/.test(brT) && /Datos ilustrativos de demostración/.test(brT) && /Fuente: Contabilidad/.test(brT) && !BAD_TEXT.test(brT));
   /* F12 en las pantallas nuevas */
   for (const dest of ['Colombia', 'Chile', 'República Dominicana', 'Panamá'].filter(c => c !== pais).slice(0, 2)) {
     for (const route of ['#/orders/investment-decisions', '#/parametrizacion/instruments', '#/dashboard/graphics', '#/parametrizacion/limits']) {

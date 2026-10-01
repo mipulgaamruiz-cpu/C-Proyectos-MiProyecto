@@ -22,14 +22,16 @@ Revisión honesta de lo que el prototipo cubre y de lo que **no** cubre, frente 
 
 **Limitaciones conocidas** (honestas, no menores):
 
-- **Sin efecto cambiario.** Las inversiones en USD o EUR no separan el retorno del activo del efecto de la divisa.
+- **Efecto cambiario** (cerrado): se separa en Atribución de retorno para las inversiones en USD y EUR, con variaciones de divisa ilustrativas.
 - **Derivados**: solo se mide el efecto de la cobertura (activo, costo por puntos forward y neto). No hay atribución de las posiciones de inversión.
 - **Inmobiliario** se mide en renta y valorización, **sin benchmark**; la serie de valorización es escalonada por avalúo.
 - **Alternativas** se miden en TIR y MOIC, sin comparación contra una referencia.
 - **Lending**: el rendimiento (intereses, pérdida por mora, prepago) es ilustrativo y simplificado; no hay curvas de pérdida ni de prepago por vintage.
 - Los datos de desempeño son **sintéticos**: sirven para mostrar la mecánica, no para validar cálculos.
 
-## 3. Brechas frente a un front fiduciario completo
+## 3. Brechas frente a un front fiduciario completo (estado actualizado)
+
+Cerradas en esta entrega: validación previa de límites en todas las órdenes, pantalla de excesos y aprobaciones, bitácora de auditoría, segregación de funciones en renta fija, renta variable y mercado monetario, y efecto cambiario en la atribución. Los datos de desempeño siguen siendo sintéticos y ahora se muestran como tales, con su fuente (Contabilidad). La tabla siguiente conserva el diagnóstico original; lo que sigue abierto es riesgo de mercado y de liquidez (VaR), asignación de órdenes entre portafolios, proveedores de precios, reglamento del fondo y reportes regulatorios.
 
 | Brecha | Estado | Comentario |
 | --- | --- | --- |

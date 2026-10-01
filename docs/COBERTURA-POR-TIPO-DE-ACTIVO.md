@@ -14,6 +14,12 @@ Revisión de qué tiene el prototipo para cada tipo de activo, módulo por módu
 
 Todos los informes se filtran por tipo de vehículo: **FIC, FCP y FVP**.
 
+## Control transversal
+
+- **Validación previa de límites** en renta fija, renta variable, mercado monetario, derivados y decisiones de inversión.
+- **Excesos y aprobaciones** (Control de límites) y **Bitácora de auditoría** (Auditoría).
+- **Segregación de funciones** en todas las órdenes y en las decisiones de inversión.
+
 ## ¿Por qué hay pantallas sin carga masiva?
 
 - **Renta fija, renta variable y mercado monetario** tienen pantalla individual y carga masiva: son órdenes repetitivas y de alto volumen.

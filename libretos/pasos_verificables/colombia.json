@@ -17,6 +17,7 @@
       "Dashboard",
       "Órdenes",
       "Control de límites",
+      "Auditoría",
       "Performance attribution"
      ],
      "textoNoEsperado": []
@@ -319,7 +320,7 @@
       },
       {
        "t": "marcar",
-       "sel": ".mk-modal--wizard [name=\"d-prop\"][value=\"Posición propia\"]"
+       "sel": ".mk-modal--wizard [name=\"d-prop\"][value=\"Inversión\"]"
       },
       {
        "t": "click",
@@ -397,6 +398,36 @@
       "Normativo",
       "Interno",
       "Alerta"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/limit-control/exceptions",
+     "acciones": [
+      {
+       "t": "esperar",
+       "ms": 500
+      }
+     ],
+     "textoEsperado": [
+      "Aprobado",
+      "Bloqueado",
+      "Aprobó"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/audit/log",
+     "acciones": [
+      {
+       "t": "esperar",
+       "ms": 500
+      }
+     ],
+     "textoEsperado": [
+      "Usuario",
+      "Acción",
+      "Módulo"
      ],
      "textoNoEsperado": []
     }
