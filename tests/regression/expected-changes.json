@@ -125,6 +125,16 @@
       "ruta": "#/m/pa",
       "paises": "*",
       "motivo": "Landing de Performance attribution: tarjeta nueva Atribución por producto"
+    },
+    {
+      "ruta": "#/dashboard/money-market",
+      "paises": "*",
+      "motivo": "Etiqueta «Módulos conectados» nueva en Dashboard › Mercado monetario"
+    },
+    {
+      "ruta": "#/m/limits",
+      "paises": "*",
+      "motivo": "Landing de Control de límites: tarjeta nueva Excesos y aprobaciones"
     }
   ],
   "cifras": {

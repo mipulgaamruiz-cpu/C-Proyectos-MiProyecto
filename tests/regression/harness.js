@@ -76,7 +76,7 @@ window.__reg = async (cfg) => {
     document.querySelector('.mk-modal--form [data-s]').click(); await w(300); ok('MM: bloquea por cupo (1.000 M > 480 M)', /Supera el cupo disponible/.test(f.innerText) && !!document.querySelector('.mk-modal--form'));
     const n0 = +(document.querySelector('#view .mk-rowinfo').textContent.match(/de (\d+)/)[1]); set('nominal', '400000000'); document.querySelector('.mk-modal--form [data-s]').click(); await w(400);
     const rev = /revisa la operación/i.test(document.body.innerText); ok('MM: con 400 M abre "Revisa la operación"', rev);
-    if (rev) { [...document.querySelectorAll('[data-ok]')].pop().click(); await w(900); }
+    if (rev) { const ov = [...document.querySelectorAll('.mk-modal-overlay')].pop(), mo = ov.querySelector('[name="d-motivo"]'); if (mo) { mo.value = 'Renovación de una operación que vence mañana.'; ov.querySelector('[name="d-aprob"]').selectedIndex = 1; } [...document.querySelectorAll('[data-ok]')].pop().click(); await w(900); }
     const n1 = +(document.querySelector('#view .mk-rowinfo').textContent.match(/de (\d+)/)[1]); ok('MM: la operación queda registrada', n1 === n0 + 1, n0 + ' → ' + n1);
     window.__go('#/dashboard/money-market'); await w(700); const pt = document.body.innerText;
     ok('Posición monetaria: saldo 15.420.000.000, plazo ≈ 49,8, vence 7 días 4.920.000.000, tasa 10,65 %', /15\.420\.000\.000/.test(pt) && /49,8 días/.test(pt) && /4\.920\.000\.000/.test(pt) && /10,65\s?%/.test(pt));
