@@ -163,7 +163,7 @@ export async function runFlows2(browser, html, R, pais) {
   /* eventos publicados desde la campana */
   await page.click('#bell'); await page.click('#evBtn'); await page.waitForSelector('.mk-modal--form');
   const evt = await page.evaluate(() => document.querySelector('.mk-modal--form').innerText);
-  ok('Eventos publicados: lista orden ejecutada, límite excedido y módulo destino', /Orden ejecutada/.test(evt) && /Límite excedido/.test(evt) && /Contabilidad/.test(evt) && /Cumplimiento/.test(evt));
+  ok('Eventos publicados: lista orden ejecutada, límite excedido y módulo destino', /Orden ejecutada/.test(evt) && /Límite excedido/.test(evt) && /Contabilidad/.test(evt) && /Riesgos/.test(evt));
   await closeModals(page);
 
   /* F12 · cambio de país a mitad de sesión */

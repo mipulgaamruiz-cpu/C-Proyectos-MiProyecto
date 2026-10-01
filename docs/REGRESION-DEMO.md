@@ -74,7 +74,7 @@ Cada uno está marcado en el código con `/* SUPUESTO: ... */`.
 | Spot y tasa en USD | 4.000 COP/USD, 950 CLP/USD, 60 DOP/USD, 1,08 USD por EUR (Panamá); tasa USD 4,3 %; tasa local = IBR 3M (Tasas de referencia) | Ramiro |
 | Exposición potencial futura | Factor por instrumento (forward 15 %, swap 8 %, opción 12 %, futuro 5 %) × raíz del plazo en años | Riesgos |
 | Mejor cotización | La de menor precio, tasa fija o prima (menor costo para el fondo) | Ramiro |
-| Instrumentos de derivados por país | La plataforma opera forward de divisas y de tasas (OTC y novado), swap de divisas y de tasas (OTC), swap novado y futuros; **no opera opciones**. Colombia: los ocho. Chile: sin futuros. República Dominicana y Panamá: solo OTC (forward y swap, de divisas y de tasas). «Swap novado» se asume de tasas; confirmar si debe separarse en divisas y tasas | Ramiro |
+| Instrumentos de derivados por país | La plataforma opera forward de divisas y de tasas (OTC y novado), swap de divisas y de tasas (OTC y novado) y futuros; **no opera opciones**. Colombia: los nueve. Chile: sin futuros. República Dominicana y Panamá: solo OTC (forward y swap, de divisas y de tasas) | Ramiro |
 | Panamá | Par EUR/USD: el balboa circula a la par con el dólar, no hay riesgo USD/PAB | Ramiro |
 | Naturaleza de los límites | **Internos** (permiten continuar con motivo y aprobador): cupo de contraparte, concentración por inmueble, arrendatario, ciudad, originador, proyecto y sector, y tope por etapa. **Normativos** (bloquean): propósito, sobrecobertura, emisor, calificación, macroactivo, moneda, plazo, endeudamiento, tope a activos en desarrollo y régimen del FVP | Compliance |
 | Posiciones, MTM, delta y vega de derivados | Cifras inventadas (ver `DERIV_POS`) | Ramiro |
@@ -84,7 +84,7 @@ Cada uno está marcado en el código con `/* SUPUESTO: ... */`.
 | Régimen de inversión del FVP | Topes por perfil (renta variable, renta fija, exterior, emisor) y nombres de perfil (Conservador, Moderado, Agresivo) | Ramiro |
 | Usuarios, actas y aprobadores | Usuarios simulados (Ramiro Giraldo Colorado, Laura Medina, Camilo Ortega y Paula Rincón) | Demo |
 | Nombres de bancos, instrumentos y tasas por país (incluido Panamá) | Ilustrativos | Negocio |
-| Módulos externos (New Inversiones, Derivados, Administración del fondo, Administración de activos y crédito, Contabilidad y Cumplimiento) | Simulados con datos locales; el contrato entre módulos se muestra con chips de fuente y el panel «Eventos publicados» | Tecnología |
+| Módulos externos (New Inversiones, Derivados, Administración del fondo, Administración de activos y crédito, Contabilidad y Riesgos) | Simulados con datos locales; el contrato entre módulos se muestra con chips de fuente y el panel «Eventos publicados» | Tecnología |
 
 ## 4. Diferencias con el documento de diseño
 

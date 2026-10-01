@@ -227,7 +227,7 @@ export async function runFlows3(browser, html, R, pais) {
   await go(page, '#/orders/derivatives'); await page.click('[data-new]'); await page.waitForSelector(`${W2} [name="d-inst"]`);
   const insts = await page.locator(`${W2} [name="d-inst"] option`).allTextContents();
   const props = await page.locator(`${W2} [name="d-prop"]`).evaluateAll(r => r.map(x => x.value));
-  ok('Derivados: sin opciones; instrumentos permitidos solo forward, swap y futuros', insts.filter(x => x && x !== 'Seleccionar').every(x => /^(Forward de (divisas|tasas) (OTC|novado)|Swap de (divisas|tasas) OTC|Swap novado|Futuro)$/.test(x)) && insts.length > 4 && !/Opci/i.test(insts.join(',')) && di.inst.every(i => !/Opci/i.test(i)), insts.join('|'));
+  ok('Derivados: sin opciones; instrumentos permitidos solo forward, swap y futuros', insts.filter(x => x && x !== 'Seleccionar').every(x => /^(Forward de (divisas|tasas) (OTC|novado)|Swap de (divisas|tasas) (OTC|novado)|Futuro)$/.test(x)) && insts.length > 4 && !/Opci/i.test(insts.join(',')) && di.inst.every(i => !/Opci/i.test(i)), insts.join('|'));
   ok('Derivados: el propósito es Cobertura, Inversión o Cobertura e inversión', ['Cobertura', 'Inversión', 'Cobertura e inversión'].every(p => props.includes(p)) && props.length === 3, props.join('|')); await closeModals(page);
   const dtx = []; for (const r of ['#/orders/derivatives', '#/dashboard/sensitivity-measures', '#/dashboard/exposure', '#/orders/reports']) { await go(page, r); dtx.push(await page.locator('#view').innerText()) }
   ok('Derivados: ninguna pantalla muestra opciones, delta ni vega', !/Opci[oó]n|opciones|\bDelta\b|\bVega\b/.test(dtx.join(' ')));

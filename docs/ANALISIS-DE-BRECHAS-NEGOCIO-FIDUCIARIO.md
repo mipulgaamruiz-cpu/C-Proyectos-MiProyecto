@@ -45,6 +45,22 @@ Revisión honesta de lo que el prototipo cubre y de lo que **no** cubre, frente 
 
 ## 4. Recomendación
 
-Para la demo con clientes potenciales, lo que más se notaría es: **validación previa de límites en renta fija, renta variable y mercado monetario**, la pantalla de **excesos y aprobaciones**, y el **efecto cambiario** en la atribución. Las demás brechas pueden presentarse como parte de otros módulos de la plataforma (Riesgos, Cumplimiento, Contabilidad).
+Para la demo con clientes potenciales, lo que más se notaría es: **validación previa de límites en renta fija, renta variable y mercado monetario**, la pantalla de **excesos y aprobaciones**, y el **efecto cambiario** en la atribución. Las demás brechas pueden presentarse como parte de otros módulos de la plataforma (Riesgos, Contabilidad).
 
 Falta decidir con el negocio cuáles de estas brechas se construyen antes de la demo.
+
+## 5. ¿Hace falta construir un módulo de Cumplimiento?
+
+La plataforma tiene el módulo transversal de **Riesgos** y no tiene **Cumplimiento**. En el prototipo, el evento «límite excedido» ahora se publica a **Riesgos** (antes apuntaba a un módulo de Cumplimiento que no existe).
+
+**Recomendación: no construir un módulo de Cumplimiento completo para esta entrega.** Es una iniciativa aparte y mucho más grande, y buena parte de lo que cubre no es del Front.
+
+Lo que el Front sí necesita, y conviene resolver dentro de **Control de límites**:
+
+- Validación previa de límites en todas las órdenes.
+- Una pantalla de **excesos y aprobaciones** (motivo, aprobador, fecha).
+- Una **bitácora de auditoría**.
+
+Lo que normalmente es de Cumplimiento y queda **fuera** del Front: reportes al supervisor, listas restrictivas y prevención de lavado de activos (SARLAFT), conflictos de interés y operaciones con vinculados, y gestión de reglamentos.
+
+**Decisión pendiente del negocio:** quién es dueño de los límites normativos de inversión. Si es Riesgos, el Front los publica a Riesgos como hoy. Si más adelante nace un módulo de Cumplimiento, consumiría los mismos eventos publicados sin cambiar el Front.
