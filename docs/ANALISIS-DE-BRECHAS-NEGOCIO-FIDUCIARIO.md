@@ -31,7 +31,7 @@ Revisión honesta de lo que el prototipo cubre y de lo que **no** cubre, frente 
 
 ## 3. Brechas frente a un front fiduciario completo (estado actualizado)
 
-Cerradas en esta entrega: validación previa de límites en todas las órdenes, pantalla de excesos y aprobaciones, bitácora de auditoría, segregación de funciones en renta fija, renta variable y mercado monetario, y efecto cambiario en la atribución. Los datos de desempeño siguen siendo sintéticos y ahora se muestran como tales, con su fuente (Contabilidad). La tabla siguiente conserva el diagnóstico original; lo que sigue abierto es riesgo de mercado y de liquidez (VaR), asignación de órdenes entre portafolios, proveedores de precios, reglamento del fondo y reportes regulatorios.
+Cerradas en esta entrega: validación previa de límites en todas las órdenes, pantalla de excesos y aprobaciones, bitácora de auditoría, segregación de funciones en renta fija, renta variable y mercado monetario, y efecto cambiario en la atribución. Los datos de desempeño siguen siendo sintéticos (ilustrativos); en producción llegan precargados de Contabilidad. La tabla siguiente conserva el diagnóstico original; lo que sigue abierto es riesgo de mercado y de liquidez (VaR), asignación de órdenes entre portafolios, proveedores de precios, reglamento del fondo y reportes regulatorios.
 
 | Brecha | Estado | Comentario |
 | --- | --- | --- |
