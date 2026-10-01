@@ -19,7 +19,7 @@ Cada uno está marcado en el código con `/* SUPUESTO: ... */`.
 | Naturaleza de los límites | **Internos** (permiten continuar con motivo y aprobador): cupo de contraparte, concentración por inmueble, arrendatario, ciudad, originador, proyecto y sector, y tope por etapa. **Normativos** (bloquean): propósito, sobrecobertura, emisor, calificación, macroactivo, moneda, plazo, endeudamiento, tope a activos en desarrollo y régimen del FVP | Compliance |
 | Posiciones, MTM, delta y vega de derivados | Cifras inventadas (ver `DERIV_POS`) | Ramiro |
 | Efecto de la cobertura en la atribución | Peso de la exposición cubierta × costo o ganancia por puntos forward, con cifras inventadas | Ramiro |
-| Estados de derivados en el Libro de órdenes | Se muestran con la escala común (En cotización y Por justificar = Complementación) | Producto |
+| Estados de derivados en los informes de órdenes | Se muestran con la escala común (En cotización y Por justificar = Complementación) | Producto |
 | Activos no listados | Inmuebles, proyectos, TCC y cartera, con avalúos, covenants, comprometido y desembolsado inventados | Administración de activos y crédito |
 | Régimen de inversión del FVP | Topes por perfil (renta variable, renta fija, exterior, emisor) y nombres de perfil (Conservador, Moderado, Agresivo) | Ramiro |
 | Usuarios, actas y aprobadores | Usuarios simulados (Ramiro Giraldo Colorado, Laura Medina, Camilo Ortega y Paula Rincón) | Demo |
@@ -34,7 +34,11 @@ Cada uno está marcado en el código con `/* SUPUESTO: ... */`.
 - **Valor indicativo**: se calcula con las tasas de **Tasas de referencia**; no hay otra fuente de tasas.
 - **Órdenes › Mercado monetario** ya existía; solo recibió la regla de precarga (chip de New Inversiones) y el cupo compartido con derivados.
 - **Parámetros de mejor ejecución**: viven en Parametrización › Flujo de órdenes, marcados «por definir con Compliance».
-- **Libro de órdenes**: ahora incluye también las órdenes de derivados.
+- **Informes de órdenes por producto** (reemplazan al Libro de órdenes, a pedido del negocio): renta fija, renta variable, mercado monetario, derivados, inmobiliario, inversiones alternativas (TCC y proyectos) y Lending, cada uno filtrable por tipo de vehículo **FIC, FCP y FVP**. Los tres últimos salen de Decisiones de inversión. **SUPUESTO:** FCP agrupa los fondos inmobiliarios y alternativos; el nombre del vehículo por país lo valida el negocio.
+- **Atribución por producto** (nueva pantalla de Performance attribution): renta fija, renta variable, mercado monetario, derivados, inmobiliario, alternativas y Lending. Dos reportes nuevos en Reportes de desempeño: «Informe de atribución por producto» y «Informe de Lending».
+- **Catálogos nuevos**: Clases de activo, Instrumentos de derivados (disponibilidad por país), Sectores de cartera y Originadores de cartera.
+- **Módulos conectados**: ahora también en Renta fija, Renta variable y Derivados (en Derivados faltaba por un orden de carga).
+- **Decisión de diseño**: Derivados y Decisiones de inversión no tienen carga masiva a propósito (cotizador y evidencia de mejor ejecución; comité y acta).
 - **Cuatro países**: se agregó Panamá (además de Colombia, Chile y República Dominicana) y todo se probó en los cuatro.
 - **KPIs de las listas**: ahora reflejan los filtros aplicados (antes mostraban siempre el total); es lo que pide el invariante «totales de KPIs = suma de las filas visibles».
 - **Deuda previa corregida** (commit aparte en la Fase 0): la descripción de la tarjeta de mercado monetario mencionaba «CDT» en Chile y República Dominicana; el portafolio por defecto de las pantallas de atribución usaba el nombre de Colombia en otros países.

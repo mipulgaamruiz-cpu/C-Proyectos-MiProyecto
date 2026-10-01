@@ -156,6 +156,34 @@ export async function runFlows3(browser, html, R, pais) {
   const pt = await page.locator('#view').innerText();
   ok('Portafolios: tipos de vehículo nuevos (inmobiliario, alternativo y FVP por perfil)', tp.some(x => /Fondo inmobiliario/i.test(x)) && tp.some(x => /Fondo alternativo/i.test(x)) && tp.some(x => /FVP|APV/.test(x)) && K.fvp.every(f => pt.includes(f)), tp.join(','));
 
+  /* Informes de órdenes por producto, filtrables por FIC, FCP y FVP */
+  await go(page, '#/orders/reports');
+  const ids = await page.locator('[data-r]').evaluateAll(b => b.map(x => x.dataset.r));
+  ok('Informes: siete informes por producto (renta fija, renta variable, mercado monetario, derivados, inmobiliario, alternativas y Lending)', ['rf', 'rv', 'mm', 'der', 'inm', 'alt', 'lend'].every(i => ids.includes(i)) && ids.length === 7 && !/Libro de órdenes/i.test(await page.locator('#view').innerText()), ids.join(','));
+  const cnt = async () => { const t = await page.locator('#out .mk-rowinfo').innerText().catch(() => ''); const m = t.match(/de (\d+)/); return m ? +m[1] : 0 };
+  for (const id of ids) {
+    await go(page, '#/orders/reports'); await page.click(`[data-r="${id}"]`);
+    const vo = await page.locator('#view [name=veh] option').allTextContents();
+    const res = {};
+    for (const v of ['', 'FIC', 'FCP', 'FVP']) { await page.selectOption('#view [name=veh]', v); await page.click('#view [data-gen]'); await page.waitForTimeout(650); res[v || 'todos'] = await cnt() }
+    ok(`Informe ${id}: filtro por tipo de vehículo (FIC, FCP y FVP) coherente con el total`, vo.length === 4 && res.FIC + res.FCP + res.FVP <= res.todos && res.todos > 0 && (['inm', 'alt', 'lend'].includes(id) ? res.FCP === res.todos : res.FIC > 0), JSON.stringify(res));
+    const tx = await page.locator('#view').innerText();
+    ok(`Informe ${id}: sin textos rotos`, !BAD_TEXT.test(tx));
+  }
+  for (const [route, nombre] of [['#/orders/fixed-income', 'Renta fija'], ['#/orders/variable-income', 'Renta variable'], ['#/orders/derivatives', 'Derivados'], ['#/orders/money-market', 'Mercado monetario']]) {
+    await go(page, route);
+    const tx = await page.locator('#view').innerText();
+    ok(`${nombre}: muestra la etiqueta “Módulos conectados”`, /Módulos conectados/.test(tx) && (await page.locator('#view .mk-apoya a.mk-chip').count()) >= 3);
+  }
+  /* Atribución por producto: los siete productos */
+  const PK = await page.evaluate(() => { const M = window.__mk; return { der: M.DS.DERIV_POS.find(p => p.prop === 'Cobertura').port, fic: M.DS.FUNDS[1], inm: M.DS.FUNDS.find(f => M.vehKind(f) === 'inm'), alt: M.DS.FUNDS.find(f => M.vehKind(f) === 'alt') } });
+  const prodTab = async (port, tab) => { await go(page, '#/performance-attribution/by-product'); await page.selectOption('#view [name=port]', { label: port }); await page.click('#view [data-consult]'); await page.waitForTimeout(600); await page.click(`#view [data-t="${tab}"]`); await page.waitForTimeout(350); return page.locator('#view').innerText() };
+  const tabsTxt = await (async () => { await go(page, '#/performance-attribution/by-product'); return page.locator('#view .mk-tab').allTextContents() })();
+  ok('Atribución por producto: pestañas de los siete productos', ['Renta fija', 'Renta variable', 'Mercado monetario', 'Derivados', 'Inmobiliario', 'Alternativas (TCC y proyectos)', 'Lending'].every(t => tabsTxt.map(x => x.trim()).includes(t)), tabsTxt.join(','));
+  for (const [port, tab, re, lbl] of [[PK.fic, 0, /Retorno de renta fija/i, 'Renta fija'], [PK.fic, 1, /Retorno de renta variable/i, 'Renta variable'], [PK.fic, 2, /Retorno monetario/i, 'Mercado monetario'], [PK.der, 3, /Efecto en el portafolio/i, 'Derivados'], [PK.inm, 4, /Renta \(canon neto\)/i, 'Inmobiliario'], [PK.alt, 5, /MOIC/i, 'Alternativas'], [PK.alt, 6, /Rendimiento de la cartera/i, 'Lending']]) {
+    const tx = await prodTab(port, tab);
+    ok(`Atribución por producto · ${lbl}: muestra cifras y gráfica`, re.test(tx) && !BAD_TEXT.test(tx) && (await page.locator('#view svg').count()) > 0, tx.slice(0, 120));
+  }
   /* F12 en las pantallas nuevas */
   for (const dest of ['Colombia', 'Chile', 'República Dominicana', 'Panamá'].filter(c => c !== pais).slice(0, 2)) {
     for (const route of ['#/orders/investment-decisions', '#/parametrizacion/instruments', '#/dashboard/graphics', '#/parametrizacion/limits']) {

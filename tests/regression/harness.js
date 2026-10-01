@@ -89,9 +89,8 @@ window.__reg = async (cfg) => {
     ok('Límites: emisor ' + cfg.emisor + ' al 92 % en Alerta', !!l1 && /92,00\s?%/.test(l1.innerText), l1 ? l1.innerText.replace(/\s+/g, ' ').slice(0, 100) : 'no encontrado');
     ok('Límites: contraparte ' + cfg.cp + ' al 94 % en Alerta', !!l2, l2 ? l2.innerText.replace(/\s+/g, ' ').slice(0, 100) : 'no encontrado');
     window.__go('#/parametrizacion/counterparties'); await w(650); const cr = [...document.querySelectorAll('#pg tbody tr')].find(tr => tr.innerText.includes(cfg.cp)); ok('Contrapartes: ' + cfg.cp + ' con cupo y utilización', !!cr && /%/.test(cr.innerText), cr ? cr.innerText.replace(/\s+/g, ' ').slice(0, 110) : '');
-    window.__go('#/orders/reports'); await w(700); document.querySelector('[data-r]').click(); await w(300); document.querySelector('[data-gen]').click(); await w(900);
-    const rt = document.querySelector('#out .mk-rowinfo').textContent; ok('Libro de órdenes: ' + X.libro + ' órdenes tras las pruebas', new RegExp('de ' + X.libro + '\\b').test(rt), rt.replace(/\s+/g, ' '));
-    const kp = document.querySelector('#out .mk-kpis').innerText.replace(/\s+/g, ' '); ok('Libro de órdenes: KPI por mercado', X.kpis.every(([k, v]) => new RegExp(k + '\\s*' + v + '\\b', 'i').test(kp)), kp);
+    for (const [id, n] of Object.entries(X.informes)) { window.__go('#/orders/reports'); await w(600); document.querySelector('[data-r="' + id + '"]').click(); await w(300); document.querySelector('[data-gen]').click(); await w(900);
+      const rt = (document.querySelector('#out .mk-rowinfo') || { textContent: '' }).textContent; ok('Informe ' + id + ': ' + n + ' registros tras las pruebas', new RegExp('de ' + n + '\\b').test(rt), rt.replace(/\s+/g, ' ')); }
     document.querySelector('#bell').click(); await w(300); const nt = document.querySelector('#ntfList').innerText; ok('Campana: cupo de contraparte y vencimiento', /Cupo de contraparte al 93%/.test(nt) && /CDT|DPF|CDP/.test(nt)); document.querySelector('#ntfClose').click();
     ok('Sin errores JS durante los flujos', errs.length === 0, errs.join(';'));
   } catch (e) { ok('EXCEPCIÓN en la prueba', false, String(e && e.message)); }

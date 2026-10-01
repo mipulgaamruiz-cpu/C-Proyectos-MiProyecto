@@ -406,14 +406,14 @@
    "escena": "8",
    "minutos": "18:30–20:00",
    "opcional": false,
-   "pantalla": "REPORTAR · Órdenes › Reportes (Libro de órdenes)",
+   "pantalla": "REPORTAR · Órdenes › Reportes (informes por producto)",
    "pasos": [
     {
      "ruta": "#/orders/reports",
      "acciones": [
       {
        "t": "click",
-       "sel": "[data-r]"
+       "sel": "[data-r=\"der\"]"
       },
       {
        "t": "click",
@@ -425,8 +425,30 @@
       }
      ],
      "textoEsperado": [
-      "Derivados",
-      "/Mostrando 10 de [0-9]+ órdenes/"
+      "Nocional total",
+      "Evidencia"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/orders/reports",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "[data-r=\"lend\"]"
+      },
+      {
+       "t": "click",
+       "sel": "[data-gen]"
+      },
+      {
+       "t": "esperar",
+       "ms": 700
+      }
+     ],
+     "textoEsperado": [
+      "Compra de cartera",
+      "Monto total"
      ],
      "textoNoEsperado": []
     }

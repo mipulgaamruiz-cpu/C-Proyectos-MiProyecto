@@ -9,8 +9,8 @@ export const CFG = {
   'República Dominicana': { fondo: 'FONDO ABIERTO RENTA FIJA', fondo2: 'FONDO ABIERTO LIQUIDEZ', emisor: 'BANCO ADEMI', cp: 'BANCO POPULAR DOMINICANO', bad: ['FINDETER', 'FIC ', 'CLP', 'CORFO', 'FONDO MUTUO', 'Apoya a', 'BANCOLOMBIA', 'CDT', 'SIMULTÁNEA', 'PACTO DE RETRO', 'BANCO GENERAL'] },
   'Panamá': { fondo: 'FONDO DE INVERSIÓN RENTA FIJA', fondo2: 'FONDO DE INVERSIÓN LIQUIDEZ', emisor: 'BANCO HIPOTECARIO NACIONAL', cp: 'BANCO GENERAL', bad: ['FINDETER', 'FIC ', 'CLP', 'DOP', 'CORFO', 'BANCO ADEMI', 'FONDO MUTUO', 'FONDO ABIERTO', 'Apoya a', 'BANCOLOMBIA', 'CDT', 'SIMULTÁNEA', 'PACTO DE RETRO', 'REPORTO'] }
 };
-/* cifras esperadas del Libro de órdenes al final de la secuencia de pruebas (se actualizan por fase) */
-export const EXPECT = { libro: 109, kpis: [['Renta fija', 40], ['Renta variable', 28], ['Mercado monetario', 33], ['Derivados', 8]] };
+/* cifras esperadas de los informes de órdenes por producto al final de la secuencia de pruebas (se actualizan por fase) */
+export const EXPECT = { informes: { rf: 40, rv: 28, mm: 33, der: 8, inm: 2, alt: 2, lend: 1 } };
 
 export async function runFlows(browser, html, R) {
   const harness = fs.readFileSync(path.join(here, 'harness.js'), 'utf8');
