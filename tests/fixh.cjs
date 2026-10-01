@@ -1,0 +1,11 @@
+const fs=require('fs');
+let h=fs.readFileSync('regression/harness.js','utf8');
+const a="window.__go('#/limit-control/limit-evaluation'); await w(650);";
+if(!h.includes(a))throw 1;
+h=h.replace(a,a+"\n    { const fs0 = document.querySelector('#view select[data-fl=\"p\"]'); fs0.value = cfg.fondo2; fs0.dispatchEvent(new Event('change')); await w(300); }");
+fs.writeFileSync('regression/harness.js',h);
+let t=fs.readFileSync('regression/flows3.mjs','utf8');
+const b="/perfil \(FVP\)/i.test(";
+if(!t.includes(b))throw 2;
+t=t.replace(b,"/perfil \((FVP|APV)\)/i.test(");
+fs.writeFileSync('regression/flows3.mjs',t);console.log('ok');

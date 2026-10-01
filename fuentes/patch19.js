@@ -1,0 +1,10 @@
+const fs=require('fs');let s=fs.readFileSync('mk.js','utf8');
+const rep=(a,b)=>{if(!s.includes(a))throw new Error('missing: '+a.slice(0,90));s=s.replace(a,()=>b)};
+rep("bench:{id:'bench',nombre:'Composición de Benchmarks',","bench:{id:'bench',pre:'Importación de',nombre:'Composición de Benchmarks',");
+rep("<b>Estructura de Cargue Masivo de '+esc(m.nombre)+'</b>","<b>Estructura de '+esc(m.pre||'Cargue Masivo de')+' '+esc(m.nombre)+'</b>");
+rep("<b>Manual Cargue Masivo de '+esc(m.nombre)+'</b>","<b>'+(m.pre?'Manual de '+esc(m.pre):'Manual Cargue Masivo de')+' '+esc(m.nombre)+'</b>");
+rep("download('Estructura_Cargue_Masivo_'+base+'.xls'","download('Estructura_'+(m.pre?'Importacion':'Cargue_Masivo')+'_'+base+'.xls'");
+rep("download('Manual_Cargue_Masivo_'+base+'.html'","download('Manual_'+(m.pre?'Importacion':'Cargue_Masivo')+'_'+base+'.html'");
+rep("<title>Manual Cargue Masivo de '+esc(m.nombre)+'</title>","<title>Manual '+(m.pre?'de '+esc(m.pre):'Cargue Masivo de')+' '+esc(m.nombre)+'</title>");
+rep(`<h1 style="color:#6A1B9A">Manual Cargue Masivo de '+esc(m.nombre)+'</h1>`,`<h1 style="color:#6A1B9A">Manual '+(m.pre?'de '+esc(m.pre):'Cargue Masivo de')+' '+esc(m.nombre)+'</h1>`);
+fs.writeFileSync('mk.js',s);console.log('ok');

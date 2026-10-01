@@ -1,0 +1,101 @@
+{
+ "Colombia": {
+  "limitesEvaluados": 20,
+  "alertas": 2,
+  "cupoBancolombia": 6720000000,
+  "contrapartes": 7,
+  "ordenesRF": 26,
+  "ordenesRV": 14,
+  "ordenesMM": 18,
+  "brinsonBalanceado1YTD": -0.0016382560716331155
+ },
+ "Colombia_mm": [
+  {
+   "p": "FIC LIQUIDEZ",
+   "tot": 15420000000,
+   "wam": 49.7613,
+   "tasa": 0.106458,
+   "v7": 4920000000
+  },
+  {
+   "p": "FIC MONETARIO",
+   "tot": 3272749058,
+   "wam": 26.0362,
+   "tasa": 0.106069,
+   "v7": 1200000000
+  },
+  {
+   "p": "FIC RENTA FIJA",
+   "tot": 2000000000,
+   "wam": 30.4,
+   "tasa": 0.10588,
+   "v7": 800000000
+  }
+ ],
+ "Chile": {
+  "limitesEvaluados": 20,
+  "alertas": 2,
+  "cupoBancolombia": 6720000000,
+  "contrapartes": 7,
+  "ordenesRF": 26,
+  "ordenesRV": 14,
+  "ordenesMM": 18,
+  "brinsonBalanceado1YTD": -0.00008405685756429984
+ },
+ "Chile_mm": [
+  {
+   "p": "FONDO MUTUO LIQUIDEZ",
+   "tot": 15420000000,
+   "wam": 49.7613,
+   "tasa": 0.106458,
+   "v7": 4920000000
+  },
+  {
+   "p": "FONDO MUTUO MONETARIO",
+   "tot": 3272749058,
+   "wam": 26.0362,
+   "tasa": 0.106069,
+   "v7": 1200000000
+  },
+  {
+   "p": "FONDO MUTUO RENTA FIJA",
+   "tot": 2000000000,
+   "wam": 30.4,
+   "tasa": 0.10588,
+   "v7": 800000000
+  }
+ ],
+ "República Dominicana": {
+  "limitesEvaluados": 20,
+  "alertas": 2,
+  "cupoBancolombia": 6720000000,
+  "contrapartes": 7,
+  "ordenesRF": 26,
+  "ordenesRV": 14,
+  "ordenesMM": 18,
+  "brinsonBalanceado1YTD": 0.0003114805482041724
+ },
+ "República Dominicana_mm": [
+  {
+   "p": "FONDO ABIERTO LIQUIDEZ",
+   "tot": 15420000000,
+   "wam": 49.7613,
+   "tasa": 0.106458,
+   "v7": 4920000000
+  },
+  {
+   "p": "FONDO ABIERTO MONETARIO",
+   "tot": 3272749058,
+   "wam": 26.0362,
+   "tasa": 0.106069,
+   "v7": 1200000000
+  },
+  {
+   "p": "FONDO ABIERTO RENTA FIJA",
+   "tot": 2000000000,
+   "wam": 30.4,
+   "tasa": 0.10588,
+   "v7": 800000000
+  }
+ ]
+}

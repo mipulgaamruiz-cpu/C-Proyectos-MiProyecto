@@ -1,0 +1,154 @@
+.mk-navgroup{ font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--mk-text-muted); padding:14px 12px 6px; }
+.mk-tooltip__bubble--tc{ width:340px; }
+.mk-tooltip__bubble--wide{ white-space:normal; width:260px; line-height:1.45; text-align:left;
+  padding:9px 11px; font-weight:400; }
+.mk-tplfilters{ display:flex; align-items:flex-end; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+.mk-tplfilters .mk-field{ min-width:190px; }
+.mk-tplfilters .mk-field--search{ flex:1; min-width:240px; }
+.mk-kpis{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:18px; }
+.mk-kpi{ border:1px solid var(--mk-border); border-radius:var(--mk-radius); padding:12px 14px; background:#fff; }
+.mk-kpi__l{ font-size:11.5px; color:var(--mk-text-muted); text-transform:uppercase; letter-spacing:.03em; }
+.mk-kpi__v{ font-size:20px; font-weight:800; color:#111; margin-top:2px; }
+.mk-kpi--p{ background:#FBF7FE; }
+.mk-kpi--b{ background:#F5F8FF; }
+.mk-kpi--g{ background:#F4FBF6; }
+.mk-kpi--y{ background:#FFF8EE; }
+.mk-kpi--r{ background:#FEF3F2; }
+.mk-metric{ border-radius:8px; padding:10px 14px; }
+.mk-metric__l{ font-size:11.5px; font-weight:600; }
+.mk-metric__v{ font-size:16px; font-weight:800; color:#111; margin-top:1px; }
+.mk-metric--p{ background:#F8F2FC; }
+.mk-metric--p .mk-metric__l{ color:var(--mk-primary); }
+.mk-metric--b{ background:#EFF6FF; }
+.mk-metric--b .mk-metric__l{ color:var(--mk-info); }
+.mk-metric--g{ background:#F0FDF4; }
+.mk-metric--g .mk-metric__l{ color:var(--mk-success); }
+.mk-badge--tag{ background:var(--mk-primary); }
+.mk-badge--outline{ background:#EFF6FF; color:var(--mk-info); }
+.mk-badge--outline-g{ background:#F1F5F9; color:#475569; }
+.mk-modal--form{ width:min(620px,100%); }
+.mk-modal__head--brand{ border-bottom:0; padding-bottom:4px; }
+.mk-modal__head--brand span{ color:var(--mk-primary); font-size:16.5px; font-weight:800; }
+.mk-modal--form{ border-top:4px solid var(--mk-primary); }
+.mk-formgrid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.mk-formgrid .span2{ grid-column:1 / -1; }
+/* Formularios de captura anchos: tres columnas. A dos, un campo ocupa media
+   pantalla y la lectura se vuelve un zigzag. */
+#ntFsContexto .mk-formgrid, #ntSwapBox .mk-formgrid{ grid-template-columns:repeat(3,1fr); }
+/* --- Contrapartes Habilitadas --- */
+.mk-metrics4{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; padding:0 18px 18px; }
+.mk-metric--o{ background:#FFF7ED; }
+.mk-metric--o .mk-metric__l{ color:#C2650B; }
+.mk-badge--rating{ background:#F1F5F9; color:#334155; font-weight:800; letter-spacing:.02em; }
+.mk-util{ height:5px; border-radius:999px; background:#F1E7DA; margin-top:7px; overflow:hidden; }
+.mk-util__b{ height:100%; border-radius:999px; background:#EA8A1E; }
+.mk-util__b.hi{ background:var(--mk-danger); }
+.mk-inline{ display:flex; gap:26px; flex-wrap:wrap; font-size:12.5px; color:var(--mk-text-muted); padding:0 18px 16px; }
+.mk-inline b{ color:#111; font-weight:700; }
+.mk-inline .v-p{ color:var(--mk-primary); font-weight:800; }
+.mk-inline .v-b{ color:var(--mk-info); font-weight:800; }
+.mk-inline .v-g{ color:var(--mk-success); font-weight:800; }
+.mk-modal--wizard{ width:min(720px,100%); }
+.mk-modal__sub{ font-size:12.5px; color:var(--mk-text-muted); padding:0 20px 12px; margin-top:-6px; }
+.mk-wizsteps{ display:flex; align-items:flex-start; justify-content:center; gap:6px; padding:6px 0 20px; }
+.mk-wizstep{ display:flex; flex-direction:column; align-items:center; text-align:center; width:150px; }
+.mk-wizstep__n{ width:44px; height:44px; border-radius:50%; display:grid; place-items:center;
+  font-weight:800; font-size:15px; background:#E5E7EB; color:var(--mk-text-muted); transition:.2s; }
+.mk-wizstep.on .mk-wizstep__n{ background:var(--mk-primary); color:#fff; box-shadow:0 0 0 4px var(--mk-primary-50); }
+.mk-wizstep.done .mk-wizstep__n{ background:var(--mk-success); color:#fff; }
+.mk-wizstep__t{ font-weight:700; font-size:13px; color:#111; margin-top:8px; }
+.mk-wizstep.on .mk-wizstep__t{ color:var(--mk-primary); }
+.mk-wizstep__d{ font-size:11.5px; color:var(--mk-text-muted); line-height:1.35; }
+.mk-wizline{ flex:none; width:44px; height:2px; background:#E5E7EB; margin-top:22px; border-radius:2px; }
+.mk-wizline.done{ background:var(--mk-success); }
+.mk-wizpanel{ border:1px solid var(--mk-primary-100); border-radius:var(--mk-radius); padding:18px; background:#FDFCFF; }
+.mk-wizfoot{ display:flex; justify-content:space-between; gap:10px; padding:14px 20px; border-top:1px solid var(--mk-border); }
+.mk-summary{ border:1px solid var(--mk-border-2); border-radius:8px; background:#fff; padding:12px 14px; margin-top:14px; }
+.mk-summary h4{ margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--mk-primary); }
+.mk-table td .mk-num{ font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:700; }
+.mk-th-info{ display:inline-flex; align-items:center; gap:6px; }
+/* --- Ciclo de Vida --- */
+.mk-na{ color:var(--mk-text-faint); font-size:12.5px; }
+.mk-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+.mk-chip{ background:#F1F5F9; color:#334155; border-radius:999px; padding:5px 12px; font-size:12.5px; font-weight:600; }
+.mk-tagsoft{ display:inline-block; background:#F1F5F9; color:#334155; border-radius:6px;
+  padding:4px 10px; font-size:12px; font-weight:600; margin:2px 4px 2px 0; }
+.mk-badge--estado-soft{ background:var(--mk-primary-50); color:var(--mk-primary); }
+/* --- Reglas de Margen --- */
+.mk-emptybig{ text-align:center; padding:44px 20px; }
+.mk-emptybig__ico{ color:#94A3B8; margin-bottom:12px; }
+.mk-emptybig__t{ font-size:14.5px; font-weight:600; color:#475569; }
+.mk-emptybig__d{ font-size:13px; color:var(--mk-primary); margin-top:4px; }
+.mk-subhead{ display:flex; align-items:center; gap:9px; font-weight:800; font-size:13.5px; color:#111; margin:6px 0 12px; }
+.mk-subhead svg{ color:var(--mk-primary); flex:none; }
+.mk-subhead--g svg{ color:var(--mk-success); }
+.mk-subhead__sw{ margin-left:auto; font-size:12.5px; font-weight:600; color:var(--mk-text-muted); display:inline-flex; align-items:center; gap:8px; }
+.mk-infobox{ border:1px solid var(--mk-primary-100); border-radius:var(--mk-radius); background:#FFFDF8;
+  padding:14px 16px; display:flex; gap:12px; align-items:flex-start; }
+.mk-infobox__i{ color:var(--mk-warning); flex:none; }
+.mk-infobox b{ color:#92400E; }
+.mk-infobox__t{ font-weight:800; color:#7C3A06; font-size:13px; margin-bottom:6px; }
+.mk-infobox ul{ margin:0; padding-left:18px; font-size:12.5px; color:#7C3A06; line-height:1.75; }
+/* Tooltips de encabezado: se despliegan hacia abajo para no recortarse */
+.mk-table thead .mk-tooltip__bubble{ bottom:auto; top:150%; }
+.mk-acts .mk-tooltip__bubble{ white-space:nowrap; }
+.mk-switchbox{ display:flex; align-items:center; gap:14px; background:#F7F5FA; border-radius:8px; padding:12px 14px; margin:14px 0; }
+.mk-switchbox__t{ font-weight:700; font-size:13px; color:#111; }
+.mk-switchbox__d{ font-size:12px; color:var(--mk-text-muted); }
+/* ============================================================
+   PASADA HORIZONTAL GLOBAL
+   El dominio se ve en pantallas anchas: la informacion se
+   reparte a lo ancho en vez de apilarse. Menos scroll, mismo
+   contenido.
+   ============================================================ */
+/* Fichas de datos y formularios: tantas columnas como quepan */
+.mk-formgrid{ grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
+/* Bloques de solo lectura (detalles): columnas mas estrechas */
+.mk-formgrid:not(:has(input,select,textarea)){
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+/* Convenciones y fuentes: once campos de solo lectura, todos cortos. En
+   pantalla ancha caben en cuatro columnas y el paso 1 deja de verse vacio. */
+#ntFsConvenciones .mk-formgrid{ grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); }
+.mk-formgrid .span2{ grid-column:1 / -1; }
+/* Utilidad: dos bloques lado a lado */
+.mk-cols2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(460px,1fr)); gap:16px; align-items:start; }
+.mk-cols2 > *{ min-width:0; margin-bottom:0 !important; }
+.mk-cols3{ display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; align-items:start; }
+.mk-cols3 > *{ min-width:0; margin-bottom:0 !important; }
+/* Rejillas internas dentro de una columna estrecha: se reacomodan
+   en vez de desbordarse sobre la columna vecina. */
+.mk-cols2 .mk-grid, .mk-cols3 .mk-grid,
+.mk-cols2 .mk-kpis, .mk-cols3 .mk-kpis{
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr)) !important; }
+.mk-cols2 .mk-card, .mk-cols3 .mk-card{ min-width:0; overflow:hidden; }
+/* ============================================================
+   TOOLTIPS SIN RECORTE
+   La burbuja ya no se pinta dentro de su celda o su tarjeta: la
+   Plataforma la dibuja en una capa por encima de todo y la
+   reubica para que nunca quede fuera de la pantalla ni cortada
+   por el borde de una tabla, una columna o un modal.
+   ============================================================ */
+.mk-tooltip__bubble{ display:none !important; }
+/* Validaciones previas del cierre: rejilla en vez de lista apilada */
+.mk-vgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:10px; }
+.mk-vgrid .mk-band{ margin:0; align-items:flex-start; }
+.mk-vgrid .mk-band__tag{ padding:3px 6px; }
+.mk-vgrid .mk-band > div{ min-width:0; }
+/* Filtros en una sola fila compacta */
+.mk-filters, .mk-tplfilters{ align-items:flex-end; }
+/* En Setup los contadores no aportan: la parametrizacion se lee en la tabla */
+[id^="view-setup-"] .mk-kpis{ display:none !important; }
+.mk-filters input[type="date"], .mk-tplfilters input[type="date"]{ min-width:150px; max-width:180px; }
+.mk-filters .mk-field, .mk-tplfilters .mk-field{ margin-bottom:0; }
+.mk-tplfilters, .mk-filters{ padding-top:6px; padding-bottom:6px; row-gap:8px; }
+.mk-kpis{ margin-bottom:10px; }
+.mk-kpi{ padding:8px 13px; }
+.mk-filters .mk-field--search, .mk-tplfilters .mk-field--search{ flex:1 1 220px; min-width:200px; }
+.mk-filters .mk-label, .mk-tplfilters .mk-label{ margin-bottom:3px; }
+.mk-cols2, .mk-cols3{ gap:12px; }
+.mk-vgrid{ gap:8px; }
+.mk-kpis{ margin-bottom:8px; }
+.mk-kpis{ gap:10px; margin-bottom:8px; }
+.mk-kpi{ padding:8px 13px; }
+.mk-filters, .mk-tplfilters{ gap:12px; }

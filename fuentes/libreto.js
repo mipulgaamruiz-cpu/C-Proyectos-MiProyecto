@@ -1,0 +1,168 @@
+const fs=require('fs');
+
+/* Datos por país tal como los muestra el prototipo. */
+const COUNTRIES=[
+ {file:'Colombia',pais:'Colombia',mon:'COP',fondo:'FIC RENTA FIJA',fondo2:'FIC LIQUIDEZ',fondoMM:'FIC MONETARIO',bg:'FIC BALANCEADO GLOBAL',b1:'FIC BALANCEADO 1',fvp:'FVP MODERADO',emisor:'FINDETER',instr:'TFIT11090233',bonos:'TES',op:'CDT',repo:'simultáneas',cp:'BANCOLOMBIA S.A.',cp2:'BANCO DAVIVIENDA',cp3:'BANCO DE BOGOTÁ',ref:'IBR y DTF',par:'USD/COP',cobertura:'dólares',deriv:'Forward, swap, opción y futuro',
+  aud:'Fiduciarias, sociedades administradoras de FIC y áreas de inversiones: gerente de inversiones, riesgos y operaciones.',
+  extra:'Moneda base COP; títulos indexados en UVR; índices IBR, DTF y COLCAP; mercado monetario con CDT, simultáneas, interbancarios, overnight y TES de corto plazo; derivados forward, swap, opción y futuro sobre USD/COP.',
+  multi:'Cambiar País a Chile, República Dominicana o Panamá para mostrar que emisores, monedas, índices, operaciones monetarias y derivados cambian.'},
+ {file:'Chile',pais:'Chile',mon:'CLP',fondo:'FONDO MUTUO RENTA FIJA',fondo2:'FONDO MUTUO LIQUIDEZ',fondoMM:'FONDO MUTUO MONETARIO',bg:'FONDO MUTUO BALANCEADO GLOBAL',b1:'FONDO MUTUO BALANCEADO 1',fvp:'APV MODERADO',emisor:'CORFO',instr:'BTU11090233',bonos:'bonos del Gobierno',op:'DPF',repo:'pactos de retrocompra',cp:'BANCO SANTANDER CHILE',cp2:'BANCO DE CHILE',cp3:'BANCO BCI',ref:'TAB y TPM',par:'USD/CLP',cobertura:'dólares',deriv:'Forward, swap y opción',
+  aud:'Administradoras generales de fondos (AGF), corredoras y áreas de inversiones: gerente de inversiones, riesgos y operaciones.',
+  extra:'Moneda base CLP; instrumentos indexados en UF; índices TAB, TPM e IPSA; mercado monetario con DPF, pactos de retrocompra, interbancarios, overnight y bonos de corto plazo; derivados forward, swap y opción sobre USD/CLP.',
+  multi:'Cambiar País a Colombia, República Dominicana o Panamá para mostrar que emisores, monedas, índices, operaciones monetarias y derivados cambian.'},
+ {file:'Republica_Dominicana',pais:'República Dominicana',mon:'DOP',fondo:'FONDO ABIERTO RENTA FIJA',fondo2:'FONDO ABIERTO LIQUIDEZ',fondoMM:'FONDO ABIERTO MONETARIO',bg:'FONDO ABIERTO BALANCEADO GLOBAL',b1:'FONDO ABIERTO BALANCEADO 1',fvp:'FVP MODERADO',emisor:'BANCO ADEMI',instr:'BSRD11090233',bonos:'bonos soberanos',op:'CDP',repo:'reportos',cp:'BANCO POPULAR DOMINICANO',cp2:'BANCO DE RESERVAS',cp3:'BANCO BHD',ref:'tasa pasiva y TPM',par:'USD/DOP',cobertura:'dólares',deriv:'Forward y swap',
+  aud:'Sociedades administradoras de fondos de inversión, puestos de bolsa y áreas de inversiones: gerente de inversiones, riesgos y operaciones.',
+  extra:'Moneda base DOP con inversiones en USD; tasa pasiva y TPM como referencias; índice de la BVRD; mercado monetario con CDP, reportos, interbancarios, overnight y bonos soberanos de corto plazo; derivados forward y swap sobre USD/DOP.',
+  multi:'Cambiar País a Colombia, Chile o Panamá para mostrar que emisores, monedas, índices, operaciones monetarias y derivados cambian.'},
+ {file:'Panama',pais:'Panamá',mon:'PAB',fondo:'FONDO DE INVERSIÓN RENTA FIJA',fondo2:'FONDO DE INVERSIÓN LIQUIDEZ',fondoMM:'FONDO DE INVERSIÓN MONETARIO',bg:'FONDO DE INVERSIÓN BALANCEADO GLOBAL',b1:'FONDO DE INVERSIÓN BALANCEADO 1',fvp:'FVP MODERADO',emisor:'BANCO HIPOTECARIO NACIONAL',instr:'LTES11090233',bonos:'letras y bonos del Tesoro',op:'DPF',repo:'repos',cp:'BANCO GENERAL',cp2:'BANISTMO',cp3:'GLOBAL BANK',ref:'SOFR y tasa de depósitos a plazo fijo',par:'EUR/USD',cobertura:'euros',deriv:'Forward y swap',
+  aud:'Administradoras de fondos de inversión, casas de valores y áreas de inversiones: gerente de inversiones, riesgos y operaciones.',
+  extra:'Moneda base PAB (balboa, a la par con el dólar) con circulación en USD; sin indexación (no hay UF ni UVR); tasas SOFR y de depósitos a plazo fijo; índice de la Bolsa de Valores de Panamá; mercado monetario con DPF, repos, interbancarios, overnight y letras del Tesoro de corto plazo; derivados forward y swap (cobertura de euros).',
+  multi:'Cambiar País a Colombia, Chile o República Dominicana para mostrar que emisores, monedas, índices, operaciones monetarias y derivados cambian.'}
+];
+
+/* ====== CONTENIDO (única fuente para el libreto y para los pasos verificables) ====== */
+function content(c){
+ const T=s=>String(s).split('{FONDO}').join(c.fondo).split('{FONDO2}').join(c.fondo2).split('{FONDOMM}').join(c.fondoMM).split('{BG}').join(c.bg).split('{B1}').join(c.b1).split('{FVP}').join(c.fvp).split('{EMISOR}').join(c.emisor).split('{INSTR}').join(c.instr).split('{BONOS}').join(c.bonos).split('{MON}').join(c.mon).split('{PAIS}').join(c.pais).split('{OP}').join(c.op).split('{REPO}').join(c.repo).split('{CP}').join(c.cp).split('{CP2}').join(c.cp2).split('{CP3}').join(c.cp3).split('{REF}').join(c.ref).split('{PAR}').join(c.par).split('{COB}').join(c.cobertura).split('{DERIV}').join(c.deriv).split('{CARPETA}').join('Plantillas_carga_masiva/'+c.file);
+ const W='.mk-modal--wizard';
+ const clk=s=>({t:'click',sel:s}),sel=(s,v)=>({t:'elegir',sel:s,valor:v}),esc_=(s,v)=>({t:'escribir',sel:s,valor:v}),sub=(s,f)=>({t:'subir',sel:s,archivo:f}),wait=ms=>({t:'esperar',ms});
+ /* escena: [n, minutos, pantalla, hacer[], decir, pregunta, opcional?, pasos[]] */
+ const scenes=[
+  ['1','0:00–1:00','Apertura · Home y menú lateral',
+   ['Mostrar las tarjetas de módulos: Parametrización, Dashboard, Órdenes, Control de límites y Performance attribution.','Abrir el menú (tres rayas) y desplegar el árbol de Dashboard y Órdenes.','Señalar País = {PAIS}, la campana (con **Eventos publicados**) y el cambio de tema claro/oscuro.'],
+   '“Todo el ciclo de inversión en un solo lugar: ver, operar, controlar, reportar y explicar. Y una idea fuerza: **el gestor no digita lo que otro módulo ya tiene**; los datos llegan precargados de su módulo dueño.”',
+   '¿Cuántas herramientas y archivos usa hoy su equipo entre que se decide una inversión y se le reporta al comité?',false,
+   [{ruta:'#/',texto:['Parametrización','Dashboard','Órdenes','Control de límites','Performance attribution']}]],
+  ['2','1:00–3:00','VER · Dashboard › Visor de portafolio y Flujos futuros (datos precargados)',
+   ['El Visor abre cargado con **{FONDO}**: tres gráficas. Señalar el chip **Fuente: New Inversiones · actualizado** y la **Fecha operativa**.','Ir a **Flujos futuros**: la liquidez esperada llega de **Administración del fondo** y su chip aparece como **desactualizado**. Pulsar **Refrescar** y ver cómo se actualiza la fecha.'],
+   '“Estas cifras no se digitan: vienen del módulo que las tiene, con su fuente y su fecha. Si un dato está viejo, el sistema lo advierte y se refresca con un clic.”',
+   '¿Cuánto tarda hoy su equipo en responder “¿cómo estamos concentrados por emisor?” un lunes a las 8 a. m.?',false,
+   [{ruta:'#/dashboard/graphics',texto:['{FONDO}','Fuente: New Inversiones']},{ruta:'#/dashboard/future-flows',texto:['Fuente: Administración del fondo','desactualizado']},{acciones:[clk('#fx [data-refresh="adminfondo"]')],texto:['Fuente: Administración del fondo'],textoNo:['desactualizado']}]],
+  ['3','3:00–6:00','OPERAR · Órdenes › Renta fija (registro, precarga y Carga Masiva)',
+   ['**Nuevo**: elegir el instrumento **{INSTR}**: se completan solos **emisor, moneda y valor indicativo** (chip New Inversiones). **Guardar** → “Revisa la orden” → **Confirmar y guardar**.','Pestaña **Carga Masiva**: descargar la **Estructura** y el **Manual**; elegir **Ejemplo_Cargue_Masivo_Ordenes_de_Renta_Fija.xlsx** (carpeta {CARPETA}) → **Procesar**: **banda verde** “6 registros cargados · 0 con errores”.'],
+   '“El sistema no deja pasar órdenes incompletas, completa lo que otro módulo ya sabe y valida el archivo fila por fila.”',
+   '¿Cuántas órdenes se cargan manualmente cada día y cuántas veces se corrigen errores de digitación?',false,
+   [{ruta:'#/orders/fixed-income',acciones:[clk('[data-new]'),esc_('.mk-modal--form [name="instr"]','{INSTR}'),{t:'tecla',sel:'.mk-modal--form [name="instr"]',valor:'Tab'}],texto:['Fuente: New Inversiones','Emisor','Valor indicativo']},
+    {ruta:'#/orders/fixed-income',acciones:[clk('[data-rt="1"]'),sub('#mass input[type=file]','{CARPETA}/Ejemplo_Cargue_Masivo_Ordenes_de_Renta_Fija.xlsx'),clk('#mass [data-proc]'),wait(1800)],texto:['Ejemplo con datos de demostración','6 registros cargados','0 con errores']}]],
+  ['4','6:00–9:00','OPERAR · Órdenes › Mercado monetario y Dashboard › Mercado monetario',
+   ['**Nuevo**: inversión en **{OP}** con **{CP}**: debajo aparece el cupo, **disponible $480.000.000,00**, que ya descuenta la exposición de derivados con esa contraparte. Valor nominal **1.000.000.000** → la plataforma **bloquea**.','**Dashboard › Mercado monetario** con {FONDO2}: saldo **15.420.000.000**, plazo promedio ≈ **49,8 días**, vence en 7 días **4.920.000.000 · 4 op.**; pestañas Escalera de vencimientos y Devengo.'],
+   '“Los cupos de contraparte se comparten entre mercado monetario y derivados: nadie sobrepasa un cupo sin que quede registrado.”',
+   '¿Cómo controlan hoy el cupo por contraparte antes de cerrar una operación? ¿Y la escalera de vencimientos?',false,
+   [{ruta:'#/orders/money-market',acciones:[clk('[data-new]'),sel('.mk-modal--form [name="cp"]','{CP}')],texto:['disponible $480.000.000,00']},{ruta:'#/dashboard/money-market',texto:['15.420.000.000','49,8 días','4.920.000.000']}]],
+  ['5','9:00–14:00','DERIVADOS · Órdenes › Derivados (cotizar, comparar, ejecutar y evidencia)',
+   ['**Nueva orden**: portafolio **{BG}**, instrumento **Forward**, subyacente **{PAR}**, nocional **2.000.000.000**, plazo **90**, propósito **Cobertura** → **Continuar**: la **validación previa de límites** (propósito y cobertura sobre exposición bruta) sale en **Cumple**.','**Valor indicativo** (chip **Fuente: Derivados**): lo calcula Derivados con las tasas de Parametrización; el gestor no lo digita. Continuar.','**Cotizaciones**: pulsar **Cargar cotizaciones de ejemplo** ({CP}, {CP2} y {CP3}); se ordenan frente al indicativo y se marca la **Mejor**. Con menos de 3 contrapartes distintas, el sistema bloquea.','**Elegir**: con la mejor no pide justificación. Mostrar el caso contrario: elegir la segunda y el sistema **exige la justificación**.','**Registrar**: “Orden registrada” con la **evidencia EV-####** ligada a la orden. **Ver evidencia**: imprimir, CSV y Excel; **Corregir** crea la versión 2 y conserva la 1.','**Confirmar** la orden con otro usuario (quien registra no confirma). Mostrar que **{B1}** es de **solo cobertura**: al intentar “Posición propia”, la orden queda **bloqueada**.'],
+   '“Cada derivado queda con su evidencia de mejor ejecución, que no se puede editar, y con la segregación de funciones incorporada. Para auditoría, la respuesta está en un clic.”',
+   '¿Cómo documentan hoy que una operación se hizo al mejor precio disponible?',false,
+   [{ruta:'#/orders/derivatives',acciones:[clk('[data-new]'),sel(W+' [name="d-port"]','{BG}'),sel(W+' [name="d-inst"]','Forward'),esc_(W+' [name="d-noc"]','2000000000'),esc_(W+' [name="d-plazo"]','90'),clk(W+' [data-n]')],texto:['Valor indicativo','Fuente: Derivados']},
+    {acciones:[clk(W+' [data-n]'),clk(W+' [data-demo]')],texto:['Mejor','{CP}','{CP2}','{CP3}']},
+    {acciones:[clk(W+' [data-n]')],texto:['no requiere justificación']},
+    {acciones:[clk(W+' [data-n]')],texto:['Validación de límites','Cumple']},
+    {acciones:[clk(W+' [data-reg]'),wait(500)],texto:['Orden registrada','EV-']},
+    {acciones:[clk(W+' [data-ev]'),wait(400)],texto:['Evidencia de mejor ejecución','Inmutable','Corregir','Imprimir']},
+    {ruta:'#/orders/derivatives',acciones:[clk('[data-new]'),sel(W+' [name="d-port"]','{B1}'),sel(W+' [name="d-inst"]','Forward'),esc_(W+' [name="d-noc"]','500000000'),esc_(W+' [name="d-plazo"]','30'),{t:'marcar',sel:W+' [name="d-prop"][value="Posición propia"]'},clk(W+' [data-n]')],texto:['solo admite operaciones de cobertura','Límite normativo excedido']}]],
+  ['6','14:00–16:30','EXPLICAR LA COBERTURA · Dashboard › Exposición y cobertura y Atribución de retorno',
+   ['**Exposición y cobertura**: exposición bruta, cobertura, **% cubierto**, exposición neta y MTM; la gráfica **cubierto frente a descubierto** por subyacente y la pestaña de posiciones.','**Performance attribution › Atribución de retorno** con **{B1}**: además de asignación, selección e interacción aparece el **efecto de cobertura** (retorno del activo, costo o ganancia por puntos forward y retorno neto cubierto).'],
+   '“No solo cuánto cubrí, sino cuánto me costó o me dio la cobertura dentro del retorno.”',
+   '¿Hoy pueden separar el retorno del activo del efecto de su cobertura?',false,
+   [{ruta:'#/dashboard/exposure',texto:['Exposición bruta','% cubierto','Cubierto y descubierto','Fuente: Derivados']},{ruta:'#/performance-attribution/brinson',acciones:[sel('#view [name="port"]','{B1}'),clk('#view [data-consult]'),wait(500)],texto:['Efecto cobertura']}]],
+  ['7','16:30–18:30','CONTROLAR · Control de límites › Evaluación',
+   ['Filtrar por **{FONDO2}**: límite MAX por emisor **{EMISOR}** (20 %) al **92 %** en **Alerta** y límite por contraparte **{CP}** (25 %) al **94 %**.','Señalar la columna **Naturaleza**: los límites **normativos bloquean** la orden; los **internos** permiten continuar con motivo y aprobador registrados. Mostrar las filas de **cupo por exposición potencial** y de **propósito**.'],
+   '“La plataforma mide cada límite contra la posición real y distingue lo que bloquea de lo que se aprueba con excepción registrada.”',
+   '¿Qué límites bloquean hoy una operación y cuáles se aprueban con excepción? ¿Queda registro?',false,
+   [{ruta:'#/limit-control/limit-evaluation',acciones:[sel('#view select[data-fl="p"]','{FONDO2}')],texto:['{FONDO2}','{EMISOR}','{CP}','Normativo','Interno','Alerta']}]],
+  ['8','18:30–20:00','REPORTAR · Órdenes › Reportes (Libro de órdenes)',
+   ['Abrir **Reportes** › **Libro de órdenes** › **Generar informe**: reúne renta fija, renta variable, mercado monetario y **derivados** (**66 órdenes** en los datos originales). Filtrar **Mercado = Derivados**; descargar **Excel** y **CSV**.'],
+   '“Un solo libro con todas las órdenes de todos los mercados, listo para auditoría y conciliación.”',
+   '¿Cuánto tiempo toma hoy armar el libro de órdenes para el cierre del día?',false,
+   [{ruta:'#/orders/reports',acciones:[clk('[data-r]'),clk('[data-gen]'),wait(700)],texto:['Derivados','/Mostrando 10 de [0-9]+ órdenes/']}]],
+  ['9','20:00–24:00','EXPLICAR · Performance attribution',
+   ['**Resumen de desempeño** de {FONDO}: rentabilidad vs benchmark, exceso, tracking error. **Atribución renta fija** y **Atribución mercado monetario** con {FONDO2}.','**Reportes**: generar “Informe de rentabilidad mensual por portafolio” y descargar el Excel.'],
+   '“No solo cuánto rentó el portafolio, sino por qué: asignación, selección, curva, crédito, plazo, contraparte o cobertura.”',
+   '¿Cómo le explican hoy al comité de dónde vino el exceso de retorno?',false,
+   [{ruta:'#/performance-attribution/summary',texto:['Tracking error','Information ratio']},{ruta:'#/performance-attribution/fixed-income',texto:['Atribución de renta fija']},{ruta:'#/performance-attribution/money-market',texto:['Atribución mercado monetario']}]],
+  ['10','24:00–25:00','ADAPTAR y cierre · Parametrización',
+   ['**Contrapartes y cupos**: cupo, utilizado en mercado monetario, **exposición potencial de derivados** y utilización total ({CP} al **93,33 %**).','**Flujo de órdenes**: estados de derivados y decisiones, y los **parámetros de mejor ejecución** (mínimo de cotizaciones, tolerancia, umbral de dato desactualizado) marcados **por definir con Compliance**.','Señalar **Módulos conectados** de cada maestro. Opcional (30 s): '+c.multi,'Volver al Home.'],
+   '“Esto se ajusta a su operación: estados, portafolios, contrapartes, cupos, parámetros y límites los define su equipo. Proponemos un piloto con uno o dos portafolios.”',
+   '¿Qué portafolio y qué proceso les gustaría ver primero con sus propios datos?',false,
+   [{ruta:'#/parametrizacion/counterparties',texto:['{CP}','Exposición potencial de derivados','Utilización total']},{ruta:'#/parametrizacion/flow',texto:['Por justificar','Parámetros de mejor ejecución','Por definir con Compliance']}]],
+  ['11','OPCIONAL · +6 min','Decisiones de inversión, inmobiliarios y alternativos',
+   ['**Órdenes › Decisiones de inversión**: la decisión **DI-0002** (desembolso a un proyecto) está **En comité**: **Aprobar** exige un aprobador distinto del proponente y el **número de acta**; al aprobar se publica el evento **Decisión aprobada** (campana › **Eventos publicados**). El acta aprobada no se edita: **Corregir acta** crea la versión 2.','**Visor de portafolio** con **FONDO INMOBILIARIO 1**: cada cifra trae **fuente y fecha de valoración** y la insignia **Valoración vencida** (bodega logística con avalúo de más de 12 meses). Con **FONDO ALTERNATIVO 1**: pestaña **Seguimiento** (comprometido vs desembolsado, flujos y covenants).','**Atribución**: inmobiliarios con **renta y valorización** y el aviso de serie escalonada; alternativos con **TIR y MOIC**.'],
+   '“Para activos sin precio de mercado, el gestor decide en comité y ve su valoración con fuente y fecha; el cobro del canon o la gestión del inmueble viven en otros módulos y aquí llegan precargados.”',
+   '¿Cómo les llegan hoy los avalúos y cómo saben cuándo una valoración está vencida?',true,
+   [{ruta:'#/orders/investment-decisions',texto:['DI-0002','En comité','Aprobada','Rechazada']},{ruta:'#/dashboard/graphics',acciones:[sel('#view [name="port"]','FONDO INMOBILIARIO 1'),wait(500)],texto:['Valoración vencida','Fuente: Administración de activos y crédito','Fecha de valoración']},{ruta:'#/dashboard/graphics',acciones:[sel('#view [name="port"]','FONDO ALTERNATIVO 1'),wait(400),clk('#view [data-t="1"]'),wait(300)],texto:['Comprometido','Covenants en alerta']},{ruta:'#/performance-attribution/summary',acciones:[sel('#view [name="port"]','FONDO ALTERNATIVO 1'),clk('#view [data-consult]'),wait(600)],texto:['TIR','MOIC']}]],
+  ['12','OPCIONAL · +3 min','FVP · perfiles de riesgo y régimen de inversión',
+   ['**Atribución › Resumen** con **{FVP}**: pestaña **Comparación entre perfiles** (Conservador, Moderado, Agresivo frente a su benchmark).','**Parametrización › Configuración de límites › Régimen de inversión del FVP**: versiones con **fecha de vigencia** (la anterior se conserva). En **Evaluación**, el régimen se mide por perfil.'],
+   '“El régimen de inversión es un parámetro versionado: cambia con fecha y deja historia. Los aportes y retiros individuales no son del Front: llegan como liquidez esperada desde Administración del fondo.”',
+   '¿Cómo versionan hoy el régimen de inversión por perfil?',true,
+   [{ruta:'#/performance-attribution/summary',acciones:[sel('#view [name="port"]','{FVP}'),clk('#view [data-consult]'),wait(600),clk('#view [data-t="2"]'),wait(300)],texto:['Conservador','Moderado','Agresivo']},{ruta:'#/parametrizacion/limits',acciones:[clk('#regimen .mk-accordion__head'),wait(250)],texto:['Vigente','Histórica']}]]
+ ].map(s=>({n:s[0],min:s[1],pantalla:T(s[2]),hacer:s[3].map(T),decir:T(s[4]),preg:T(s[5]),opcional:s[6],pasos:JSON.parse(T(JSON.stringify(s[7])))}));
+ const cifras=[
+  ['Saldo monetario de {FONDO2}','15.420.000.000','Dashboard › Mercado monetario'],
+  ['Plazo promedio ponderado (tope 90 días)','≈ 49,8 días','Dashboard › Mercado monetario'],
+  ['Vence en 7 días','4.920.000.000 · 4 operaciones','Dashboard › Mercado monetario'],
+  ['Cupo de {CP}','$7.200 M autorizado · $6.720 M utilizado (93,33 %) · $480 M disponible','Parametrización › Contrapartes y cupos'],
+  ['Límite por emisor {EMISOR} (MAX 20 %)','92 % · Alerta','Control de límites › Evaluación'],
+  ['Límite por contraparte {CP} (MAX 25 %)','94 % · Alerta','Control de límites › Evaluación'],
+  ['Exposición y cobertura (todos los portafolios)','Exposición bruta 37.000.000.000 · cobertura 23.400.000.000 · 63,2 % cubierto','Dashboard › Exposición y cobertura'],
+  ['Órdenes de derivados (datos originales)','8 órdenes: 1 En cotización, 1 Por justificar, 2 Registradas, 4 Confirmadas; 2 con justificación','Órdenes › Derivados'],
+  ['Libro de órdenes (sin cargas previas)','66 órdenes: 26 renta fija, 14 renta variable, 18 mercado monetario y 8 derivados','Órdenes › Reportes'],
+  ['Parámetros de mejor ejecución (ilustrativos)','3 cotizaciones mínimas · tolerancia 0,50 % · dato desactualizado a los 2 días · avalúo vencido a los 12 meses','Parametrización › Flujo de órdenes'],
+  ['Archivos de ejemplo para Carga Masiva','Renta fija 6 · Renta variable 6 · Mercado monetario 6 · Instrumentos 5 · Benchmarks 4 · Contrapartes 4 filas (todas válidas: banda verde)','{CARPETA}']
+ ].map(r=>r.map(T));
+ const roles=[
+  ['Gerente de inversiones','Ve posición, vencimientos, exposición, cobertura y desempeño en una sola plataforma; decide con datos del día.'],
+  ['Riesgos y cumplimiento','Límites normativos e internos y cupos con alerta temprana; evidencia de mejor ejecución y trazabilidad de cada decisión.'],
+  ['Operaciones y tesorería','Registro con validaciones, datos precargados, carga masiva, control de cupo al momento y libro de órdenes descargable.'],
+  ['Comité y dirección','Decisiones con acta, informes de desempeño y atribución listos para descargar, con el mismo dato que ve el equipo.']
+ ];
+ const faq=[
+  ['¿Estos son datos reales?','No. Son datos de ejemplo de {PAIS} ({MON}); los precios, puntos forward, curvas y avalúos son ilustrativos. En una implementación se conectan a la valoración y a las órdenes de su operación; el alcance se define en el levantamiento.'],
+  ['¿De dónde salen los datos precargados?','Cada dato viene del módulo que lo tiene: New Inversiones (instrumentos, posiciones y valoración de renta fija, renta variable y mercado monetario), Derivados (valor indicativo, curva y cotizaciones), Administración del fondo (aportes y retiros esperados), Administración de activos y crédito (canon, pérdida esperada y avalúos). El Front muestra la fuente y la fecha y avisa cuando un dato está desactualizado; el gestor no lo digita.'],
+  ['¿Cómo se garantiza la evidencia de mejor ejecución?','Cada orden de derivado exige un mínimo de cotizaciones de contrapartes distintas (parámetro editable) y las compara con el valor indicativo. Si la elegida no es la mejor o se sale de la tolerancia, la justificación es obligatoria. La evidencia queda ligada a la orden, no se edita (solo se corrige creando una versión nueva que conserva la anterior) y se puede imprimir y exportar.'],
+  ['¿Cómo se segregan las funciones?','Quien registra la orden no la confirma; en decisiones de inversión el aprobador no puede ser el proponente y el acta aprobada es inmutable. Los límites internos excedidos exigen motivo y aprobador registrados; los normativos bloquean.'],
+  ['¿Qué queda fuera del Front?','Los llamados de capital y distribuciones a inversionistas, la vinculación de afiliados y los aportes y retiros individuales, el cobro del canon y la gestión del inmueble, y la originación y cobranza de crédito. Esos procesos viven en otros módulos; el Front solo recibe sus datos ya procesados.'],
+  ['¿Qué operaciones de mercado monetario y de derivados cubre?','Mercado monetario: {OP}, {REPO}, interbancarios, overnight y títulos de deuda pública de corto plazo, con cupo por contraparte, escalera de vencimientos y devengo. Derivados en {PAIS}: {DERIV}. Las definiciones finales (instrumentos disponibles, base de días, calendario, fixing) se validan con su área de tesorería.'],
+  ['¿Cómo controlan el cupo de las contrapartes?','Cada contraparte tiene un cupo en Parametrización. El mercado monetario y la exposición potencial de los derivados consumen el mismo cupo; al registrar una operación la plataforma muestra el disponible y, si lo supera, bloquea (monetario) o exige aprobación registrada (derivados, límite interno).'],
+  ['¿Se integra con nuestros sistemas actuales?','Es la siguiente conversación: la demo muestra la experiencia y el contrato entre módulos. Las integraciones se definen con su área de tecnología. No prometer plazos ni interfaces concretas.'],
+  ['¿Podemos cambiar los estados, los límites o los parámetros?','Sí, por eso existe Parametrización: portafolios, contrapartes y cupos, tasas, índices, benchmarks, límites (con su naturaleza), régimen del FVP y los parámetros de mejor ejecución, que hoy son ilustrativos y están por definir con Compliance.'],
+  ['¿Cumple con la normatividad / reportes regulatorios?','No afirmar cobertura normativa. Responder: los informes regulatorios y los umbrales se definen en el alcance con su área de cumplimiento.'],
+  ['¿Y si operamos en otro país?','El selector de País está en la barra y cambia los datos de ejemplo entre Colombia, Chile, República Dominicana y Panamá, incluidos mercado monetario y derivados. Cada país entra con su propia parametrización.']
+ ].map(f=>[f[0],T(f[1])]);
+ return {
+  titulo:'Libreto de demo · Front de inversiones',
+  sub:'Versión '+c.pais+' · clientes potenciales',
+  ficha:[['Audiencia',c.aud],['Duración','25 minutos de demo + 10 de preguntas. Las escenas 11 y 12 son opcionales (+6 y +3 minutos). Versión corta de 12 minutos más abajo.'],['Archivo','front-inversiones-performance-attribution.html (se abre con doble clic; no requiere internet).'],['Datos','De ejemplo para '+c.pais+'. '+c.extra+' Hilo conductor: **'+c.fondo+'** (renta fija), **'+c.fondo2+'** (liquidez y mercado monetario) y **'+c.bg+'** (derivados).'],['Archivos de Carga Masiva',T('Carpeta {CARPETA}: un Excel y un CSV de ejemplo por pantalla, con datos de demostración. También se descargan desde cada Carga Masiva con “Descargar ejemplo con datos”.')]],
+  mensaje:'**Una sola plataforma para ver, operar, controlar, reportar y explicar el desempeño de sus portafolios —renta fija, renta variable, mercado monetario y derivados—, donde el gestor no digita lo que otro módulo ya tiene.**',
+  pilares:['**Ver:** Visor de portafolio, flujos futuros, sensibilidades, posición monetaria y exposición y cobertura.','**Operar:** órdenes de renta fija, renta variable, mercado monetario y derivados (con cotizaciones y evidencia de mejor ejecución), y decisiones de inversión en activos sin mercado.','**Controlar y reportar:** límites normativos e internos, cupos compartidos y un libro de órdenes descargable.','**Explicar:** Performance attribution, incluido el efecto de la cobertura, la renta y valorización de inmuebles y la TIR y el MOIC de alternativos.'],
+  antes:['Abrir el HTML en Chrome o Edge y pasar a pantalla completa (F11).','Recargar con F5 para partir de los datos originales (las cargas masivas y las órdenes nuevas agregan filas de verdad).','Elegir **País = '+c.pais+'** (arriba a la derecha) y cerrar el menú lateral. Cambiar de país reinicia las ediciones hechas.','Dejar el **tema claro** (botón luna/sol, a la derecha de País).','Tener a mano la carpeta **'+T('{CARPETA}')+'** con los archivos de ejemplo (renta fija y mercado monetario son los dos que se cargan en la demo).','Hilo: renta fija con **'+c.fondo+'**; liquidez y monetario con **'+c.fondo2+'**; derivados con **'+c.bg+'** (y **'+c.b1+'** para el bloqueo por solo cobertura).'],
+  escenas:scenes,cifras,roles,
+  corta:'Escena **1** (Home, 1 min) → escena **3** solo la Carga Masiva con la banda verde (2 min) → escena **5** con cotizaciones, evidencia y el caso con justificación (4 min) → escena **7** (Límites, 1 min) → escena **9** limitada a Resumen y Atribución (3 min) → cierre de la escena **10** (1 min).',
+  faq,
+  nohacer:['Las cargas masivas, las órdenes y las decisiones nuevas cargan de verdad en el prototipo: recargar con F5 antes de la demo y no subir dos veces el mismo archivo (los instrumentos y las contrapartes repetidos se rechazan: sirve para mostrar el control de errores con la banda roja).','Los demás límites del módulo de evaluación se calculan con datos de ejemplo: comentar solo los de {EMISOR} y {CP}.','Si se cambia la Fecha operativa, las cifras del Dashboard varían unos puntos porcentuales: las de la tabla “Cifras para citar” son las del día en curso.','No mostrar ni prometer llamados de capital, distribuciones a inversionistas, vinculación de afiliados, cobro de canon, gestión del inmueble ni originación o cobranza de crédito: son de otros módulos; el Front solo recibe esos datos.','No afirmar integraciones, cumplimiento normativo ni fechas de entrega. Los umbrales (cotizaciones mínimas, tolerancia, frecuencia de avalúo) son parámetros ilustrativos por definir con Compliance.','Las cifras y los precios son ilustrativos: no compararlos con portafolios reales del cliente. Los nombres de bancos, instrumentos y tasas de cada país hay que validarlos con el negocio antes de la demo.'].map(T),
+  cierre:'“Si le hace sentido, el siguiente paso es un **piloto con uno o dos portafolios** para verlo con sus propios datos. Agendamos el levantamiento con su equipo de inversiones, tesorería y tecnología.”'
+ };
+}
+
+/* ====== RENDER HTML ====== */
+function buildHtml(c){
+ const C=content(c);
+ const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+ const rich=s=>esc(s).split('**').map((p,i)=>i%2?'<b>'+p+'</b>':p).join('');
+ const ul=a=>'<ul>'+a.map(x=>'<li>'+rich(x)+'</li>').join('')+'</ul>';
+ const tbl=(head,rows,cls)=>'<table'+(cls?' class="'+cls+'"':'')+'><thead><tr>'+head.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map((x,i)=>'<td'+(i===0?' class="k"':'')+'>'+x+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+ const css=':root{--p:#6A1B9A;--soft:#F4ECF8;--line:#EADBF7;--mut:#6B7280}*{box-sizing:border-box}body{margin:0;background:#FDFAFF;color:#1F2937;font:15px/1.5 Inter,"Segoe UI",system-ui,sans-serif}.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}h1{font-size:30px;margin:0 0 4px;color:var(--p)}.sub{color:var(--mut);font-size:17px;margin:0 0 18px}h2{font-size:20px;color:var(--p);margin:30px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);font-size:14px}th{background:var(--p);color:#fff;text-align:left;padding:10px 12px}td{padding:10px 12px;border-top:1px solid #E5E7EB;vertical-align:top}td.k{background:var(--soft);font-weight:700}.msg{background:var(--soft);border-left:4px solid var(--p);border-radius:8px;padding:12px 16px;font-size:17px}ul{margin:8px 0;padding-left:22px}li{margin:4px 0}.esc td ul{padding-left:18px;margin:0}.dec{font-style:italic;color:#374151}.q{color:#0F766E}.tag{display:inline-block;background:var(--p);color:#fff;border-radius:999px;padding:1px 10px;font-weight:700;font-size:12px}.opt{background:#B45309}.min{color:var(--mut);font-size:12px;white-space:nowrap}@media print{body{background:#fff}.wrap{padding:0}h2{break-after:avoid}tr{break-inside:avoid}}@media(max-width:760px){td,th{padding:8px}table{font-size:13px}}';
+ const esc2=C.escenas.map(s=>['<span class="tag'+(s.opcional?' opt':'')+'">'+s.n+'</span><div class="min">'+esc(s.min)+'</div>',esc(s.pantalla),'<ul>'+s.hacer.map(x=>'<li>'+rich(x)+'</li>').join('')+'</ul>','<span class="dec">'+rich(s.decir)+'</span>','<span class="q">'+esc(s.preg)+'</span>']);
+ return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(C.titulo)+' · '+esc(c.pais)+'</title><style>'+css+'</style></head><body><div class="wrap"><h1>'+esc(C.titulo)+'</h1><p class="sub">'+esc(C.sub)+'</p>'
+  +tbl(['Ficha','Detalle'],C.ficha.map(f=>[esc(f[0]),rich(f[1])]))
+  +'<h2>Mensaje central</h2><div class="msg">'+rich(C.mensaje)+'</div>'+ul(C.pilares)
+  +'<h2>Valor por rol</h2>'+tbl(['Rol','Qué gana'],C.roles.map(r=>[esc(r[0]),esc(r[1])]))
+  +'<h2>Antes de empezar (2 minutos)</h2>'+ul(C.antes)
+  +'<h2>Guion por escenas</h2>'+tbl(['Min','Pantalla','Qué hacer','Qué decir','Pregunta para el cliente'],esc2,'esc')
+  +'<h2>Cifras para citar</h2>'+tbl(['Dato','Valor en la demo','Dónde se ve'],C.cifras.map(r=>[esc(r[0]),esc(r[1]),esc(r[2])]))
+  +'<h2>Versión corta (12 minutos)</h2><p>'+rich(C.corta)+'</p>'
+  +'<h2>Preguntas probables y cómo responder</h2>'+tbl(['Pregunta','Respuesta sugerida'],C.faq.map(f=>[esc(f[0]),esc(f[1])]))
+  +'<h2>Qué NO hacer en la demo</h2>'+ul(C.nohacer)
+  +'<h2>Cierre y siguiente paso</h2><div class="msg">'+rich(C.cierre)+'</div></div></body></html>';
+}
+function buildJson(c){const C=content(c);return {pais:c.pais,archivo:'Libreto_demo_Front_de_inversiones_'+c.file+'.html',descripcion:'Pasos verificables del libreto. Cada paso navega (ruta), ejecuta acciones y comprueba textos visibles.',escenas:C.escenas.map(s=>({escena:s.n,minutos:s.min,opcional:!!s.opcional,pantalla:s.pantalla,pasos:s.pasos.map(p=>({ruta:p.ruta||null,acciones:p.acciones||[],textoEsperado:p.texto||[],textoNoEsperado:p.textoNo||[]}))}))}}
+if(require.main===module){for(const c of COUNTRIES){fs.writeFileSync('C:/Derivados AF/Libreto_demo_Front_de_inversiones_'+c.file+'.html',buildHtml(c),'utf8');fs.writeFileSync('C:/Derivados AF/tests/libretos/'+c.file.toLowerCase()+'.json',JSON.stringify(buildJson(c),null,1),'utf8');console.log('ok',c.file)}}
+module.exports={COUNTRIES,content};

@@ -1,0 +1,1 @@
+Control de límites Seguimiento del cumplimiento de los límites definidos en Parametrización. Evaluación Evalúa el cumplimiento de los límites.

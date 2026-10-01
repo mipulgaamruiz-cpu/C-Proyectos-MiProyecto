@@ -1,0 +1,12 @@
+const fs=require('fs'),{JSDOM,VirtualConsole}=require('jsdom'),ExcelJS=require('exceljs');
+const html=fs.readFileSync('C:/Derivados AF/front-inversiones-performance-attribution.html','utf8');
+const dom=new JSDOM(html,{runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:new VirtualConsole(),beforeParse(w){w.TextEncoder=TextEncoder;w.TextDecoder=TextDecoder;w.scrollTo=()=>{}}});
+const w=dom.window;
+(async()=>{const u8=w.__mk.buildBook([{name:'Prueba',header:true,filter:true,rows:[['Portafolio','Valor','Fecha','Rentab.','Texto'],['FIC LIQUIDEZ',{n:1234567.891,s:2},{d:new Date(2026,8,30,12).getTime()},{n:0.1065,s:4},'+12,3 pb & <b>'],['FIC "X"',{n:-5.5,s:2},{d:new Date(2026,0,1,12).getTime()},{n:-0.01,s:4},'ñandú']]}]);
+ fs.writeFileSync('t.xlsx',Buffer.from(u8));const wb=new ExcelJS.Workbook();await wb.xlsx.readFile('t.xlsx');const ws=wb.getWorksheet('Prueba');
+ const r2=ws.getRow(2),r3=ws.getRow(3);
+ console.log('autofiltro',JSON.stringify(ws.autoFilter),'| congelado',JSON.stringify(ws.views&&ws.views[0]&&ws.views[0].state));
+ console.log('A2',r2.getCell(1).value,'| B2',r2.getCell(2).value,r2.getCell(2).numFmt,'| C2',r2.getCell(3).value instanceof Date?r2.getCell(3).value.toISOString().slice(0,10):r2.getCell(3).value,r2.getCell(3).numFmt,'| D2',r2.getCell(4).value,r2.getCell(4).numFmt,'| E2',r2.getCell(5).value);
+ console.log('A3',r3.getCell(1).value,'| B3',r3.getCell(2).value,'| C3',r3.getCell(3).value instanceof Date?r3.getCell(3).value.toISOString().slice(0,10):'',' | E3',r3.getCell(5).value);
+ console.log('encabezado negrita/relleno',JSON.stringify(ws.getRow(1).getCell(1).font&&ws.getRow(1).getCell(1).font.bold),JSON.stringify(ws.getRow(1).getCell(1).fill&&ws.getRow(1).getCell(1).fill.fgColor));
+ process.exit(0)})().catch(e=>{console.error(e);process.exit(1)});

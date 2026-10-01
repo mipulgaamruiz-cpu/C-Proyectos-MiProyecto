@@ -1,0 +1,672 @@
+
+.mk-navgroup{ font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--mk-text-muted); padding:14px 12px 6px; }
+.mk-accordion__head{ display:flex; align-items:center; gap:12px; }
+.mk-accordion__ico{ color:var(--mk-primary-strong); display:flex; }
+.mk-accordion__t{ display:block; font-weight:700; color:#111; }
+.mk-accordion__d{ display:block; font-size:12.5px; font-weight:400; color:var(--mk-text-muted); margin-top:2px; }
+.mk-accordion__head > .mk-accordion__chev{ margin-left:auto; }
+.mk-accordion{ margin-bottom:16px; }
+.mk-linkcard--hot{ border-color:var(--mk-primary); box-shadow:0 0 0 3px rgba(106,27,154,.10); }
+.mk-cardwrap{ position:relative; display:flex; }
+.mk-cardwrap > .mk-linkcard{ flex:1; }
+.mk-cardwrap__info{ position:absolute; top:10px; right:10px; z-index:60; }
+.nt-cal{ display:flex; flex-wrap:wrap; gap:6px; }
+.nt-cal label{ display:inline-flex; align-items:center; gap:5px; border:1px solid var(--mk-border,#E3DDEB); border-radius:14px; padding:4px 10px; font-size:12px; cursor:pointer; background:#fff; }
+.nt-cal label.on{ border-color:#6A1B9A; background:#F4ECF8; color:#4A1270; font-weight:600; }
+.nt-cal label.off{ opacity:.5; cursor:not-allowed; }
+.mk-tooltip__bubble--tc{ width:340px; }
+.mk-tooltip__bubble--wide{ white-space:normal; width:260px; line-height:1.45; text-align:left;
+  padding:9px 11px; font-weight:400; }
+.mk-lead{ font-size:13.5px; color:#3f3f46; line-height:1.6; background:#FBF7FE;
+  border-left:4px solid var(--mk-primary); border-radius:8px; padding:12px 16px; }
+.mk-country{ margin-left:auto; position:relative; display:inline-flex; align-items:center; }
+.mk-country select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  font:inherit; font-size:12.5px; color:#111; cursor:pointer;
+  padding:5px 30px 5px 14px; border:1px solid var(--mk-primary); border-radius:999px;
+  background:#fff; line-height:1.4; }
+.mk-country select:hover{ background:var(--mk-primary-50); }
+.mk-country select:focus{ outline:none; box-shadow:0 0 0 3px rgba(106,27,154,.12); }
+.mk-country__chev{ position:absolute; right:11px; pointer-events:none; color:var(--mk-primary); display:flex; }
+.mk-country__pill{ margin-left:auto; display:inline-flex; align-items:center; gap:7px;
+  font:inherit; font-size:12.5px; color:var(--mk-primary); cursor:pointer;
+  padding:5px 14px; border:1px dashed var(--mk-primary-200); border-radius:999px;
+  background:var(--mk-primary-50); line-height:1.4; }
+.mk-country__pill:hover{ background:var(--mk-primary-100); }
+.mk-paisbox{ border:1px solid var(--mk-primary); border-radius:var(--mk-radius);
+  padding:16px 18px; background:#FBF7FE; margin-bottom:18px; }
+.mk-paisbox__t{ font-weight:800; color:var(--mk-primary); font-size:13px;
+  text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
+
+/* ============================================================
+   MOLECULE · Centro de Notificaciones (campana + panel lateral)
+   ============================================================ */
+.mk-bell{ margin-left:auto; position:relative; display:grid; place-items:center;
+  width:38px; height:34px; border:1px solid var(--mk-primary-100); border-radius:var(--mk-radius-sm);
+  background:var(--mk-surface); color:var(--mk-primary); cursor:pointer; }
+.mk-bell:hover{ background:var(--mk-primary-50); }
+.mk-bell__dot{ position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; padding:0 4px;
+  border-radius:999px; background:var(--mk-danger); color:#fff; font-size:10.5px; font-weight:800;
+  display:grid; place-items:center; border:2px solid #fff; }
+.mk-country{ margin-left:12px; }
+
+.mk-notif{ position:fixed; top:0; right:0; height:100%; width:430px; max-width:92vw; z-index:60;
+  background:var(--mk-surface); transform:translateX(100%); transition:transform .22s ease;
+  display:flex; flex-direction:column; box-shadow:var(--mk-shadow-lg); }
+.mk-notif.open{ transform:none; visibility:visible; }
+/* El panel cerrado no debe generar barra horizontal ni aparecer en capturas */
+.mk-notif{ visibility:hidden; }
+html,body{ overflow-x:hidden; }
+.mk-notif__head{ padding:18px 20px 14px; border-bottom:1px solid var(--mk-border); position:relative; }
+.mk-notif__head h2{ margin:0; font-size:21px; font-weight:800; color:#111; }
+.mk-notif__mail{ font-size:12.5px; color:var(--mk-text-muted); }
+.mk-notif__close{ position:absolute; top:18px; right:18px; border:0; background:none; cursor:pointer;
+  color:var(--mk-text-muted); font-size:20px; line-height:1; }
+.mk-notif__filtros{ padding:16px 20px; background:#FBF7FE; border-bottom:1px solid var(--mk-border);
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.mk-notif__filtros .mk-btn{ grid-column:1 / -1; }
+.mk-notif__list{ padding:16px 20px; overflow-y:auto; flex:1; background:#FDFAFF; }
+.mk-notif__foot{ padding:12px 20px; border-top:1px solid var(--mk-border); font-size:12px;
+  color:var(--mk-success); text-align:center; }
+
+.mk-ncard{ background:var(--mk-surface); border:1px solid var(--mk-primary-100);
+  border-radius:var(--mk-radius); padding:14px 16px; margin-bottom:14px; position:relative; }
+.mk-ncard.unread{ background:#FBF7FE; }
+.mk-ncard__top{ display:flex; gap:12px; align-items:flex-start; }
+.mk-ncard__ico{ flex:none; display:grid; place-items:center; width:26px; height:26px; border-radius:50%; }
+.mk-ncard__ico--ok{ background:var(--mk-success-soft); color:var(--mk-success); }
+.mk-ncard__ico--info{ background:var(--mk-info-soft); color:var(--mk-info); }
+.mk-ncard__ico--warn{ background:var(--mk-warning-soft); color:var(--mk-warning); }
+.mk-ncard__ico--err{ background:var(--mk-danger-soft); color:var(--mk-danger); }
+.mk-ncard__t{ font-weight:700; color:#111; font-size:14px; }
+.mk-ncard__d{ font-size:12.5px; color:var(--mk-text-muted); margin-top:3px; line-height:1.5; }
+.mk-ncard__meta{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:10px;
+  font-size:11.5px; color:var(--mk-text-muted); }
+.mk-ncard__tag{ border:1px solid var(--mk-primary-200); color:var(--mk-primary); border-radius:999px;
+  padding:2px 10px; font-size:11px; font-weight:600; }
+.mk-ncard__unread{ position:absolute; top:16px; right:16px; width:8px; height:8px; border-radius:50%;
+  background:var(--mk-primary); }
+.mk-ncard__badges{ margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; }
+
+/* ============================================================
+   MODULO - Setup / Base Operativa / Templates
+   ============================================================ */
+.mk-tplhead{ display:flex; align-items:center; justify-content:space-between; gap:14px;
+  background:#fff; border:1px solid var(--mk-border); border-radius:var(--mk-radius);
+  padding:12px 16px; box-shadow:var(--mk-shadow); margin-bottom:16px; flex-wrap:wrap; }
+.mk-tplhead__left{ display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--mk-text); }
+.mk-tplhead__left svg{ color:var(--mk-primary-strong); flex:none; }
+
+.mk-tplfilters{ display:flex; align-items:flex-end; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+.mk-tplfilters .mk-field{ min-width:190px; }
+.mk-tplfilters .mk-field--search{ flex:1; min-width:240px; }
+
+.mk-kpis{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:18px; }
+@media (max-width:900px){ .mk-kpis{ grid-template-columns:repeat(2,1fr); } }
+.mk-kpi{ border:1px solid var(--mk-border); border-radius:var(--mk-radius); padding:12px 14px; background:#fff; }
+.mk-kpi__l{ font-size:11.5px; color:var(--mk-text-muted); text-transform:uppercase; letter-spacing:.03em; }
+.mk-kpi__v{ font-size:20px; font-weight:800; color:#111; margin-top:2px; }
+.mk-kpi--p{ background:#FBF7FE; }
+.mk-kpi--b{ background:#F5F8FF; }
+.mk-kpi--g{ background:#F4FBF6; }
+.mk-kpi--y{ background:#FFF8EE; }
+.mk-kpi--r{ background:#FEF3F2; }
+
+.mk-tplcard{ background:#fff; border:1px solid var(--mk-border); border-radius:var(--mk-radius);
+  box-shadow:var(--mk-shadow); margin-bottom:16px; overflow:hidden; transition:box-shadow .18s, border-color .18s; }
+.mk-tplcard:hover{ border-color:var(--mk-primary-200); box-shadow:0 6px 20px rgba(106,27,154,.10); }
+.mk-tplcard.is-off{ opacity:.72; }
+.mk-tplcard__top{ display:flex; align-items:flex-start; gap:14px; padding:16px 18px; flex-wrap:wrap; }
+.mk-tplcard__ico{ width:42px; height:42px; flex:none; border-radius:10px; display:grid; place-items:center;
+  background:var(--mk-primary-50); color:var(--mk-primary-strong); }
+.mk-tplcard__id{ flex:1; min-width:260px; }
+.mk-tplcard__title{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.mk-tplcard__title h3{ margin:0; font-size:15.5px; font-weight:800; color:#111; }
+.mk-tplcard__meta{ font-size:12.5px; color:var(--mk-text-muted); margin-top:3px; }
+.mk-tplcard__meta b{ color:var(--mk-text); font-weight:600; }
+.mk-tplcard__meta .mk-dot{ color:var(--mk-border-2); margin:0 7px; }
+.mk-tplcard__trace{ font-size:12px; color:var(--mk-text-faint); margin-top:2px; }
+.mk-tplcard__trace u{ text-decoration:none; color:var(--mk-primary); }
+.mk-tplcard__desc{ padding:0 18px 12px; font-size:12.5px; color:var(--mk-text-muted);
+  border-top:1px solid var(--mk-border-2); padding-top:12px; margin:0 0 0 0; }
+.mk-tplcard__actions{ display:flex; gap:8px; flex:none; }
+
+.mk-actbtn{ display:inline-flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  min-width:58px; padding:8px 6px; border:1.5px solid var(--mk-primary); border-radius:9px;
+  background:#fff; color:var(--mk-primary); font-family:inherit; font-size:11.5px; font-weight:600;
+  cursor:pointer; transition:background .15s, transform .12s; }
+.mk-actbtn:hover{ background:var(--mk-primary-50); transform:translateY(-1px); }
+.mk-actbtn--danger{ border-color:var(--mk-danger); color:var(--mk-danger); }
+.mk-actbtn--danger:hover{ background:var(--mk-danger-soft); }
+.mk-actbtn--success{ border-color:var(--mk-success); color:var(--mk-success); }
+.mk-actbtn--success:hover{ background:var(--mk-success-soft); }
+
+.mk-tplmetrics{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; padding:0 18px 18px; }
+@media (max-width:900px){ .mk-tplmetrics{ grid-template-columns:1fr; } }
+.mk-metric{ border-radius:8px; padding:10px 14px; }
+.mk-metric__l{ font-size:11.5px; font-weight:600; }
+.mk-metric__v{ font-size:16px; font-weight:800; color:#111; margin-top:1px; }
+.mk-metric--p{ background:#F8F2FC; } .mk-metric--p .mk-metric__l{ color:var(--mk-primary); }
+.mk-metric--b{ background:#EFF6FF; } .mk-metric--b .mk-metric__l{ color:var(--mk-info); }
+.mk-metric--g{ background:#F0FDF4; } .mk-metric--g .mk-metric__l{ color:var(--mk-success); }
+
+.mk-badge--tag{ background:var(--mk-primary); }
+.mk-badge--outline{ background:#EFF6FF; color:var(--mk-info); }
+.mk-badge--outline-g{ background:#F1F5F9; color:#475569; }
+
+.mk-modal--form{ width:min(620px,100%); }
+.mk-modal__head--brand{ border-bottom:0; padding-bottom:4px; }
+.mk-modal__head--brand span{ color:var(--mk-primary); font-size:16.5px; font-weight:800; }
+.mk-modal--form{ border-top:4px solid var(--mk-primary); }
+.mk-formgrid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:640px){ .mk-formgrid{ grid-template-columns:1fr; } }
+.mk-formgrid .span2{ grid-column:1 / -1; }
+/* Formularios de captura anchos: tres columnas. A dos, un campo ocupa media
+   pantalla y la lectura se vuelve un zigzag. */
+#ntFsContexto .mk-formgrid, #ntSwapBox .mk-formgrid{ grid-template-columns:repeat(3,1fr); }
+@media (max-width:1100px){ #ntFsContexto .mk-formgrid, #ntSwapBox .mk-formgrid{ grid-template-columns:1fr 1fr; } }
+@media (max-width:700px){ #ntFsContexto .mk-formgrid, #ntSwapBox .mk-formgrid{ grid-template-columns:1fr; } }
+
+/* --- Contrapartes Habilitadas --- */
+.mk-metrics4{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; padding:0 18px 18px; }
+@media (max-width:1100px){ .mk-metrics4{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:640px){ .mk-metrics4{ grid-template-columns:1fr; } }
+.mk-metric--o{ background:#FFF7ED; } .mk-metric--o .mk-metric__l{ color:#C2650B; }
+.mk-tplcard__ico--cp{ background:#EFF6FF; color:var(--mk-info); }
+.mk-badge--banco{ background:#3981F6; }
+.mk-badge--camara{ background:#15803D; }
+.mk-badge--broker{ background:#E8A317; }
+.mk-badge--corp{ background:#F1F5F9; color:#475569; }
+.mk-badge--rating{ background:#F1F5F9; color:#334155; font-weight:800; letter-spacing:.02em; }
+.mk-util{ height:5px; border-radius:999px; background:#F1E7DA; margin-top:7px; overflow:hidden; }
+.mk-util__b{ height:100%; border-radius:999px; background:#EA8A1E; }
+.mk-util__b.hi{ background:var(--mk-danger); }
+
+/* --- Subyacentes --- */
+.mk-tplcard__ico--fx{ background:#F3EDFC; color:var(--mk-primary-strong); }
+.mk-tplcard__ico--tasa{ background:#F3EDFC; color:var(--mk-success); }
+.mk-badge--divisa{ background:#3981F6; }
+.mk-badge--tasa{ background:#15803D; }
+.mk-badge--indice{ background:#7C3AED; }
+.mk-badge--clase{ background:#F1F5F9; color:#475569; }
+.mk-inline{ display:flex; gap:26px; flex-wrap:wrap; font-size:12.5px; color:var(--mk-text-muted); padding:0 18px 16px; }
+.mk-inline b{ color:#111; font-weight:700; }
+.mk-inline .v-p{ color:var(--mk-primary); font-weight:800; }
+.mk-inline .v-b{ color:var(--mk-info); font-weight:800; }
+.mk-inline .v-g{ color:var(--mk-success); font-weight:800; }
+
+/* --- Alcance de aplicacion (fondos) --- */
+.mk-scope{ border:1px solid var(--mk-border); border-radius:var(--mk-radius); background:#FDFCFF; padding:14px 16px; margin-top:18px; }
+.mk-scope__t{ font-size:12px; font-weight:800; color:var(--mk-primary); text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
+.mk-scope__q{ font-size:13px; color:var(--mk-text); margin-bottom:12px; }
+.mk-scope__opt{ display:flex; gap:10px; align-items:flex-start; padding:9px 11px; border:1px solid var(--mk-border-2);
+  border-radius:8px; background:#fff; cursor:pointer; margin-bottom:8px; transition:border-color .15s, background .15s; }
+.mk-scope__opt:hover{ border-color:var(--mk-primary-200); }
+.mk-scope__opt.sel{ border-color:var(--mk-primary); background:var(--mk-primary-50); }
+.mk-scope__opt input{ margin-top:2px; accent-color:var(--mk-primary); width:16px; height:16px; flex:none; }
+.mk-scope__lb{ font-weight:700; font-size:13px; color:#111; display:block; }
+.mk-scope__d{ font-size:12px; color:var(--mk-text-muted); }
+.mk-scope__slot{ margin:2px 0 10px 27px; }
+.mk-fundlist{ border:1px solid var(--mk-border-2); border-radius:8px; max-height:190px; overflow-y:auto; background:#fff; }
+.mk-fund{ display:flex; gap:10px; align-items:center; padding:9px 12px; border-bottom:1px solid #F1F0F5; cursor:pointer; }
+.mk-fund:last-child{ border-bottom:0; }
+.mk-fund:hover{ background:var(--mk-primary-50); }
+.mk-fund input{ accent-color:var(--mk-primary); width:16px; height:16px; flex:none; }
+.mk-fund__ico{ color:var(--mk-text-muted); display:flex; flex:none; }
+.mk-fund__n{ font-weight:700; font-size:13px; color:#111; }
+.mk-fund__m{ font-size:12px; color:var(--mk-primary); }
+.mk-scope__count{ font-size:12px; color:var(--mk-text-muted); margin-top:6px; }
+.mk-badge--scope{ background:#EEF2FF; color:#4338CA; }
+
+/* --- Contratos de Futuros / Wizard --- */
+.mk-badge--fisica{ background:#7C3AED; }
+.mk-badge--financiera{ background:#3981F6; }
+.mk-mono{ font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:800; color:var(--mk-primary); }
+.mk-modal--wizard{ width:min(720px,100%); }
+.mk-modal__sub{ font-size:12.5px; color:var(--mk-text-muted); padding:0 20px 12px; margin-top:-6px; }
+.mk-wizsteps{ display:flex; align-items:flex-start; justify-content:center; gap:6px; padding:6px 0 20px; }
+.mk-wizstep{ display:flex; flex-direction:column; align-items:center; text-align:center; width:150px; }
+.mk-wizstep__n{ width:44px; height:44px; border-radius:50%; display:grid; place-items:center;
+  font-weight:800; font-size:15px; background:#E5E7EB; color:var(--mk-text-muted); transition:.2s; }
+.mk-wizstep.on .mk-wizstep__n{ background:var(--mk-primary); color:#fff; box-shadow:0 0 0 4px var(--mk-primary-50); }
+.mk-wizstep.done .mk-wizstep__n{ background:var(--mk-success); color:#fff; }
+.mk-wizstep__t{ font-weight:700; font-size:13px; color:#111; margin-top:8px; }
+.mk-wizstep.on .mk-wizstep__t{ color:var(--mk-primary); }
+.mk-wizstep__d{ font-size:11.5px; color:var(--mk-text-muted); line-height:1.35; }
+.mk-wizline{ flex:none; width:44px; height:2px; background:#E5E7EB; margin-top:22px; border-radius:2px; }
+.mk-wizline.done{ background:var(--mk-success); }
+.mk-wizpanel{ border:1px solid var(--mk-primary-100); border-radius:var(--mk-radius); padding:18px; background:#FDFCFF; }
+.mk-wizfoot{ display:flex; justify-content:space-between; gap:10px; padding:14px 20px; border-top:1px solid var(--mk-border); }
+.mk-summary{ border:1px solid var(--mk-border-2); border-radius:8px; background:#fff; padding:12px 14px; margin-top:14px; }
+.mk-summary h4{ margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--mk-primary); }
+
+/* --- Configuracion Economica (comisiones) --- */
+.mk-badge--otc{ background:#3981F6; }
+.mk-badge--std{ background:#15803D; }
+.mk-badge--opc{ background:#F1F5F9; color:#475569; }
+.mk-badge--obl{ background:var(--mk-danger); }
+.mk-badge--pct{ background:#3981F6; }
+.mk-badge--contrato{ background:#15803D; }
+.mk-badge--moneda{ background:#F1F5F9; color:#334155; font-family:ui-monospace,Menlo,Consolas,monospace; }
+.mk-badge--dot::before{ content:"\25CF"; margin-right:6px; font-size:9px; opacity:.85; }
+.mk-badge--incompleta{ background:var(--mk-danger); }
+.mk-badge--pend{ background:var(--mk-success); }
+.mk-nodisp{ display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--mk-text-muted); }
+.mk-nodisp::before{ content:""; width:9px; height:9px; border-radius:50%; background:#F87171; }
+.mk-table td .mk-num{ font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:700; }
+.mk-table--compact tbody td{ vertical-align:middle; }
+.mk-th-info{ display:inline-flex; align-items:center; gap:6px; }
+
+/* --- Ciclo de Vida --- */
+.mk-na{ color:var(--mk-text-faint); font-size:12.5px; }
+.mk-badge--check::before{ content:"\2713"; margin-right:6px; font-weight:900; }
+.mk-statelist{ display:flex; flex-direction:column; gap:10px; }
+.mk-stateitem{ display:flex; align-items:center; gap:12px; border:1px solid var(--mk-border-2);
+  border-radius:8px; background:#FAFAFC; padding:12px 16px; font-weight:700; color:#111; font-size:13.5px; }
+.mk-stateitem__c{ color:var(--mk-success); display:flex; flex:none; }
+.mk-stateitem__n{ margin-left:auto; font-size:11.5px; font-weight:600; color:var(--mk-text-muted); }
+
+/* --- Reglas Ciclo de Vida --- */
+.mk-rt-id{ font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:800; color:var(--mk-primary); font-size:12.5px; }
+.mk-trans{ display:inline-flex; align-items:center; gap:8px; font-size:12.5px; }
+.mk-trans__a{ color:var(--mk-text-muted); }
+.mk-trans__b{ font-weight:700; color:#111; }
+.mk-trans__ar{ color:var(--mk-text-faint); }
+.mk-badge--proc{ background:#3981F6; }
+.mk-badge--ambos{ background:#F1F5F9; color:#475569; }
+.mk-badge--aprob{ background:#E8A317; }
+.mk-badge--no{ background:#F1F5F9; color:#64748B; }
+.mk-badge--no::before{ content:"\00D7"; margin-right:5px; font-weight:900; }
+.mk-warnsi{ display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600; color:var(--mk-warning); }
+.mk-iconbtn--x{ background:transparent; color:var(--mk-danger); font-size:17px; font-weight:800; }
+.mk-iconbtn--x:hover{ background:var(--mk-danger-soft); }
+.mk-rtsec{ margin-top:18px; }
+.mk-rtsec h4{ margin:0 0 10px; font-size:13.5px; font-weight:800; color:#111; }
+.mk-rtline{ display:flex; align-items:flex-start; gap:10px; font-size:13px; padding:5px 0; color:var(--mk-text); }
+.mk-rtline .c{ color:var(--mk-success); flex:none; display:flex; }
+.mk-rtline .p{ color:var(--mk-primary); flex:none; display:flex; }
+.mk-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+.mk-chip{ background:#F1F5F9; color:#334155; border-radius:999px; padding:5px 12px; font-size:12.5px; font-weight:600; }
+
+/* --- Modelos de Garantia --- */
+.mk-fset{ border:1px solid var(--mk-border); border-radius:var(--mk-radius); padding:16px; margin-bottom:14px; background:#fff; }
+.mk-fset__h{ display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.mk-fset__n{ width:22px; height:22px; flex:none; border-radius:6px; display:grid; place-items:center;
+  background:var(--mk-primary); color:#fff; font-size:12px; font-weight:800; }
+.mk-fset__t{ font-weight:800; font-size:14px; color:#111; }
+.mk-checkgrid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:640px){ .mk-checkgrid{ grid-template-columns:1fr; } }
+.mk-checkbox-card{ display:flex; align-items:center; gap:10px; border:1px solid var(--mk-border-2);
+  border-radius:8px; padding:11px 14px; cursor:pointer; font-size:13px; color:var(--mk-text); background:#fff; transition:.15s; }
+.mk-checkbox-card:hover{ border-color:var(--mk-primary-200); }
+.mk-checkbox-card.sel{ border-color:var(--mk-primary); background:var(--mk-primary-50); font-weight:700; }
+.mk-checkbox-card input{ accent-color:var(--mk-primary); width:16px; height:16px; flex:none; }
+.mk-radiorow{ display:flex; gap:22px; align-items:center; }
+.mk-tagsoft{ display:inline-block; background:#F1F5F9; color:#334155; border-radius:6px;
+  padding:4px 10px; font-size:12px; font-weight:600; margin:2px 4px 2px 0; }
+.mk-badge--oblig{ background:var(--mk-warning-soft); color:#92400E; }
+.mk-badge--estado-soft{ background:var(--mk-primary-50); color:var(--mk-primary); }
+
+/* --- Reglas de Margen --- */
+.mk-emptybig{ text-align:center; padding:44px 20px; }
+.mk-emptybig__ico{ color:#94A3B8; margin-bottom:12px; }
+.mk-emptybig__t{ font-size:14.5px; font-weight:600; color:#475569; }
+.mk-emptybig__d{ font-size:13px; color:var(--mk-primary); margin-top:4px; }
+.mk-subhead{ display:flex; align-items:center; gap:9px; font-weight:800; font-size:13.5px; color:#111; margin:6px 0 12px; }
+.mk-subhead svg{ color:var(--mk-primary); flex:none; }
+.mk-subhead--g svg{ color:var(--mk-success); }
+.mk-subhead__sw{ margin-left:auto; font-size:12.5px; font-weight:600; color:var(--mk-text-muted); display:inline-flex; align-items:center; gap:8px; }
+.mk-collrow{ display:grid; grid-template-columns:1fr 150px 34px; gap:10px; align-items:center; margin-bottom:10px; }
+@media (max-width:640px){ .mk-collrow{ grid-template-columns:1fr 100px 30px; } }
+.mk-collrow .rm{ background:transparent; border:0; color:var(--mk-danger); font-size:18px; cursor:pointer; border-radius:6px; }
+.mk-collrow .rm:hover{ background:var(--mk-danger-soft); }
+.mk-infobox{ border:1px solid var(--mk-primary-100); border-radius:var(--mk-radius); background:#FFFDF8;
+  padding:14px 16px; display:flex; gap:12px; align-items:flex-start; }
+.mk-infobox__i{ color:var(--mk-warning); flex:none; }
+.mk-infobox b{ color:#92400E; }
+.mk-infobox__t{ font-weight:800; color:#7C3A06; font-size:13px; margin-bottom:6px; }
+.mk-infobox ul{ margin:0; padding-left:18px; font-size:12.5px; color:#7C3A06; line-height:1.75; }
+
+/* --- Reglas de Liquidacion --- */
+.mk-badge--warn2{ background:var(--mk-warning); }
+.mk-badge--soft2{ background:#F1F5F9; color:#475569; }
+.mk-badge--crit{ background:var(--mk-danger); }
+.mk-swpill{ width:44px; height:22px; border-radius:999px; background:#D1D5DB; position:relative; display:inline-block; cursor:pointer; transition:.2s; }
+.mk-swpill.on{ background:var(--mk-primary); }
+.mk-swpill::after{ content:""; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:50%; background:#fff; transition:.2s; }
+.mk-swpill.on::after{ transform:translateX(22px); }
+.mk-impacts{ display:flex; flex-direction:column; gap:5px; align-items:flex-start; }
+.mk-flow{ display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-top:8px; font-size:12px; }
+.mk-flow .mk-badge{ white-space:nowrap; }
+
+/* --- Reglas Fiscales por Instrumento --- */
+.mk-tick{ display:inline-flex; color:var(--mk-success); }
+.mk-cross{ display:inline-flex; color:#94A3B8; }
+.mk-badge--fiscal{ background:var(--mk-warning); }
+
+/* ============================================================
+   SINCRONIA DE DISENO CON LA PLATAFORMA REAL (Lending)
+   Homogeneiza todas las pantallas del prototipo con el look
+   productivo: fieldsets Filtros/Informacion, header de tabla
+   morado, triada de acciones, buscador con selector de campo,
+   CSV/Excel solidos, paginacion numerada y pills de estado.
+   NO cambiar: es la referencia unica de la plataforma SaaS.
+   ============================================================ */
+.mk-fieldset{ border:1px solid var(--mk-primary-100); border-radius:var(--mk-radius); padding:16px; margin:0 0 16px; min-inline-size:0; max-width:100%; }
+.mk-fieldset > .mk-card{ border:0; box-shadow:none; padding:0; min-width:0; }
+.mk-fieldset > legend{ font-size:12px; color:var(--mk-primary); padding:0 6px; font-weight:600; }
+.mk-fieldset .mk-fieldset{ margin-bottom:0; }
+.mk-fieldset > .mk-datatable__toolbar{ border:1px solid var(--mk-primary-100); border-radius:var(--mk-radius); padding:12px 14px; margin-bottom:14px; }
+
+/* Tabla: header morado solido, filas compactas */
+.mk-table thead th{ background:var(--mk-primary); font-weight:700; font-size:12.5px; padding:12px 14px; }
+.mk-table thead th:first-child, .mk-table thead th:last-child{ border-radius:0; }
+.mk-tablewrap{ border-radius:6px; border:1px solid var(--mk-primary-100); }
+.mk-table tbody tr:last-child td{ border-bottom:0; }
+
+/* Triada de acciones */
+.mk-table .actions, .mk-acts{ display:flex; gap:6px; align-items:center; }
+.mk-iconbtn{ width:30px; height:28px; border:1px solid var(--mk-primary-200); background:var(--mk-surface); }
+.mk-iconbtn--view{ background:var(--mk-surface); color:var(--mk-primary); }
+.mk-iconbtn--edit{ background:var(--mk-surface); color:var(--mk-primary); border-color:var(--mk-primary-200); }
+.mk-iconbtn--delete{ background:var(--mk-surface); color:var(--mk-danger); border-color:#F5C2C2; }
+.mk-iconbtn--view:hover{ background:var(--mk-primary-50); }
+.mk-iconbtn--edit:hover{ background:var(--mk-primary-50); }
+.mk-iconbtn--delete:hover{ background:var(--mk-danger-soft); }
+.mk-iconbtn--dark{ background:var(--mk-slate-btn); color:#fff; border-color:var(--mk-slate-btn); }
+
+/* Buscador con selector de campo + boton lupa */
+.mk-searchgroup{ display:flex; align-items:stretch; gap:8px; }
+.mk-searchgroup__box{ display:flex; align-items:stretch; border:1px solid var(--mk-primary-200);
+  border-radius:var(--mk-radius-sm); overflow:hidden; background:var(--mk-surface); }
+.mk-searchgroup__box .mk-input{ border:0; min-width:230px; }
+.mk-searchgroup__box .mk-input:focus{ box-shadow:none; }
+.mk-searchgroup__field{ display:flex; align-items:center; border-left:1px solid var(--mk-primary-100); }
+.mk-searchgroup__field select{ appearance:none; -webkit-appearance:none; border:0; background:transparent;
+  font:inherit; font-size:12.5px; color:var(--mk-text); padding:0 24px 0 12px; cursor:pointer; outline:none; }
+.mk-searchgroup__field{ position:relative; }
+.mk-searchgroup__field::after{ content:""; position:absolute; right:10px; top:50%; width:7px; height:7px;
+  border-right:2px solid var(--mk-text-muted); border-bottom:2px solid var(--mk-text-muted);
+  transform:translateY(-70%) rotate(45deg); pointer-events:none; }
+.mk-searchgroup__field .mk-select--plain{ border:0; background:transparent; height:auto; padding:0 4px;
+  font-size:12.5px; color:var(--mk-text-muted); box-shadow:none; }
+.mk-searchgroup__go{ display:grid; place-items:center; width:34px; border:0; border-radius:var(--mk-radius-sm);
+  background:var(--mk-primary); color:#fff; cursor:pointer; }
+.mk-searchgroup__go:hover{ background:var(--mk-primary-dark); }
+
+/* Exportar: CSV pizarra / Excel verde, con icono de nube */
+.mk-export .mk-btn{ padding:7px 13px; font-size:12.5px; border:0; }
+.mk-export .mk-btn--csv{ background:var(--mk-slate-btn); color:#fff; }
+.mk-export .mk-btn--csv:hover{ background:#4f5d72; }
+.mk-export .mk-btn--xls{ background:var(--mk-excel); color:#fff; }
+.mk-export .mk-btn--xls:hover{ background:#0b5e30; }
+
+/* Pie de tabla con paginacion numerada */
+.mk-datatable__foot{ margin-top:12px; }
+.mk-pagination button{ min-width:30px; height:30px; }
+.mk-pagination .nav{ color:var(--mk-primary); font-weight:700; }
+
+/* Pill de estado ancho como en la plataforma */
+.mk-table td .mk-badge--wide{ min-width:180px; border-radius:var(--mk-radius-pill); }
+#loBody td .mk-badge--wide{ min-width:0; padding-left:10px; padding-right:10px; }
+#loBody td:first-child b, #apBody td:first-child b, #loBody td:nth-child(2) b, #apBody td:nth-child(2) b{ white-space:nowrap; }
+
+/* Tooltips de encabezado: se despliegan hacia abajo para no recortarse */
+.mk-table thead .mk-tooltip__bubble{ bottom:auto; top:150%; }
+.mk-table thead th{ overflow:visible; }
+.mk-acts .mk-tooltip__bubble{ white-space:nowrap; }
+.mk-kebab{ background:transparent; border:0; cursor:pointer; color:var(--mk-text-muted); font-size:18px; line-height:1;
+  padding:4px 9px; border-radius:6px; }
+.mk-kebab:hover{ background:var(--mk-primary-50); color:var(--mk-primary); }
+.mk-menu{ position:absolute; z-index:75; background:#fff; border:1px solid var(--mk-border); border-radius:8px;
+  box-shadow:var(--mk-shadow-lg); padding:6px; min-width:160px; }
+.mk-menu button{ display:block; width:100%; text-align:left; background:none; border:0; font:inherit; font-size:13px;
+  padding:9px 12px; border-radius:6px; cursor:pointer; color:var(--mk-text); }
+.mk-menu button:hover{ background:var(--mk-primary-50); }
+.mk-menu button.danger{ color:var(--mk-danger); }
+.mk-menu button.danger:hover{ background:var(--mk-danger-soft); }
+.mk-switchbox{ display:flex; align-items:center; gap:14px; background:#F7F5FA; border-radius:8px; padding:12px 14px; margin:14px 0; }
+.mk-switchbox__t{ font-weight:700; font-size:13px; color:#111; }
+.mk-switchbox__d{ font-size:12px; color:var(--mk-text-muted); }
+
+
+
+
+
+
+
+
+
+
+
+/* ============================================================
+   PASADA HORIZONTAL GLOBAL
+   El dominio se ve en pantallas anchas: la informacion se
+   reparte a lo ancho en vez de apilarse. Menos scroll, mismo
+   contenido.
+   ============================================================ */
+/* Fichas de datos y formularios: tantas columnas como quepan */
+.mk-formgrid{ grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
+/* Bloques de solo lectura (detalles): columnas mas estrechas */
+.mk-formgrid:not(:has(input,select,textarea)){
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+/* Convenciones y fuentes: once campos de solo lectura, todos cortos. En
+   pantalla ancha caben en cuatro columnas y el paso 1 deja de verse vacio. */
+#ntFsConvenciones .mk-formgrid{ grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); }
+#ntFsConvenciones .mk-input[readonly]{ background:#FBF7FE; }
+.mk-formgrid .span2{ grid-column:1 / -1; }
+@media (max-width:700px){ .mk-formgrid, .mk-formgrid:not(:has(input,select,textarea)){ grid-template-columns:1fr; } }
+/* Fieldsets y tarjetas mas compactos en vertical */
+.mk-section .mk-fieldset{ margin-bottom:14px; }
+.mk-detail{ padding:6px 0; }
+/* Utilidad: dos bloques lado a lado */
+.mk-cols2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(460px,1fr)); gap:16px; align-items:start; }
+.mk-cols2 > *{ min-width:0; margin-bottom:0 !important; }
+.mk-cols3{ display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; align-items:start; }
+.mk-cols3 > *{ min-width:0; margin-bottom:0 !important; }
+/* Rejillas internas dentro de una columna estrecha: se reacomodan
+   en vez de desbordarse sobre la columna vecina. */
+.mk-cols2 .mk-grid, .mk-cols3 .mk-grid,
+.mk-cols2 .mk-kpis, .mk-cols3 .mk-kpis{
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr)) !important; }
+.mk-cols2 .mk-card, .mk-cols3 .mk-card{ min-width:0; overflow:hidden; }
+
+/* ============================================================
+   TOOLTIPS SIN RECORTE
+   La burbuja ya no se pinta dentro de su celda o su tarjeta: la
+   Plataforma la dibuja en una capa por encima de todo y la
+   reubica para que nunca quede fuera de la pantalla ni cortada
+   por el borde de una tabla, una columna o un modal.
+   ============================================================ */
+.mk-tooltip__bubble{ display:none !important; }
+#mkTipPop{
+  position:fixed; z-index:99999; display:none; pointer-events:none;
+  background:#1f2937; color:#fff; font-size:11.5px; line-height:1.45;
+  padding:6px 10px; border-radius:6px; white-space:nowrap;
+  box-shadow:0 8px 24px rgba(17,24,39,.28); max-width:min(340px,92vw); }
+#mkTipPop.is-wide{ white-space:normal; width:280px; text-align:left; padding:9px 11px; font-weight:400; }
+#mkTipPop b{ color:#fff; }
+/* Validaciones previas del cierre: rejilla en vez de lista apilada */
+.mk-vgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:10px; }
+.mk-vgrid .mk-band{ margin:0; align-items:flex-start; }
+.mk-vgrid .mk-band__tag{ padding:3px 6px; }
+.mk-vgrid .mk-band > div{ min-width:0; }
+.mk-vitem--ok{ background:#F7FBF8; border-left-color:#9BC7A8; color:#3f5346; }
+.mk-vitem--ok .mk-band__tag{ background:#9BC7A8; }
+
+/* Densidad de tabla: mismas columnas, filas mas bajas */
+.mk-table tbody td{ padding:7px 12px; }
+.mk-table thead th{ padding:9px 12px; }
+.mk-table td .mk-badge{ padding:2px 8px; font-size:11px; }
+.mk-table td .mk-acts .mk-iconbtn, .mk-table td .mk-actbtn{ padding:4px 6px; }
+.mk-table td .mk-help{ font-size:11px; line-height:1.35; }
+
+/* Acordeones de modulos transversales en dos columnas */
+.mk-section > .mk-accordion{ margin-bottom:12px; }
+.mk-accgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(520px,1fr)); gap:14px; align-items:start; }
+.mk-accgrid > .mk-accordion{ margin-bottom:0; min-width:0; }
+
+/* Filtros en una sola fila compacta */
+.mk-filters, .mk-tplfilters{ align-items:flex-end; }
+
+/* Listas de chips (verificaciones, impactos): a lo ancho, no en columna */
+.mk-impacts{ flex-direction:row; flex-wrap:wrap; gap:6px 8px; }
+
+/* ============================================================
+   FILAS DE UNA SOLA LINEA
+   La tabla es para comparar y encontrar; el detalle completo de
+   un registro se lee en el modal "Ver". Cada celda ocupa una
+   linea: si el texto no cabe, se recorta con puntos suspensivos
+   y el valor completo esta en el modal (y en el tooltip nativo).
+   ============================================================ */
+.mk-tablewrap .mk-table tbody td{
+  white-space:nowrap; max-width:300px; overflow:hidden; text-overflow:ellipsis;
+  vertical-align:middle; }
+/* La segunda linea descriptiva pasa al modal de detalle */
+.mk-tablewrap .mk-table tbody td > .mk-help{ display:none !important; }
+/* Celdas de acciones, casillas y badges: sin recorte */
+.mk-tablewrap .mk-table tbody td:has(.mk-acts),
+.mk-tablewrap .mk-table tbody td:has(button),
+.mk-tablewrap .mk-table tbody td:has(input){
+  max-width:none; overflow:visible; }
+.mk-tablewrap .mk-table tbody td .mk-badge{ white-space:nowrap; }
+/* Grupos de chips y de acciones dentro de una celda: una sola linea.
+   La lista completa se lee en el modal de detalle. */
+.mk-tablewrap .mk-table tbody td .mk-impacts{
+  display:inline-flex; flex-wrap:nowrap; vertical-align:middle; gap:4px; }
+.mk-tablewrap .mk-table tbody td .mk-acts{ flex-wrap:nowrap; }
+
+/* En Setup los contadores no aportan: la parametrizacion se lee en la tabla */
+[id^="view-setup-"] .mk-kpis{ display:none !important; }
+
+/* ============================================================
+   BOTONES DE ACCION
+   Un solo estilo en todo el prototipo: cuadro redondeado de
+   color solido con el icono en blanco. Ver en morado de marca,
+   Editar en magenta, Inactivar o Eliminar en rojo. El estado
+   deshabilitado conserva el color en un tono claro para que la
+   fila siga leyendose igual.
+   ============================================================ */
+.mk-acts{ display:flex; gap:6px; align-items:center; }
+.mk-table .actions{ display:flex; gap:6px; align-items:center; }
+.mk-iconbtn,
+.mk-table .mk-iconbtn,
+.mk-table td .mk-acts .mk-iconbtn{
+  display:inline-grid; place-items:center; width:32px; height:32px;
+  border:0; border-radius:9px; cursor:pointer; padding:0;
+  background:var(--mk-primary); color:#fff;
+  transition:filter .12s ease, opacity .12s ease;
+}
+.mk-iconbtn svg{ stroke:#fff; }
+.mk-iconbtn:hover{ filter:brightness(1.12); }
+.mk-iconbtn--view, .mk-table .mk-iconbtn--view, .mk-table td .mk-acts .mk-iconbtn--view{ background:#6A1B9A; }
+.mk-iconbtn--edit, .mk-table .mk-iconbtn--edit, .mk-table td .mk-acts .mk-iconbtn--edit{ background:#C2185B; }
+.mk-iconbtn--delete, .mk-table .mk-iconbtn--delete, .mk-table td .mk-acts .mk-iconbtn--delete{ background:#E23B3B; }
+.mk-iconbtn--ok, .mk-table .mk-iconbtn--ok, .mk-table td .mk-acts .mk-iconbtn--ok{ background:#15803D; }
+.mk-iconbtn--menu, .mk-table .mk-iconbtn--menu, .mk-table td .mk-acts .mk-iconbtn--menu{ background:#4B5563; }
+/* Clonar y demas acciones sin color propio: gris de plataforma */
+.mk-table td .mk-acts .mk-iconbtn:not([class*="mk-iconbtn--"]){ background:#6B7280; }
+.mk-iconbtn--dark, .mk-table .mk-iconbtn--dark{ background:var(--mk-slate-btn); color:#fff; }
+.mk-iconbtn[disabled], .mk-iconbtn.is-off{ cursor:not-allowed; opacity:.42; filter:none; }
+.mk-iconbtn--x{ background:transparent; color:var(--mk-danger); }
+.mk-iconbtn--x svg{ stroke:var(--mk-danger); }
+/* El kebab de acciones por estado usa el mismo cuadro */
+.mk-table td .mk-kebab{
+  display:inline-grid; place-items:center; width:32px; height:32px;
+  border:0; border-radius:9px; background:#4B5563; color:#fff;
+  font-size:17px; line-height:1; padding:0; }
+.mk-table td .mk-kebab:hover{ background:#374151; filter:brightness(1.1); }
+
+/* Filtro de fecha: compacto y sin aire cuando no hay nada que decir */
+[data-mkfecmsg]:empty{ display:none; margin:0; }
+[data-mkfecmsg]{ margin:0 0 8px; }
+.mk-filters input[type="date"], .mk-tplfilters input[type="date"]{ min-width:150px; max-width:180px; }
+.mk-filters .mk-field, .mk-tplfilters .mk-field{ margin-bottom:0; }
+.mk-tplfilters, .mk-filters{ padding-top:6px; padding-bottom:6px; row-gap:8px; }
+[hidden]{ display:none !important; }
+.mk-kpis{ margin-bottom:10px; }
+.mk-section .mk-fieldset{ margin-bottom:10px; }
+.mk-kpi{ padding:8px 13px; }
+.mk-section{ padding:14px 20px; }
+/* Campo de fecha dentro de una fila de herramientas */
+.mk-toolfecha{ flex-wrap:wrap; gap:12px; align-items:flex-end; }
+.mk-toolfecha .mk-field{ margin-bottom:0; }
+.mk-filters .mk-field--search, .mk-tplfilters .mk-field--search{ flex:1 1 220px; min-width:200px; }
+.mk-filters .mk-label, .mk-tplfilters .mk-label{ margin-bottom:3px; }
+.mk-cols2, .mk-cols3{ gap:12px; }
+.mk-vgrid{ gap:8px; }
+/* Ultimo ajuste de marco: el dominio cabe en una pantalla de 950 px */
+.mk-page{ padding:14px 22px 28px; }
+.mk-section{ padding:13px 18px; }
+.mk-section .mk-fieldset{ padding:10px 13px; }
+.mk-kpis{ margin-bottom:8px; }
+.mk-headerpage{ margin-bottom:10px; }
+
+/* La pantalla raiz de Derivados conserva sus acordeones a ancho completo */
+#view-derivados .mk-accgrid{ display:block; }
+#view-derivados .mk-accgrid > .mk-accordion{ margin-bottom:12px; }
+
+/* Jerarquia entre las pestanas de Contabilidad y las de cada tabla */
+[data-tabgroup="conta"] .mk-tab{ font-size:14px; font-weight:700; padding:12px 16px; }
+[data-panelgroup="conta"] .mk-tabs:not([data-tabgroup="conta"]) .mk-tab{ font-size:12.5px; padding:8px 14px; }
+[data-panelgroup="conta"] .mk-headerpage h1{ font-size:18px; }
+[data-panelgroup="conta"] > .mk-tabpanel > .mk-section{ padding:14px 16px; }
+/* La fila completa abre el detalle */
+.mk-tablewrap .mk-table tbody tr{ cursor:pointer; }
+.mk-tablewrap .mk-table tbody tr:hover td{ background:#FBF7FE; }
+.mk-tablewrap .mk-table tbody tr.mk-norow{ cursor:default; }
+/* La tabla se desplaza en horizontal: la barra se deja siempre visible */
+.mk-tablewrap{ scrollbar-width:thin; scrollbar-color:var(--mk-primary-100) transparent; }
+.mk-tablewrap::-webkit-scrollbar{ height:9px; }
+.mk-tablewrap::-webkit-scrollbar-thumb{ background:var(--mk-primary-100); border-radius:9px; }
+.mk-tablewrap::-webkit-scrollbar-track{ background:#F4F1F8; border-radius:9px; }
+
+/* ============================================================
+   RECORTE DEL MARCO
+   Margenes y rellenos del contenedor de pagina, encabezados,
+   fieldsets y KPIs. No quita informacion: recupera el alto que
+   se iba en aire alrededor de los bloques.
+   ============================================================ */
+.mk-page{ padding:14px 22px 28px; }
+.mk-section{ padding:13px 18px; }
+.mk-section .mk-headerpage{ margin-bottom:10px; }
+.mk-section .mk-fieldset{ padding:10px 13px; margin-bottom:10px; }
+.mk-section .mk-fieldset > legend{ margin-bottom:2px; }
+.mk-kpis{ gap:10px; margin-bottom:8px; }
+.mk-kpi{ padding:8px 13px; }
+.mk-datatable__toolbar{ margin-bottom:8px; }
+.mk-datatable__foot{ padding-top:8px; }
+.mk-filters, .mk-tplfilters{ gap:12px; }
+/* Modal de detalle de fila */
+#modal-fila .mk-detail__label{ font-size:11px; }
+#modal-fila .mk-detail{ border-bottom:1px solid var(--mk-border-2); }
+/* ============================================================
+   CONTEXTO DE FONDO · selector global + banda por pantalla
+   ============================================================ */
+.mk-fundsel{ margin-left:10px !important; }
+.mk-fundbar{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  margin:0 0 16px; padding:9px 14px; border-radius:10px;
+  background:var(--mk-primary-50, #f6f0fb);
+  border:1px solid rgba(106,27,154,.18);
+  font-size:13px; color:var(--mk-text, #333);
+}
+.mk-fundbar__lb{ font-size:11px; font-weight:800; letter-spacing:.4px; text-transform:uppercase;
+  color:var(--mk-primary, #6a1b9a); }
+.mk-fundbar__v{ font-weight:700; color:var(--mk-primary, #6a1b9a); display:inline-flex; align-items:center; gap:6px; }
+.mk-fundbar__m{ color:var(--mk-text-faint, #777); font-size:12.5px; }
+.mk-fundbar__sep{ color:rgba(106,27,154,.35); }
+.mk-fundbar--all{ background:#f4f6f8; border-color:#dfe4ea; }
+.mk-fundbar--all .mk-fundbar__lb, .mk-fundbar--all .mk-fundbar__v{ color:#41525f; }
+/* Alcance del cierre (EOD multi-fondo) */
+.mk-eodscope{ display:flex; flex-wrap:wrap; gap:10px; }
+.mk-eodscope__f{ display:flex; align-items:flex-start; gap:8px; padding:9px 12px; border-radius:10px;
+  border:1px solid #e2e6ea; background:#fff; cursor:pointer; min-width:250px; }
+.mk-eodscope__f:hover{ border-color:rgba(106,27,154,.45); }
+.mk-eodscope__f input{ margin-top:3px; }
+.mk-eodscope__n{ display:block; font-weight:700; font-size:13px; }
+.mk-eodscope__m{ display:block; font-size:11.5px; color:var(--mk-text-faint,#777); }
+tr[data-mkf-hide]{ display:none !important; }
+td[data-mkf-td] .mk-badge{ white-space:nowrap; }
+[data-mkf-campo]{ min-width:220px; }

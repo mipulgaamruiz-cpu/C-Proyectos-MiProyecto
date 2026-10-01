@@ -1,0 +1,1 @@
+Dashboard Consulta de portafolios, flujos y sensibilidades. Visor de portafolio Consulta gráficas interactivas por portafolio. Flujos futuros Revisa los flujos proyectados por instrumento. Medidas de sensibilidad Analiza duración, convexidad y DV01. Mercado monetario Posición, vencimientos y devengo de las operaciones monetarias.

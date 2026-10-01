@@ -1,0 +1,8 @@
+const fs=require('fs');let s=fs.readFileSync('libreto.js','utf8');
+const rep=(a,b)=>{if(!s.includes(a))throw new Error('missing: '+a.slice(0,90));s=s.replace(a,()=>b)};
+rep("'Control de límites › Configuración',\n   ['Filtrar por portafolio {FONDO2}.','Abrir el ojo de un límite MAX por emisor ({EMISOR}, 20%).','Mostrar **Inactivar** (sin confirmar) y abrir la campana: “Límite de emisor al 92%”.'],\n   '“Los límites se definen una vez, por emisor, calificación, moneda o plazo, y la plataforma avisa antes de que se incumplan.”'",
+"'Control de límites › Evaluación',\n   ['Filtrar por portafolio {FONDO2}.','Localizar el límite MAX por emisor de {EMISOR} (20%): utilización del 92 %, estado **Alerta**.','Abrir el ojo para ver el detalle y luego la campana: “Límite de emisor al 92%”.'],\n   '“La plataforma mide cada límite contra la posición real y avisa antes de que se incumpla. Los límites se definen una sola vez, en Parametrización.”'");
+rep("'Mostrar rápido **Portafolios** e **Índices de referencia**.'","'Mostrar rápido **Portafolios**, **Índices de referencia**, **Benchmarks** y **Configuración de límites** (Ver, Editar, Inactivar).'");
+rep("  bullet('Evaluación de límites repite la pantalla de Configuración en este prototipo; no entrar ahí.'),\n","");
+rep("'Sí, por eso existe Parametrización. El flujo mostrado es una propuesta para validar con su área de inversiones.'","'Sí, por eso existe Parametrización, que incluye los portafolios, índices, benchmarks y la configuración de límites. El flujo mostrado es una propuesta para validar con su área de inversiones.'");
+fs.writeFileSync('libreto.js',s);console.log('ok');

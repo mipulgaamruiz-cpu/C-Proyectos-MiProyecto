@@ -1,0 +1,129 @@
+# Regresión de la demo · Front de inversiones
+
+Generado el 30/9/2026, 22:46:06 con `node tests/regression/run.mjs` (Playwright + Chromium, abre el HTML por `file://`).
+
+**Resultado global: 3862 aprobadas, 0 falladas de 3862 verificaciones.**
+
+## 1. Resultado por país y por prueba
+
+| Prueba | Colombia | Chile | República Dominicana | Panamá |
+| --- | --- | --- | --- | --- |
+| Preparación | Aprobada (1/1) | Aprobada (1/1) | Aprobada (1/1) | Aprobada (1/1) |
+| Rutas (light) | Aprobada (269/269) | Aprobada (269/269) | Aprobada (269/269) | Aprobada (269/269) |
+| Rendimiento | Aprobada (33/33) | Aprobada (33/33) | Aprobada (33/33) | Aprobada (33/33) |
+| Línea base | Aprobada (33/33) | Aprobada (33/33) | Aprobada (33/33) | Aprobada (33/33) |
+| Diseño | Aprobada (66/66) | Aprobada (66/66) | Aprobada (66/66) | Aprobada (66/66) |
+| Rutas (dark) | Aprobada (269/269) | Aprobada (269/269) | Aprobada (269/269) | Aprobada (269/269) |
+| Localización | — | Aprobada (66/66) | Aprobada (66/66) | Aprobada (66/66) |
+| Flujos | Aprobada (111/111) | Aprobada (111/111) | Aprobada (111/111) | Aprobada (111/111) |
+| Flujos propuesta | Aprobada (38/38) | Aprobada (38/38) | Aprobada (38/38) | Aprobada (38/38) |
+| Flujos fases 2 y 3 | Aprobada (48/48) | Aprobada (48/48) | Aprobada (48/48) | Aprobada (48/48) |
+| Invariantes | Aprobada (19/19) | Aprobada (19/19) | Aprobada (19/19) | Aprobada (11/11) |
+| Libretos | Aprobada (31/31) | Aprobada (31/31) | Aprobada (31/31) | Aprobada (31/31) |
+
+Ninguna prueba falló.
+
+## 2. Cambios intencionales respecto de la línea base (Fase 0)
+
+La línea base se tomó antes de tocar el prototipo (texto visible por país y ruta, y cifras invariantes). Estas rutas cambian a propósito:
+
+| Ruta | Países | Motivo |
+| --- | --- | --- |
+| `#/` | Todos | Tarjetas nuevas (Derivados, Exposición y cobertura) y grupo «Órdenes» con tilde · Tarjeta nueva Decisiones de inversión |
+| `#/m/dashboard` | Todos | Landing de Dashboard: tarjeta nueva Exposición y cobertura y descripción ampliada |
+| `#/m/orders` | Todos | Landing de Órdenes: tarjeta nueva Derivados, etiqueta «Órdenes» y descripción ampliada · Tarjeta nueva Decisiones de inversión |
+| `#/parametrizacion/flow` | Todos | Estados de derivados y de decisiones de inversión, y parámetros de mejor ejecución (por definir con Compliance) |
+| `#/parametrizacion/portfolios` | Todos | Atributo «Derivados» (solo cobertura) en Portafolios |
+| `#/parametrizacion/counterparties` | Todos | Exposición potencial de derivados y utilización total en Contrapartes y cupos |
+| `#/parametrizacion/limits` | Todos | Columna y filtro «Naturaleza» (normativo o interno) en Configuración de límites |
+| `#/dashboard/graphics` | Todos | Chip de fuente (New Inversiones) en el Visor de portafolio |
+| `#/dashboard/future-flows` | Todos | Chips de fuente y liquidez esperada (Administración del fondo) en Flujos futuros |
+| `#/dashboard/sensitivity-measures` | Todos | Delta y vega de las opciones junto al DV01 |
+| `#/limit-control/limit-evaluation` | Todos | Naturaleza del límite, cupo de contraparte por exposición potencial y restricción por propósito |
+| `#/orders/reports` | Todos | El Libro de órdenes incluye ahora las órdenes de derivados |
+| `#/performance-attribution/brinson` | Todos | Efecto de cobertura dentro de la atribución de retorno; el portafolio por defecto respeta el país |
+| `#/performance-attribution/contribution` | Todos | Deuda previa corregida: el portafolio por defecto ahora respeta el país (antes usaba el nombre de Colombia) · La lista de portafolios incluye los vehículos nuevos; la contribución incluye los activos no listados |
+| `#/performance-attribution/money-market` | Todos | Deuda previa corregida: el portafolio por defecto ahora respeta el país · La lista de portafolios incluye los vehículos nuevos |
+| `#/performance-attribution/summary` | Todos | Retorno cubierto y sin cubrir para portafolios con derivados (solo si el portafolio por defecto los tiene) |
+| `#/performance-attribution/reports` | Todos | Plantillas de informe por tipo de vehículo (inmobiliarios, alternativos y FVP) |
+| `#/performance-attribution/fixed-income` | Todos | La lista de portafolios incluye los vehículos nuevos (inmobiliario, alternativo y FVP por perfil) |
+| `#/parametrizacion/instruments` | Todos | Clase de activo (inmueble, proyecto, TCC y cartera) con sus campos propios y avalúos |
+| `#/parametrizacion/catalogs` | Todos | Catálogos de avaluadores y de propósito de la operación |
+| `#/parametrizacion/benchmarks` | Todos | Benchmarks de los portafolios nuevos (inmobiliario, alternativo y perfiles FVP) |
+| `#/orders/money-market` | Todos | La lista de portafolios incluye los vehículos nuevos |
+
+Cifras que cambian a propósito: **limitesEvaluados** (se agregan las filas de cupo por exposición potencial y de restricción por propósito); **alertas** (el cupo consolidado de la contraparte con mayor utilización queda en alerta); **brinsonBalanceado1YTD** (el exceso de retorno incluye ahora el efecto de la cobertura).
+
+Cambios menores no planeados en el texto de la propuesta: el grupo del menú pasó de «Ordenes» a «Órdenes» (etiqueta, breadcrumbs y textos).
+
+## 3. Lista de `SUPUESTO` (todo lo que se inventó y debe validar el negocio)
+
+Cada uno está marcado en el código con `/* SUPUESTO: ... */`.
+
+| Tema | Valor ilustrativo | Quién valida |
+| --- | --- | --- |
+| Mínimo de cotizaciones de contrapartes distintas | 3 (editable en Parametrización › Flujo de órdenes) | Compliance |
+| Tolerancia frente al valor indicativo | 0,50 % (editable) | Compliance |
+| Umbral para marcar un dato precargado como desactualizado | 2 días (editable) | Negocio y tecnología |
+| Frecuencia de avalúo antes de marcar «valoración vencida» | 12 meses (editable) | Negocio |
+| Edad de los datos de cada módulo externo | Administración del fondo llega con 3 días (para mostrar la advertencia); los demás, al día | Demo |
+| Valor indicativo de derivados | Forward = spot × (1 + tasa local × t) / (1 + tasa USD × t); swap = tasa de referencia + spread; opción = prima como % del nocional | Ramiro |
+| Spot y tasa en USD | 4.000 COP/USD, 950 CLP/USD, 60 DOP/USD, 1,08 USD por EUR (Panamá); tasa USD 4,3 %; tasa local = IBR 3M (Tasas de referencia) | Ramiro |
+| Exposición potencial futura | Factor por instrumento (forward 15 %, swap 8 %, opción 12 %, futuro 5 %) × raíz del plazo en años | Riesgos |
+| Mejor cotización | La de menor precio, tasa fija o prima (menor costo para el fondo) | Ramiro |
+| Instrumentos de derivados por país | Colombia: forward, swap, opción y futuro. Chile: forward, swap y opción. República Dominicana y Panamá: forward y swap | Ramiro |
+| Panamá | Par EUR/USD: el balboa circula a la par con el dólar, no hay riesgo USD/PAB | Ramiro |
+| Naturaleza de los límites | **Internos** (permiten continuar con motivo y aprobador): cupo de contraparte, concentración por inmueble, arrendatario, ciudad, originador, proyecto y sector, y tope por etapa. **Normativos** (bloquean): propósito, sobrecobertura, emisor, calificación, macroactivo, moneda, plazo, endeudamiento, tope a activos en desarrollo y régimen del FVP | Compliance |
+| Posiciones, MTM, delta y vega de derivados | Cifras inventadas (ver `DERIV_POS`) | Ramiro |
+| Efecto de la cobertura en la atribución | Peso de la exposición cubierta × costo o ganancia por puntos forward, con cifras inventadas | Ramiro |
+| Estados de derivados en el Libro de órdenes | Se muestran con la escala común (En cotización y Por justificar = Complementación) | Producto |
+| Activos no listados | Inmuebles, proyectos, TCC y cartera, con avalúos, covenants, comprometido y desembolsado inventados | Administración de activos y crédito |
+| Régimen de inversión del FVP | Topes por perfil (renta variable, renta fija, exterior, emisor) y nombres de perfil (Conservador, Moderado, Agresivo) | Ramiro |
+| Usuarios, actas y aprobadores | Usuarios simulados (Ramiro Giraldo Colorado, Laura Medina, Camilo Ortega y Paula Rincón) | Demo |
+| Nombres de bancos, instrumentos y tasas por país (incluido Panamá) | Ilustrativos | Negocio |
+| Módulos externos (New Inversiones, Derivados, Administración del fondo, Administración de activos y crédito, Contabilidad y Cumplimiento) | Simulados con datos locales; el contrato entre módulos se muestra con chips de fuente y el panel «Eventos publicados» | Tecnología |
+
+## 4. Diferencias con el documento de diseño
+
+- **Contrapartes y cupos**: se reutilizó el maestro existente (Parametrización › Contrapartes y cupos) y se extendió con la exposición potencial de derivados y la utilización total; no se duplicaron contrapartes ni cupos en Catálogos o Configuración de límites.
+- **Exposición y cobertura** es un ítem propio del Dashboard, distinto de **Mercado monetario**.
+- **Efecto de cobertura**: dentro de **Atribución de retorno**; **Atribución mercado monetario** no cambia.
+- **Valor indicativo**: se calcula con las tasas de **Tasas de referencia**; no hay otra fuente de tasas.
+- **Órdenes › Mercado monetario** ya existía; solo recibió la regla de precarga (chip de New Inversiones) y el cupo compartido con derivados.
+- **Parámetros de mejor ejecución**: viven en Parametrización › Flujo de órdenes, marcados «por definir con Compliance».
+- **Libro de órdenes**: ahora incluye también las órdenes de derivados.
+- **Cuatro países**: se agregó Panamá (además de Colombia, Chile y República Dominicana) y todo se probó en los cuatro.
+- **KPIs de las listas**: ahora reflejan los filtros aplicados (antes mostraban siempre el total); es lo que pide el invariante «totales de KPIs = suma de las filas visibles».
+- **Deuda previa corregida** (commit aparte en la Fase 0): la descripción de la tarjeta de mercado monetario mencionaba «CDT» en Chile y República Dominicana; el portafolio por defecto de las pantallas de atribución usaba el nombre de Colombia en otros países.
+- **Proceso**: el proyecto no es un repositorio git, así que no hay rama ni commits por fase. Las copias de cada fase quedaron en el directorio de trabajo (`mk.before_fase0.js`, `mk.before_f1.js`, …) y la línea base en `tests/regression/baseline/`.
+- **Arnés**: Playwright con Chromium (`file://`). El arnés en página (`tests/regression/harness.js`) reutiliza las verificaciones previas de exportes, cargas masivas, reportes y mercado monetario.
+
+## 5. Pendientes
+
+- **Fase 4 · Lending: no implementada (pendiente de decisión).** Depende de confirmar que el fondo *invierte* en cartera (si la origina, es otro dominio). Ya existen la clase de activo Cartera en Instrumentos y la decisión «Compra de cartera»; faltan composición por deudor, calificación, plazo y tasa en el Visor, flujos con supuesto de prepago y límites de concentración por deudor, sector y originador.
+- Umbrales por definir con Compliance: cotizaciones mínimas, tolerancia, frecuencia de avalúo y umbral de dato desactualizado.
+- Validaciones de Ramiro antes de la demo: convenciones de mercado por país (base de días, calendario, fixing e instrumentos disponibles) y los datos de Panamá.
+- Qué datos entrega New Inversiones y con qué frecuencia (hoy simulado).
+- Mejor ejecución para renta fija y renta variable: fuera de esta entrega (solo derivados).
+- Lo que **nunca** debe aparecer en el Front (llamados de capital, distribuciones a inversionistas, vinculación de afiliados, cobro de canon y gestión del inmueble, originación y cobranza de crédito) no está en el prototipo ni en los libretos; los libretos lo mencionan solo como fuera de alcance.
+
+## 6. Orden de módulos y tarjetas
+
+El menú, la home y las tarjetas de cada landing salen de la misma lista (`NAV`); la regresión comprueba que las tarjetas llevan a su ruta y siguen el orden del menú.
+
+1. **Parametrización**: Flujo de órdenes, Portafolios, Instrumentos, Índices de referencia, Benchmarks, Contrapartes y cupos, Tasas de referencia, Configuración de límites, Catálogos.
+2. **Dashboard**: Visor de portafolio, Flujos futuros, Medidas de sensibilidad, Mercado monetario, Exposición y cobertura.
+3. **Órdenes**: Renta fija, Renta variable, Mercado monetario, Derivados, Decisiones de inversión, Reportes.
+4. **Control de límites**: Evaluación.
+5. **Performance attribution**: Resumen de desempeño, Atribución de retorno, Contribución por activo, Atribución renta fija, Atribución mercado monetario, Reportes.
+
+## 7. Cómo ejecutar
+
+```bash
+cd tests
+npm install            # solo la primera vez (instala Playwright)
+npx playwright install chromium
+npm run regression     # suite completa
+node regression/run.mjs --only rutas,numeros --paises Colombia,Chile
+node regression/report.mjs   # regenera este documento
+```

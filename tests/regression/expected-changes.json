@@ -1,0 +1,120 @@
+{
+  "descripcion": "Cambios intencionales respecto de la línea base (Fase 0). Toda diferencia de texto en una ruta que no esté aquí hace fallar la regresión.",
+  "cambios": [
+    {
+      "ruta": "#/",
+      "paises": "*",
+      "motivo": "Tarjetas nuevas (Derivados, Exposición y cobertura) y grupo «Órdenes» con tilde · Tarjeta nueva Decisiones de inversión"
+    },
+    {
+      "ruta": "#/m/dashboard",
+      "paises": "*",
+      "motivo": "Landing de Dashboard: tarjeta nueva Exposición y cobertura y descripción ampliada"
+    },
+    {
+      "ruta": "#/m/orders",
+      "paises": "*",
+      "motivo": "Landing de Órdenes: tarjeta nueva Derivados, etiqueta «Órdenes» y descripción ampliada · Tarjeta nueva Decisiones de inversión"
+    },
+    {
+      "ruta": "#/parametrizacion/flow",
+      "paises": "*",
+      "motivo": "Estados de derivados y de decisiones de inversión, y parámetros de mejor ejecución (por definir con Compliance)"
+    },
+    {
+      "ruta": "#/parametrizacion/portfolios",
+      "paises": "*",
+      "motivo": "Atributo «Derivados» (solo cobertura) en Portafolios"
+    },
+    {
+      "ruta": "#/parametrizacion/counterparties",
+      "paises": "*",
+      "motivo": "Exposición potencial de derivados y utilización total en Contrapartes y cupos"
+    },
+    {
+      "ruta": "#/parametrizacion/limits",
+      "paises": "*",
+      "motivo": "Columna y filtro «Naturaleza» (normativo o interno) en Configuración de límites"
+    },
+    {
+      "ruta": "#/dashboard/graphics",
+      "paises": "*",
+      "motivo": "Chip de fuente (New Inversiones) en el Visor de portafolio"
+    },
+    {
+      "ruta": "#/dashboard/future-flows",
+      "paises": "*",
+      "motivo": "Chips de fuente y liquidez esperada (Administración del fondo) en Flujos futuros"
+    },
+    {
+      "ruta": "#/dashboard/sensitivity-measures",
+      "paises": "*",
+      "motivo": "Delta y vega de las opciones junto al DV01"
+    },
+    {
+      "ruta": "#/limit-control/limit-evaluation",
+      "paises": "*",
+      "motivo": "Naturaleza del límite, cupo de contraparte por exposición potencial y restricción por propósito"
+    },
+    {
+      "ruta": "#/orders/reports",
+      "paises": "*",
+      "motivo": "El Libro de órdenes incluye ahora las órdenes de derivados"
+    },
+    {
+      "ruta": "#/performance-attribution/brinson",
+      "paises": "*",
+      "motivo": "Efecto de cobertura dentro de la atribución de retorno; el portafolio por defecto respeta el país"
+    },
+    {
+      "ruta": "#/performance-attribution/contribution",
+      "paises": "*",
+      "motivo": "Deuda previa corregida: el portafolio por defecto ahora respeta el país (antes usaba el nombre de Colombia) · La lista de portafolios incluye los vehículos nuevos; la contribución incluye los activos no listados"
+    },
+    {
+      "ruta": "#/performance-attribution/money-market",
+      "paises": "*",
+      "motivo": "Deuda previa corregida: el portafolio por defecto ahora respeta el país · La lista de portafolios incluye los vehículos nuevos"
+    },
+    {
+      "ruta": "#/performance-attribution/summary",
+      "paises": "*",
+      "motivo": "Retorno cubierto y sin cubrir para portafolios con derivados (solo si el portafolio por defecto los tiene)"
+    },
+    {
+      "ruta": "#/performance-attribution/reports",
+      "paises": "*",
+      "motivo": "Plantillas de informe por tipo de vehículo (inmobiliarios, alternativos y FVP)"
+    },
+    {
+      "ruta": "#/performance-attribution/fixed-income",
+      "paises": "*",
+      "motivo": "La lista de portafolios incluye los vehículos nuevos (inmobiliario, alternativo y FVP por perfil)"
+    },
+    {
+      "ruta": "#/parametrizacion/instruments",
+      "paises": "*",
+      "motivo": "Clase de activo (inmueble, proyecto, TCC y cartera) con sus campos propios y avalúos"
+    },
+    {
+      "ruta": "#/parametrizacion/catalogs",
+      "paises": "*",
+      "motivo": "Catálogos de avaluadores y de propósito de la operación"
+    },
+    {
+      "ruta": "#/parametrizacion/benchmarks",
+      "paises": "*",
+      "motivo": "Benchmarks de los portafolios nuevos (inmobiliario, alternativo y perfiles FVP)"
+    },
+    {
+      "ruta": "#/orders/money-market",
+      "paises": "*",
+      "motivo": "La lista de portafolios incluye los vehículos nuevos"
+    }
+  ],
+  "cifras": {
+    "limitesEvaluados": "se agregan las filas de cupo por exposición potencial y de restricción por propósito",
+    "alertas": "el cupo consolidado de la contraparte con mayor utilización queda en alerta",
+    "brinsonBalanceado1YTD": "el exceso de retorno incluye ahora el efecto de la cobertura"
+  }
+}

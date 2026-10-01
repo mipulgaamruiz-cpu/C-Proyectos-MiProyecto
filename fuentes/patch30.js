@@ -1,0 +1,10 @@
+const fs=require('fs');let s=fs.readFileSync('mk.js','utf8');
+const rep=(a,b)=>{if(!s.includes(a))throw new Error('missing: '+a.slice(0,90));s=s.replace(a,()=>b)};
+rep("f={port:'',mercado:'',est:'',tipo:'',d1:'2026-01-01',d2:OPDATE,adv:false};","f={port:'',mercado:'',est:'',tipo:'',d1:'2026-01-01',d2:isoD(Math.max(fromIso(OPDATE),Math.max.apply(null,bookRows().map(r=>r.fecha)))),adv:false};");
+rep("const e=new Date(OPDATE+'T12:00:00'),b=new Date(e.getTime()-30*864e5);$('[name=d2]',pg).value=OPDATE;","const e=new Date(f.d2+'T12:00:00'),b=new Date(e.getTime()-30*864e5);$('[name=d2]',pg).value=f.d2;");
+fs.writeFileSync('mk.js',s);
+let l=fs.readFileSync('libreto.js','utf8');
+const a="['Abrir la tarjeta **Reportes** dentro de Órdenes: el **Libro de órdenes** reúne renta fija, renta variable y mercado monetario (**58 órdenes** en los datos originales).','Señalar los KPI por mercado, filtrar **Mercado = Mercado monetario** y un rango de **Fecha inicial / Fecha final**; abrir el ojo de una orden.','Pulsar **Excel** y abrir el archivo: encabezados, filtros y columnas numéricas listas para usar. Repetir con **CSV**.']";
+if(!l.includes(a))throw new Error('libreto');
+l=l.replace(a,()=>"['Abrir la tarjeta **Reportes** dentro de Órdenes: aparece el catálogo **Informes** (buscador, categorías y tarjetas). Abrir **Libro de órdenes · todos los mercados**.','En **Filtros del informe**: Portafolio = Todos los portafolios, Mercado = Todos, **Fecha inicial / Fecha final** (o **Rango sugerido**) y **Generar informe**: reúne renta fija, renta variable y mercado monetario (**58 órdenes** en los datos originales). Mostrar “Filtro Avanzado” (estado y tipo).','Señalar los KPI por mercado, filtrar **Mercado = Mercado monetario** y abrir el ojo de una orden.','Pulsar **Excel** y abrir el archivo: encabezados, filtros y columnas numéricas listas para usar. Repetir con **CSV**.']");
+fs.writeFileSync('libreto.js',l);console.log('ok');

@@ -1,0 +1,644 @@
+{
+ "pais": "República Dominicana",
+ "archivo": "Libreto_demo_Front_de_inversiones_Republica_Dominicana.html",
+ "descripcion": "Pasos verificables del libreto. Cada paso navega (ruta), ejecuta acciones y comprueba textos visibles.",
+ "escenas": [
+  {
+   "escena": "1",
+   "minutos": "0:00–1:00",
+   "opcional": false,
+   "pantalla": "Apertura · Home y menú lateral",
+   "pasos": [
+    {
+     "ruta": "#/",
+     "acciones": [],
+     "textoEsperado": [
+      "Parametrización",
+      "Dashboard",
+      "Órdenes",
+      "Control de límites",
+      "Performance attribution"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "2",
+   "minutos": "1:00–3:00",
+   "opcional": false,
+   "pantalla": "VER · Dashboard › Visor de portafolio y Flujos futuros (datos precargados)",
+   "pasos": [
+    {
+     "ruta": "#/dashboard/graphics",
+     "acciones": [],
+     "textoEsperado": [
+      "FONDO ABIERTO RENTA FIJA",
+      "Fuente: New Inversiones"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/dashboard/future-flows",
+     "acciones": [],
+     "textoEsperado": [
+      "Fuente: Administración del fondo",
+      "desactualizado"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": null,
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "#fx [data-refresh=\"adminfondo\"]"
+      }
+     ],
+     "textoEsperado": [
+      "Fuente: Administración del fondo"
+     ],
+     "textoNoEsperado": [
+      "desactualizado"
+     ]
+    }
+   ]
+  },
+  {
+   "escena": "3",
+   "minutos": "3:00–6:00",
+   "opcional": false,
+   "pantalla": "OPERAR · Órdenes › Renta fija (registro, precarga y Carga Masiva)",
+   "pasos": [
+    {
+     "ruta": "#/orders/fixed-income",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "[data-new]"
+      },
+      {
+       "t": "escribir",
+       "sel": ".mk-modal--form [name=\"instr\"]",
+       "valor": "BSRD11090233"
+      },
+      {
+       "t": "tecla",
+       "sel": ".mk-modal--form [name=\"instr\"]",
+       "valor": "Tab"
+      }
+     ],
+     "textoEsperado": [
+      "Fuente: New Inversiones",
+      "Emisor",
+      "Valor indicativo"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/orders/fixed-income",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "[data-rt=\"1\"]"
+      },
+      {
+       "t": "subir",
+       "sel": "#mass input[type=file]",
+       "archivo": "Plantillas_carga_masiva/Republica_Dominicana/Ejemplo_Cargue_Masivo_Ordenes_de_Renta_Fija.xlsx"
+      },
+      {
+       "t": "click",
+       "sel": "#mass [data-proc]"
+      },
+      {
+       "t": "esperar",
+       "ms": 1800
+      }
+     ],
+     "textoEsperado": [
+      "Ejemplo con datos de demostración",
+      "6 registros cargados",
+      "0 con errores"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "4",
+   "minutos": "6:00–9:00",
+   "opcional": false,
+   "pantalla": "OPERAR · Órdenes › Mercado monetario y Dashboard › Mercado monetario",
+   "pasos": [
+    {
+     "ruta": "#/orders/money-market",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "[data-new]"
+      },
+      {
+       "t": "elegir",
+       "sel": ".mk-modal--form [name=\"cp\"]",
+       "valor": "BANCO POPULAR DOMINICANO"
+      }
+     ],
+     "textoEsperado": [
+      "disponible $480.000.000,00"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/dashboard/money-market",
+     "acciones": [],
+     "textoEsperado": [
+      "15.420.000.000",
+      "49,8 días",
+      "4.920.000.000"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "5",
+   "minutos": "9:00–14:00",
+   "opcional": false,
+   "pantalla": "DERIVADOS · Órdenes › Derivados (cotizar, comparar, ejecutar y evidencia)",
+   "pasos": [
+    {
+     "ruta": "#/orders/derivatives",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "[data-new]"
+      },
+      {
+       "t": "elegir",
+       "sel": ".mk-modal--wizard [name=\"d-port\"]",
+       "valor": "FONDO ABIERTO BALANCEADO GLOBAL"
+      },
+      {
+       "t": "elegir",
+       "sel": ".mk-modal--wizard [name=\"d-inst\"]",
+       "valor": "Forward"
+      },
+      {
+       "t": "escribir",
+       "sel": ".mk-modal--wizard [name=\"d-noc\"]",
+       "valor": "2000000000"
+      },
+      {
+       "t": "escribir",
+       "sel": ".mk-modal--wizard [name=\"d-plazo\"]",
+       "valor": "90"
+      },
+      {
+       "t": "click",
+       "sel": ".mk-modal--wizard [data-n]"
+      }
+     ],
+     "textoEsperado": [
+      "Valor indicativo",
+      "Fuente: Derivados"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": null,
+     "acciones": [
+      {
+       "t": "click",
+       "sel": ".mk-modal--wizard [data-n]"
+      },
+      {
+       "t": "click",
+       "sel": ".mk-modal--wizard [data-demo]"
+      }
+     ],
+     "textoEsperado": [
+      "Mejor",
+      "BANCO POPULAR DOMINICANO",
+      "BANCO DE RESERVAS",
+      "BANCO BHD"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": null,
+     "acciones": [
+      {
+       "t": "click",
+       "sel": ".mk-modal--wizard [data-n]"
+      }
+     ],
+     "textoEsperado": [
+      "no requiere justificación"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": null,
+     "acciones": [
+      {
+       "t": "click",
+       "sel": ".mk-modal--wizard [data-n]"
+      }
+     ],
+     "textoEsperado": [
+      "Validación de límites",
+      "Cumple"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": null,
+     "acciones": [
+      {
+       "t": "click",
+       "sel": ".mk-modal--wizard [data-reg]"
+      },
+      {
+       "t": "esperar",
+       "ms": 500
+      }
+     ],
+     "textoEsperado": [
+      "Orden registrada",
+      "EV-"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": null,
+     "acciones": [
+      {
+       "t": "click",
+       "sel": ".mk-modal--wizard [data-ev]"
+      },
+      {
+       "t": "esperar",
+       "ms": 400
+      }
+     ],
+     "textoEsperado": [
+      "Evidencia de mejor ejecución",
+      "Inmutable",
+      "Corregir",
+      "Imprimir"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/orders/derivatives",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "[data-new]"
+      },
+      {
+       "t": "elegir",
+       "sel": ".mk-modal--wizard [name=\"d-port\"]",
+       "valor": "FONDO ABIERTO BALANCEADO 1"
+      },
+      {
+       "t": "elegir",
+       "sel": ".mk-modal--wizard [name=\"d-inst\"]",
+       "valor": "Forward"
+      },
+      {
+       "t": "escribir",
+       "sel": ".mk-modal--wizard [name=\"d-noc\"]",
+       "valor": "500000000"
+      },
+      {
+       "t": "escribir",
+       "sel": ".mk-modal--wizard [name=\"d-plazo\"]",
+       "valor": "30"
+      },
+      {
+       "t": "marcar",
+       "sel": ".mk-modal--wizard [name=\"d-prop\"][value=\"Posición propia\"]"
+      },
+      {
+       "t": "click",
+       "sel": ".mk-modal--wizard [data-n]"
+      }
+     ],
+     "textoEsperado": [
+      "solo admite operaciones de cobertura",
+      "Límite normativo excedido"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "6",
+   "minutos": "14:00–16:30",
+   "opcional": false,
+   "pantalla": "EXPLICAR LA COBERTURA · Dashboard › Exposición y cobertura y Atribución de retorno",
+   "pasos": [
+    {
+     "ruta": "#/dashboard/exposure",
+     "acciones": [],
+     "textoEsperado": [
+      "Exposición bruta",
+      "% cubierto",
+      "Cubierto y descubierto",
+      "Fuente: Derivados"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/performance-attribution/brinson",
+     "acciones": [
+      {
+       "t": "elegir",
+       "sel": "#view [name=\"port\"]",
+       "valor": "FONDO ABIERTO BALANCEADO 1"
+      },
+      {
+       "t": "click",
+       "sel": "#view [data-consult]"
+      },
+      {
+       "t": "esperar",
+       "ms": 500
+      }
+     ],
+     "textoEsperado": [
+      "Efecto cobertura"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "7",
+   "minutos": "16:30–18:30",
+   "opcional": false,
+   "pantalla": "CONTROLAR · Control de límites › Evaluación",
+   "pasos": [
+    {
+     "ruta": "#/limit-control/limit-evaluation",
+     "acciones": [
+      {
+       "t": "elegir",
+       "sel": "#view select[data-fl=\"p\"]",
+       "valor": "FONDO ABIERTO LIQUIDEZ"
+      }
+     ],
+     "textoEsperado": [
+      "FONDO ABIERTO LIQUIDEZ",
+      "BANCO ADEMI",
+      "BANCO POPULAR DOMINICANO",
+      "Normativo",
+      "Interno",
+      "Alerta"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "8",
+   "minutos": "18:30–20:00",
+   "opcional": false,
+   "pantalla": "REPORTAR · Órdenes › Reportes (Libro de órdenes)",
+   "pasos": [
+    {
+     "ruta": "#/orders/reports",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "[data-r]"
+      },
+      {
+       "t": "click",
+       "sel": "[data-gen]"
+      },
+      {
+       "t": "esperar",
+       "ms": 700
+      }
+     ],
+     "textoEsperado": [
+      "Derivados",
+      "/Mostrando 10 de [0-9]+ órdenes/"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "9",
+   "minutos": "20:00–24:00",
+   "opcional": false,
+   "pantalla": "EXPLICAR · Performance attribution",
+   "pasos": [
+    {
+     "ruta": "#/performance-attribution/summary",
+     "acciones": [],
+     "textoEsperado": [
+      "Tracking error",
+      "Information ratio"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/performance-attribution/fixed-income",
+     "acciones": [],
+     "textoEsperado": [
+      "Atribución de renta fija"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/performance-attribution/money-market",
+     "acciones": [],
+     "textoEsperado": [
+      "Atribución mercado monetario"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "10",
+   "minutos": "24:00–25:00",
+   "opcional": false,
+   "pantalla": "ADAPTAR y cierre · Parametrización",
+   "pasos": [
+    {
+     "ruta": "#/parametrizacion/counterparties",
+     "acciones": [],
+     "textoEsperado": [
+      "BANCO POPULAR DOMINICANO",
+      "Exposición potencial de derivados",
+      "Utilización total"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/parametrizacion/flow",
+     "acciones": [],
+     "textoEsperado": [
+      "Por justificar",
+      "Parámetros de mejor ejecución",
+      "Por definir con Compliance"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "11",
+   "minutos": "OPCIONAL · +6 min",
+   "opcional": true,
+   "pantalla": "Decisiones de inversión, inmobiliarios y alternativos",
+   "pasos": [
+    {
+     "ruta": "#/orders/investment-decisions",
+     "acciones": [],
+     "textoEsperado": [
+      "DI-0002",
+      "En comité",
+      "Aprobada",
+      "Rechazada"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/dashboard/graphics",
+     "acciones": [
+      {
+       "t": "elegir",
+       "sel": "#view [name=\"port\"]",
+       "valor": "FONDO INMOBILIARIO 1"
+      },
+      {
+       "t": "esperar",
+       "ms": 500
+      }
+     ],
+     "textoEsperado": [
+      "Valoración vencida",
+      "Fuente: Administración de activos y crédito",
+      "Fecha de valoración"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/dashboard/graphics",
+     "acciones": [
+      {
+       "t": "elegir",
+       "sel": "#view [name=\"port\"]",
+       "valor": "FONDO ALTERNATIVO 1"
+      },
+      {
+       "t": "esperar",
+       "ms": 400
+      },
+      {
+       "t": "click",
+       "sel": "#view [data-t=\"1\"]"
+      },
+      {
+       "t": "esperar",
+       "ms": 300
+      }
+     ],
+     "textoEsperado": [
+      "Comprometido",
+      "Covenants en alerta"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/performance-attribution/summary",
+     "acciones": [
+      {
+       "t": "elegir",
+       "sel": "#view [name=\"port\"]",
+       "valor": "FONDO ALTERNATIVO 1"
+      },
+      {
+       "t": "click",
+       "sel": "#view [data-consult]"
+      },
+      {
+       "t": "esperar",
+       "ms": 600
+      }
+     ],
+     "textoEsperado": [
+      "TIR",
+      "MOIC"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  },
+  {
+   "escena": "12",
+   "minutos": "OPCIONAL · +3 min",
+   "opcional": true,
+   "pantalla": "FVP · perfiles de riesgo y régimen de inversión",
+   "pasos": [
+    {
+     "ruta": "#/performance-attribution/summary",
+     "acciones": [
+      {
+       "t": "elegir",
+       "sel": "#view [name=\"port\"]",
+       "valor": "FVP MODERADO"
+      },
+      {
+       "t": "click",
+       "sel": "#view [data-consult]"
+      },
+      {
+       "t": "esperar",
+       "ms": 600
+      },
+      {
+       "t": "click",
+       "sel": "#view [data-t=\"2\"]"
+      },
+      {
+       "t": "esperar",
+       "ms": 300
+      }
+     ],
+     "textoEsperado": [
+      "Conservador",
+      "Moderado",
+      "Agresivo"
+     ],
+     "textoNoEsperado": []
+    },
+    {
+     "ruta": "#/parametrizacion/limits",
+     "acciones": [
+      {
+       "t": "click",
+       "sel": "#regimen .mk-accordion__head"
+      },
+      {
+       "t": "esperar",
+       "ms": 250
+      }
+     ],
+     "textoEsperado": [
+      "Vigente",
+      "Histórica"
+     ],
+     "textoNoEsperado": []
+    }
+   ]
+  }
+ ]
+}

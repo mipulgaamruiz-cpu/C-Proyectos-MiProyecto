@@ -1,0 +1,21 @@
+const fs=require('fs');
+const rep=(s,a,b)=>{if(!s.includes(a))throw new Error('missing: '+a.slice(0,70));return s.replace(a,()=>b)};
+let js=fs.readFileSync('mk.js','utf8');
+let data=fs.readFileSync('data.part.js','utf8').split('\n').filter(l=>!l.startsWith('function toast(')&&!l.startsWith('function confirmDlg(')).join('\n');
+/*COLOMBIA*/data=data.split('CELULOSA ARAUCO Y CONSTITUCION S.A.').join('ISA S.A. E.S.P.').split('TESORERÍA GENERAL DE LA REPÚBLICA DE CHILE').join('MINISTERIO DE HACIENDA (TES)').split('BANCO CENTRAL DE CHILE').join('BANCO DE LA REPÚBLICA').split('ADMINISTRADORA GENERAL DE FONDOS SURA').join('FIDUCIARIA BANCOLOMBIA').split('BANCO SANTANDER').join('BANCOLOMBIA S.A.').split('FALABELLA S.A.').join('GRUPO SURA').split("types=['UF','DESCUENTO'").join("types=['DTF','DESCUENTO'").split("'UF'").join("'UVR'").split("'CLP'").join("'COP'").split('FONDO MUTUO LV MONETARIO').join('FIC MONETARIO').split('Efecto moneda / UF').join('Efecto moneda e indexación');
+data=rep(data,"'pa-pos':'pa-neg'","'pos':'neg'");
+data=rep(data,"const PALETTE=['#c50ee9','#6d7e96',","const PALETTE=['#6A1B9A','#64748B',");
+data=rep(data,'function seriesFor(port,periodKey){','function seriesFor(port,periodKey,end){');
+data=rep(data,'const today=new Date(2026,8,30);','const today=end||new Date(2026,8,30);');
+data=rep(data,'r=rng(hash(port)+n),k=PERIODS[periodKey].k;','r=rng(hash(port)+n+(end?end.getMonth()*7+end.getFullYear():0)),k=PERIODS[periodKey].k;');
+data=rep(data,'function perfStats(port,periodKey){','function perfStats(port,periodKey,end){');
+data=rep(data,'const s=seriesFor(port,periodKey),last','const s=seriesFor(port,periodKey,end),last');
+let icons=fs.readFileSync('icons.part.js','utf8');
+icons+="\nICONS.pen=P(['M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z','m15 5 4 4']);ICONS.copy='<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\"/>'+P('M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2');\n";
+let charts=fs.readFileSync('charts.part.js','utf8').split('class="lg"').join('class="lgd"');
+js=js.replace('/*DATA*/',()=>data).replace('/*ICONS*/',()=>icons).replace('/*CHARTS*/',()=>charts);
+js=js.replace("PAGES_INIT();\nfunction PAGES_INIT(){}\n",'');
+const css=fs.readFileSync('blk0.css','utf8')+'\n'+fs.readFileSync('blk1.css','utf8')+'\n'+fs.readFileSync('extras.css','utf8');
+const html='<!doctype html>\n<html lang="es">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>Makers Platform | Front de inversiones</title>\n<style>\n'+css+'\n</style>\n</head>\n<body>\n<div id="root"></div>\n<script>\n'+js+'\n</script>\n</body>\n</html>';
+fs.writeFileSync('C:/Derivados AF/front-inversiones-performance-attribution.html',html);
+try{new Function(js);console.log('built',html.length,'syntax ok')}catch(e){console.log('SYNTAX ERR',e.message)}
