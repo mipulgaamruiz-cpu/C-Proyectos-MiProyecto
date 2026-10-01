@@ -61,8 +61,10 @@ node gen_templates.js  # plantillas de carga masiva
 
 ## Actualización final (entrega para la demo)
 
-- Regresión completa final: **4.554 pruebas aprobadas y 0 falladas** (Colombia, Chile, República Dominicana y Panamá, tema claro y oscuro, flujos, invariantes, libretos y plantillas).
-- Incluye: Fase 4 Lending; informes de órdenes por producto filtrables por FIC, FCP y FVP; Atribución por producto con efecto cambiario; Derivados sin opciones (forward y swap de divisas y de tasas, OTC y novado, y futuros) con propósito cobertura, inversión o ambos; validación previa de límites, excesos y aprobaciones, bitácora de auditoría y segregación de funciones en todas las órdenes; «Módulos conectados» en todas las pantallas.
+- Regresión completa final: **4.370 pruebas aprobadas y 0 falladas** (Colombia, Chile, República Dominicana y Panamá, tema claro y oscuro, flujos, invariantes, libretos y plantillas).
+- Incluye: Fase 4 Lending; informes de órdenes por producto filtrables por FIC, FCP y FVP; Atribución por producto con efecto cambiario; Derivados sin opciones (forward y swap de divisas y de tasas, OTC y novado, y futuros) con propósito cobertura, inversión o ambos; validación previa de límites, excesos y aprobaciones (Control de límites), bitácora de auditoría (informe en Órdenes › Reportes) y segregación de funciones en todas las órdenes; «Módulos conectados» en todas las pantallas.
 - La versión vigente es `front-inversiones-performance-attribution.html` (raíz). `fuentes/` es solo referencia histórica (ver `fuentes/LEEME.md`).
 - Documentos: `docs/COBERTURA-POR-TIPO-DE-ACTIVO.md`, `docs/ANALISIS-DE-BRECHAS-NEGOCIO-FIDUCIARIO.md` y `docs/REGRESION-DEMO.md`.
 - Pendientes de negocio: validar con Ramiro las convenciones de derivados por país, los topes de los límites y los nombres de los vehículos; los datos de desempeño son ilustrativos.
+
+- Las plantillas de carga masiva con datos de demostración están en `03_plantillas_carga_masiva` (por país, en Excel y CSV). Ya no se descargan desde la pantalla: se entregan aparte a quien haga la demo.

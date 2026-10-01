@@ -1,23 +1,23 @@
 # Regresión de la demo · Front de inversiones
 
-Generado el 1/10/2026, 14:04:25 con `node tests/regression/run.mjs` (Playwright + Chromium, abre el HTML por `file://`).
+Generado el 1/10/2026, 14:51:01 con `node tests/regression/run.mjs` (Playwright + Chromium, abre el HTML por `file://`).
 
-**Resultado global: 4554 aprobadas, 0 falladas de 4554 verificaciones.**
+**Resultado global: 4370 aprobadas, 0 falladas de 4370 verificaciones.**
 
 ## 1. Resultado por país y por prueba
 
 | Prueba | Colombia | Chile | República Dominicana | Panamá |
 | --- | --- | --- | --- | --- |
 | Preparación | Aprobada (1/1) | Aprobada (1/1) | Aprobada (1/1) | Aprobada (1/1) |
-| Rutas (light) | Aprobada (302/302) | Aprobada (302/302) | Aprobada (302/302) | Aprobada (302/302) |
-| Rendimiento | Aprobada (37/37) | Aprobada (37/37) | Aprobada (37/37) | Aprobada (37/37) |
-| Línea base | Aprobada (37/37) | Aprobada (37/37) | Aprobada (37/37) | Aprobada (37/37) |
-| Diseño | Aprobada (74/74) | Aprobada (74/74) | Aprobada (74/74) | Aprobada (74/74) |
-| Rutas (dark) | Aprobada (302/302) | Aprobada (302/302) | Aprobada (302/302) | Aprobada (302/302) |
-| Localización | — | Aprobada (74/74) | Aprobada (74/74) | Aprobada (74/74) |
-| Flujos | Aprobada (119/119) | Aprobada (119/119) | Aprobada (119/119) | Aprobada (119/119) |
+| Rutas (light) | Aprobada (286/286) | Aprobada (286/286) | Aprobada (286/286) | Aprobada (286/286) |
+| Rendimiento | Aprobada (35/35) | Aprobada (35/35) | Aprobada (35/35) | Aprobada (35/35) |
+| Línea base | Aprobada (35/35) | Aprobada (35/35) | Aprobada (35/35) | Aprobada (35/35) |
+| Diseño | Aprobada (70/70) | Aprobada (70/70) | Aprobada (70/70) | Aprobada (70/70) |
+| Rutas (dark) | Aprobada (286/286) | Aprobada (286/286) | Aprobada (286/286) | Aprobada (286/286) |
+| Localización | — | Aprobada (70/70) | Aprobada (70/70) | Aprobada (70/70) |
+| Flujos | Aprobada (118/118) | Aprobada (118/118) | Aprobada (118/118) | Aprobada (118/118) |
 | Flujos propuesta | Aprobada (38/38) | Aprobada (38/38) | Aprobada (38/38) | Aprobada (38/38) |
-| Flujos fases 2 y 3 | Aprobada (122/122) | Aprobada (122/122) | Aprobada (122/122) | Aprobada (122/122) |
+| Flujos fases 2 y 3 | Aprobada (120/120) | Aprobada (120/120) | Aprobada (120/120) | Aprobada (120/120) |
 | Invariantes | Aprobada (19/19) | Aprobada (19/19) | Aprobada (19/19) | Aprobada (11/11) |
 | Libretos | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) | Aprobada (34/34) |
 
