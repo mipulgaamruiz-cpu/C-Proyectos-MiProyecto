@@ -57,3 +57,11 @@ node gen_templates.js  # plantillas de carga masiva
 - Reglas de oro del prototipo: un solo HTML, sin red, sin persistencia (solo el tema), español, y localización por país con `CTRY[pais].m / ex / fix`. Lo que se inventa en Colombia se reemplaza en Chile, República Dominicana y Panamá.
 - Trampas conocidas del código: las `const` de flecha usadas al crear páginas (`filters`, `cols`) deben ser `function` declaradas (ver `natOf`, `claseOf`); `S` (estado de país) se declara antes de los datos; el texto visible de las pruebas debe compararse sin distinguir mayúsculas porque el CSS pone en mayúsculas algunos rótulos.
 - Libro de órdenes: 66 órdenes en los datos originales (26 renta fija, 14 renta variable, 18 mercado monetario y 8 derivados).
+
+
+## Actualización final (entrega para la demo)
+
+- Regresión completa final: **4.104 pruebas aprobadas y 0 falladas** (Colombia, Chile, República Dominicana y Panamá, tema claro y oscuro, flujos, invariantes, libretos y plantillas).
+- Nuevo: Fase 4 Lending, siete informes de órdenes por producto filtrables por FIC, FCP y FVP, Atribución por producto, catálogos nuevos y «Módulos conectados» en Renta fija, Renta variable y Derivados.
+- La versión vigente es `front-inversiones-performance-attribution.html` (raíz). `fuentes/` quedó solo como referencia histórica (ver `fuentes/LEEME.md`).
+- Cobertura por tipo de activo: `docs/COBERTURA-POR-TIPO-DE-ACTIVO.md`. Resultado de la regresión: `docs/REGRESION-DEMO.md`.
