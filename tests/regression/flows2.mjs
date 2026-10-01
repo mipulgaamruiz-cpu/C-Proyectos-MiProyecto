@@ -28,7 +28,7 @@ export async function runFlows2(browser, html, R, pais) {
   /* F1 · orden completa con 3 cotizaciones y la mejor */
   const ev0 = await evCount();
   await wizOpen(page);
-  await step0(page, { port: BG, inst: 'Forward', noc: 2000000000, plazo: 90 });
+  await step0(page, { port: BG, inst: 'Forward de divisas OTC', noc: 2000000000, plazo: 90 });
   await page.waitForSelector(`${W} .mk-srcchip`);
   ok('F1 · paso 2 muestra el valor indicativo con la fuente Derivados', /Fuente:\s*Derivados/.test(await txt(page)) && /Valor indicativo/.test(await txt(page)));
   await next(page);
@@ -62,7 +62,7 @@ export async function runFlows2(browser, html, R, pais) {
 
   /* F2 · cotización que no es la mejor: bloquea sin justificación */
   await wizOpen(page);
-  await step0(page, { port: BG, inst: 'Forward', noc: 1000000000, plazo: 60 });
+  await step0(page, { port: BG, inst: 'Forward de divisas OTC', noc: 1000000000, plazo: 60 });
   await next(page); await page.click(`${W} [data-demo]`); await next(page);
   await page.check(`${W} [name="d-ch"] >> nth=1`);
   await page.waitForSelector(`${W} [name="d-just"]`);
@@ -78,7 +78,7 @@ export async function runFlows2(browser, html, R, pais) {
 
   /* F3 · menos cotizaciones que el mínimo */
   await wizOpen(page);
-  await step0(page, { port: BG, inst: 'Forward', noc: 500000000, plazo: 30 });
+  await step0(page, { port: BG, inst: 'Forward de divisas OTC', noc: 500000000, plazo: 30 });
   await next(page);
   for (let i = 1; i <= 2; i++) { await page.selectOption(`${W} [name="q-cp"]`, { index: i }); await page.fill(`${W} [name="q-precio"]`, String(3900 + i)); await page.click(`${W} [data-add]`); }
   await next(page);
@@ -93,7 +93,7 @@ export async function runFlows2(browser, html, R, pais) {
 
   /* F4 · cupo de contraparte excedido: límite interno permite con aprobación registrada */
   await wizOpen(page);
-  await step0(page, { port: BG, inst: 'Forward', noc: 4200000000, plazo: 365 });
+  await step0(page, { port: BG, inst: 'Forward de divisas OTC', noc: 4200000000, plazo: 365 });
   await next(page); await page.click(`${W} [data-demo]`); await next(page); await next(page);
   const t4 = await txt(page);
   ok('F4 · el cupo excedido es un límite interno (Interno · Excedido)', /Cupo de contraparte/.test(t4) && /Interno/.test(t4) && /Excedido/.test(t4) && /Límite interno excedido/.test(t4));
@@ -111,15 +111,15 @@ export async function runFlows2(browser, html, R, pais) {
   await closeModals(page);
   /* F4 · límite normativo (sobrecobertura) bloquea */
   await wizOpen(page);
-  await step0(page, { port: B1, inst: 'Forward', noc: 2000000000, plazo: 90, prop: 'Cobertura' });
+  await step0(page, { port: B1, inst: 'Forward de divisas OTC', noc: 2000000000, plazo: 90, prop: 'Cobertura' });
   const t4b = await txt(page);
   ok('F4 · límite normativo excedido (cobertura mayor a la exposición) bloquea la orden', /Límite normativo excedido/.test(t4b) && /Normativo/.test(t4b) && /Iniciar/.test(t4b) && !(await page.locator(`${W} .mk-srcchip`).count()));
-  /* F8 · portafolio solo cobertura intenta posición propia */
-  await page.check(`${W} [name="d-prop"][value="Posición propia"]`);
+  /* F8 · portafolio solo cobertura intenta una operación de inversión */
+  await page.check(`${W} [name="d-prop"][value="Inversión"]`);
   await page.fill(`${W} [name="d-noc"]`, '500000000');
   await next(page);
   const t8 = await txt(page);
-  ok('F8 · un portafolio solo cobertura no puede abrir posición propia (bloqueado)', /solo admite operaciones de cobertura/.test(t8) && /Límite normativo excedido/.test(t8));
+  ok('F8 · un portafolio solo cobertura no puede abrir operaciones de inversión (bloqueado)', /solo admite operaciones de cobertura/.test(t8) && /Límite normativo excedido/.test(t8));
   await closeModals(page);
 
   /* confirmar: segregación de funciones */

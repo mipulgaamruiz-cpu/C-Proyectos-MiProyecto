@@ -2,6 +2,7 @@
 import { openApp, go, viewText, forbiddenFor, leaks, BAD_TEXT, setCountry } from './lib.mjs';
 
 const MF = '.mk-modal--form';
+const W2 = '.mk-modal-overlay';
 const ovl = '.mk-modal-overlay:last-of-type';
 const closeModals = page => page.evaluate(() => document.querySelectorAll('.mk-modal-overlay').forEach(m => m.remove()));
 
@@ -184,6 +185,63 @@ export async function runFlows3(browser, html, R, pais) {
     const tx = await prodTab(port, tab);
     ok(`Atribución por producto · ${lbl}: muestra cifras y gráfica`, re.test(tx) && !BAD_TEXT.test(tx) && (await page.locator('#view svg').count()) > 0, tx.slice(0, 120));
   }
+  /* Ajustes de la revisión de pantallas */
+  const rowsOf = sel => page.evaluate(sel => { const cs = [...document.querySelectorAll(sel)].map(c => c.getBoundingClientRect()); const rows = {}; cs.forEach(r => { const k = Math.round(r.top / 8); (rows[k] = rows[k] || []).push(Math.round(r.width)) }); return Object.values(rows) }, sel);
+  const okRows = (rows, total) => rows.reduce((a, r) => a + r.length, 0) === total && (total <= 2 || rows.every(r => r.length >= 2)) && rows.every(r => Math.max(...r) - Math.min(...r) <= 3);
+  const groups = await page.evaluate(() => window.__mk.NAV.map(g => ({ home: g.home, key: g.key, n: g.items.length })));
+  for (const g of groups) { await go(page, g.home); await page.waitForTimeout(700); const rw = await rowsOf('#view .mk-linkcard'); ok(`Tarjetas de ${g.key}: filas balanceadas del mismo ancho, sin tarjeta sola`, okRows(rw, g.n), JSON.stringify(rw.map(r => r.length))) }
+  await go(page, '#/'); await page.waitForTimeout(500); await page.evaluate(() => document.querySelectorAll('.mk-accordion').forEach(a => a.classList.remove('collapsed'))); await page.waitForTimeout(400);
+  for (const g of groups) { const rw = await page.evaluate(id => { const cs = [...document.querySelectorAll('#' + id + ' .mk-linkcard')].map(c => c.getBoundingClientRect()); const rows = {}; cs.forEach(r => { const k = Math.round(r.top / 8); (rows[k] = rows[k] || []).push(Math.round(r.width)) }); return Object.values(rows) }, 'acc-' + g.key); ok(`Home · ${g.key}: filas balanceadas del mismo ancho, sin tarjeta sola`, okRows(rw, g.n), JSON.stringify(rw.map(r => r.length))) }
+  await go(page, '#/parametrizacion/flow'); await page.waitForTimeout(500);
+  const fa = await page.evaluate(() => ({ ed: document.querySelectorAll('#view [data-act="edit"]').length, off: document.querySelectorAll('#view [data-act="off"]').length }));
+  ok('Flujo de órdenes: cada estado tiene las acciones Editar e Inactivar', fa.ed >= 13 && fa.off >= 13, JSON.stringify(fa));
+  await page.locator('#view [data-act="edit"]').first().click(); await page.waitForSelector('[name=a1]');
+  await page.selectOption('[name=a1]', 'No'); await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(400);
+  const ft = await page.locator('#ft tbody tr').first().innerText();
+  ok('Flujo de órdenes: editar un estado cambia las acciones permitidas', /No/.test(ft.split('\n').join(' ')) && !(await page.locator('.mk-modal-overlay').count()), ft.replace(/\s+/g, ' ').slice(0, 80));
+  await page.locator('#view [data-act="off"]').first().click(); await page.waitForSelector('.mk-modal-overlay [data-ok]'); await page.click(`${ovl} [data-ok]`); await page.waitForTimeout(400);
+  ok('Flujo de órdenes: inactivar un estado lo marca como Inactivo', /Inactivo/.test(await page.locator('#ft').innerText()));
+  await go(page, '#/parametrizacion/catalogs'); await page.waitForTimeout(400);
+  const ctabs = await page.locator('#view .mk-tab').allTextContents(); let calls = [];
+  for (let i = 0; i < ctabs.length; i++) { await page.click(`#view [data-t="${i}"]`); await page.waitForTimeout(250); calls.push([ctabs[i], await page.locator('#view [data-cn]').count(), await page.locator('#view [data-act="edit"]').count()]) }
+  const sysTabs = ['Tipos de límite', 'Clases de activo', 'Instrumentos de derivados'];
+  ok('Catálogos: los maestros tienen Nuevo, Editar e Inactivar; los del sistema solo se consultan', calls.every(([t, n, e]) => sysTabs.includes(t) ? (n === 0 && e === 0) : (n === 1 && e > 0)), JSON.stringify(calls));
+  const avi = ctabs.indexOf('Avaluadores'); await page.click(`#view [data-t="${avi}"]`); await page.waitForTimeout(250);
+  await page.click('#view [data-cn]'); await page.waitForSelector(MF); await page.fill(`${MF} [name=a]`, 'Avaluadora del Pacífico S.A.'); await page.fill(`${MF} [name=e]`, 'Oficinas'); await page.click(`${MF} [data-s]`); await page.waitForTimeout(400);
+  ok('Catálogos: crear un registro lo agrega a la lista', /Avaluadora del Pacífico S\.A\./.test(await page.locator('#ct').innerText()));
+  await go(page, '#/parametrizacion/instruments'); await page.waitForTimeout(400);
+  const nb = await page.locator('#view .mk-headerpage button').evaluateAll(b => b.filter(x => /Nuevo/.test(x.innerText)).length);
+  ok('Instrumentos: un solo botón Nuevo', nb === 1, String(nb));
+  await page.click('#view [data-new]'); await page.waitForSelector('.mk-modal-overlay [data-k="n"]');
+  ok('Instrumentos: Nuevo pregunta si es un instrumento listado o un activo no listado', (await page.locator('.mk-modal-overlay [data-k]').count()) === 2); await closeModals(page);
+  await go(page, '#/parametrizacion/limits'); await page.waitForTimeout(400);
+  ok('Configuración de límites: sin el letrero «Por definir con el negocio»', !/Topes ilustrativos|Por definir con el negocio/.test(await page.locator('#view').innerText()));
+  const pn = await page.evaluate(() => window.__mk.DS.PNAMES);
+  ok('Portafolios: no hay personas naturales entre los portafolios', !pn.some(n => /Julian|Murillo|Alvarez|Saldarriaga|Jham|Mesa Restrepo/i.test(n)), pn.join(','));
+  await go(page, '#/dashboard/graphics'); await page.waitForTimeout(400);
+  const cla = async (puerto) => { await page.selectOption('#view [name=port]', { index: puerto }); await page.click('#view [data-consult]'); await page.waitForTimeout(600); return page.locator('#view [name=clase] option').allTextContents() };
+  const ports = await page.locator('#view [name=port] option').allTextContents();
+  let allCl = new Set(); for (let i = 1; i < ports.length; i++) (await cla(i)).forEach(x => allCl.add(x));
+  ok('Visor: Clase de activo incluye renta fija, renta variable, mercado monetario, derivados, inmueble, proyecto, TCC y cartera', ['Renta fija', 'Renta variable', 'Mercado monetario', 'Derivados', 'Inmueble', 'Proyecto', 'TCC', 'Cartera'].every(c => allCl.has(c)), [...allCl].join(','));
+  const di = await page.evaluate(() => ({ inst: [...new Set(window.__mk.DS.DERIV_ORDERS.map(o => o.inst))], av: window.__mk.DERIV_P ? 1 : 0 }));
+  await go(page, '#/orders/derivatives'); await page.click('[data-new]'); await page.waitForSelector(`${W2} [name="d-inst"]`);
+  const insts = await page.locator(`${W2} [name="d-inst"] option`).allTextContents();
+  const props = await page.locator(`${W2} [name="d-prop"]`).evaluateAll(r => r.map(x => x.value));
+  ok('Derivados: sin opciones; instrumentos permitidos solo forward, swap y futuros', insts.filter(x => x && x !== 'Seleccionar').every(x => /^(Forward de (divisas|tasas) (OTC|novado)|Swap de (divisas|tasas) OTC|Swap novado|Futuro)$/.test(x)) && insts.length > 4 && !/Opci/i.test(insts.join(',')) && di.inst.every(i => !/Opci/i.test(i)), insts.join('|'));
+  ok('Derivados: el propósito es Cobertura, Inversión o Cobertura e inversión', ['Cobertura', 'Inversión', 'Cobertura e inversión'].every(p => props.includes(p)) && props.length === 3, props.join('|')); await closeModals(page);
+  const dtx = []; for (const r of ['#/orders/derivatives', '#/dashboard/sensitivity-measures', '#/dashboard/exposure', '#/orders/reports']) { await go(page, r); dtx.push(await page.locator('#view').innerText()) }
+  ok('Derivados: ninguna pantalla muestra opciones, delta ni vega', !/Opci[oó]n|opciones|\bDelta\b|\bVega\b/.test(dtx.join(' ')));
+  await go(page, '#/orders/fixed-income'); await page.click('#view [data-rt="1"]'); await page.waitForTimeout(400);
+  ok('Carga masiva: los botones de descarga muestran su icono', (await page.locator('#view [data-dl] svg').count()) >= 4 && (await page.locator('#view [data-dl] svg *').count()) > 0);
+  await go(page, '#/limit-control/limit-evaluation'); await page.waitForTimeout(400);
+  ok('Evaluación de límites: filtro por tipo de activo', (await page.locator('#view select[data-fl="ta"]').count()) === 1);
+  await go(page, '#/dashboard/future-flows'); await page.waitForTimeout(400);
+  ok('Flujos futuros: filtro por tipo de activo', (await page.locator('#view [name=ta]').count()) === 1);
+  await go(page, '#/performance-attribution/contribution'); await page.waitForTimeout(400);
+  ok('Contribución por activo: filtro por tipo de activo', (await page.locator('#view [name=clase]').count()) === 1);
+  const navRoutes = await page.evaluate(() => window.__mk.NAV.flatMap(g => g.items.map(i => i[0])));
+  const sinMod = []; for (const r of navRoutes) { await go(page, r); await page.waitForTimeout(250); if ((await page.locator('#view .mk-apoya a.mk-chip').count()) < 2) sinMod.push(r) }
+  ok('Módulos conectados: todas las pantallas muestran la etiqueta con sus enlaces', sinMod.length === 0, sinMod.join(','));
   /* F12 en las pantallas nuevas */
   for (const dest of ['Colombia', 'Chile', 'República Dominicana', 'Panamá'].filter(c => c !== pais).slice(0, 2)) {
     for (const route of ['#/orders/investment-decisions', '#/parametrizacion/instruments', '#/dashboard/graphics', '#/parametrizacion/limits']) {

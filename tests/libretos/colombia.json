@@ -182,7 +182,7 @@
       {
        "t": "elegir",
        "sel": ".mk-modal--wizard [name=\"d-inst\"]",
-       "valor": "Forward"
+       "valor": "Forward de divisas OTC"
       },
       {
        "t": "escribir",
@@ -305,7 +305,7 @@
       {
        "t": "elegir",
        "sel": ".mk-modal--wizard [name=\"d-inst\"]",
-       "valor": "Forward"
+       "valor": "Forward de divisas OTC"
       },
       {
        "t": "escribir",

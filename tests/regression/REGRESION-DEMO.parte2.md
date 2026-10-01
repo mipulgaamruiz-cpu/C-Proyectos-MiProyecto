@@ -14,7 +14,7 @@ Cada uno está marcado en el código con `/* SUPUESTO: ... */`.
 | Spot y tasa en USD | 4.000 COP/USD, 950 CLP/USD, 60 DOP/USD, 1,08 USD por EUR (Panamá); tasa USD 4,3 %; tasa local = IBR 3M (Tasas de referencia) | Ramiro |
 | Exposición potencial futura | Factor por instrumento (forward 15 %, swap 8 %, opción 12 %, futuro 5 %) × raíz del plazo en años | Riesgos |
 | Mejor cotización | La de menor precio, tasa fija o prima (menor costo para el fondo) | Ramiro |
-| Instrumentos de derivados por país | Colombia: forward, swap, opción y futuro. Chile: forward, swap y opción. República Dominicana y Panamá: forward y swap | Ramiro |
+| Instrumentos de derivados por país | La plataforma opera forward de divisas y de tasas (OTC y novado), swap de divisas y de tasas (OTC), swap novado y futuros; **no opera opciones**. Colombia: los ocho. Chile: sin futuros. República Dominicana y Panamá: solo OTC (forward y swap, de divisas y de tasas). «Swap novado» se asume de tasas; confirmar si debe separarse en divisas y tasas | Ramiro |
 | Panamá | Par EUR/USD: el balboa circula a la par con el dólar, no hay riesgo USD/PAB | Ramiro |
 | Naturaleza de los límites | **Internos** (permiten continuar con motivo y aprobador): cupo de contraparte, concentración por inmueble, arrendatario, ciudad, originador, proyecto y sector, y tope por etapa. **Normativos** (bloquean): propósito, sobrecobertura, emisor, calificación, macroactivo, moneda, plazo, endeudamiento, tope a activos en desarrollo y régimen del FVP | Compliance |
 | Posiciones, MTM, delta y vega de derivados | Cifras inventadas (ver `DERIV_POS`) | Ramiro |
@@ -38,6 +38,8 @@ Cada uno está marcado en el código con `/* SUPUESTO: ... */`.
 - **Atribución por producto** (nueva pantalla de Performance attribution): renta fija, renta variable, mercado monetario, derivados, inmobiliario, alternativas y Lending. Dos reportes nuevos en Reportes de desempeño: «Informe de atribución por producto» y «Informe de Lending».
 - **Catálogos nuevos**: Clases de activo, Instrumentos de derivados (disponibilidad por país), Sectores de cartera y Originadores de cartera.
 - **Módulos conectados**: ahora también en Renta fija, Renta variable y Derivados (en Derivados faltaba por un orden de carga).
+- **Derivados**: el propósito de una operación es Cobertura, Inversión o ambos (en «Cobertura e inversión» el 50 % del nocional cuenta como cobertura; SUPUESTO). Instrumentos: forward y swap (OTC y novado) y futuros; sin opciones.
+- **Pantallas**: «Módulos conectados» en todas; Flujo de órdenes y Catálogos con Editar e Inactivar; un solo botón «Nuevo» en Instrumentos; filtro por tipo de activo en Contribución, Evaluación de límites y Flujos futuros; Visor con mercado monetario y derivados; sin personas naturales en los portafolios; tarjetas del home y de los grupos en filas balanceadas.
 - **Decisión de diseño**: Derivados y Decisiones de inversión no tienen carga masiva a propósito (cotizador y evidencia de mejor ejecución; comité y acta).
 - **Cuatro países**: se agregó Panamá (además de Colombia, Chile y República Dominicana) y todo se probó en los cuatro.
 - **KPIs de las listas**: ahora reflejan los filtros aplicados (antes mostraban siempre el total); es lo que pide el invariante «totales de KPIs = suma de las filas visibles».
