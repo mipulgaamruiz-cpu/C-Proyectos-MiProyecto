@@ -284,6 +284,11 @@ export async function runFlows3(browser, html, R, pais) {
   await page.selectOption('#view [name=port]', { index: 1 }); await page.click('#view [data-consult]'); await page.waitForTimeout(700);
   const brT = await page.locator('#view').innerText();
   ok('Atribución de retorno: separa el efecto cambiario de las inversiones en USD y EUR', /Efecto cambiario/.test(brT) && !/Datos ilustrativos de demostración/.test(brT) && !BAD_TEXT.test(brT));
+  /* Tema oscuro: las tarjetas del ciclo de vida de Flujo de órdenes no usan fondo blanco fijo */
+  await page.evaluate(() => document.documentElement.classList.add('dark')); await go(page, '#/parametrizacion/flow'); await page.waitForTimeout(500);
+  const bgs = await page.evaluate(() => [...document.querySelectorAll('#view div[style*="border-radius:10px"]')].map(d => getComputedStyle(d).backgroundColor));
+  ok('Tema oscuro · Flujo de órdenes: las tarjetas del ciclo de vida no son blancas', bgs.length >= 8 && bgs.every(c => c !== 'rgb(255, 255, 255)'), bgs.slice(0, 3).join('|'));
+  await page.evaluate(() => document.documentElement.classList.remove('dark'));
   /* F12 en las pantallas nuevas */
   for (const dest of ['Colombia', 'Chile', 'República Dominicana', 'Panamá'].filter(c => c !== pais).slice(0, 2)) {
     for (const route of ['#/orders/investment-decisions', '#/parametrizacion/instruments', '#/dashboard/graphics', '#/parametrizacion/limits']) {
